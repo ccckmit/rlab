@@ -17,9 +17,9 @@ R.samples=function(space, arg) {
 }
 
 R._range = R.range;
-R.range=function(start,end, step) {
+R.range=function(start, end, step) {
     step = step || 1;
-    return R._range(start,end+0.1*step, step); 
+    return R._range(start,end+0.00001*step, step); 
 }
 
 module.exports = R;

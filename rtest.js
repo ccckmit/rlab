@@ -1,4 +1,4 @@
-var R = require("./R");
+var R = require("./rlab");
 var c = console;
 
 var x = R.samples(R.range(1,6), {size:10, replace:false});
