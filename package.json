@@ -1,0 +1,16 @@
+{
+  "name": "rlab",
+  "version": "0.0.2",
+  "description": "Javascript scientific library like R based on lodash",
+  "main": "rlab.js",
+  "dependencies": {
+    "lodash": "^4.6.1"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "repository": {},
+  "keywords": [],
+  "author": "ccckmit",
+  "license": "BSD-3-Clause",
+  "homepage": "https://github.com/ccckmit/rlab"
+}
