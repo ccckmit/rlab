@@ -37,4 +37,13 @@ c.log("sd(x)=", x.sd().toFixed(2));
 var t1=R.ttest({x:x.value(), mu:0} );
 R.report(t1);
 
+var A = [[1,2,3],[4,5,6],[7,3,9]];
+var iA = R.M.inv(A);
+c.log("A=", R.str(A));
+c.log("iA=", R.str(iA));
+var AiA = R.M.dot(A, iA);
+c.log("AiA=", R.str(AiA));
+
+
+
 

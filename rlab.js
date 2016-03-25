@@ -1,6 +1,8 @@
 var R=require("lodash");
 var J=require("jStat").jStat;
 
+R.M=require("numeric");
+
 var repeats=function(f, x, n) {
   var a=[];
   for (var i=0; i<n; i++) {

@@ -5,7 +5,8 @@
   "main": "rlab.js",
   "dependencies": {
     "jStat": "^1.5.2",
-    "lodash": "^4.6.1"
+    "lodash": "^4.6.1",
+    "numeric": "^1.2.6"
   },
   "devDependencies": {},
   "scripts": {},
