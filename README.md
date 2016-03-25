@@ -12,7 +12,7 @@ npm install rlab
 file : rtest.js
 
 ```javascript
-var R = require("./rlab");
+var R = require("rlab");
 var c = console;
 
 var x = R.samples(R.steps(0,100, 10), 10, {replace:true}).value();
