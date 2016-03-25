@@ -23,7 +23,6 @@ c.log("qunif(0.5, -5, -1)=", R.qunif(0.5, -5, -1));
 var x = R.rnorm(10, 0, 1);
 c.log("x.str()=", x.str());
 c.log("x.sortBy()=", x.sortBy().str());
-// c.log("_str(x)=", R._str(x.value()));
 c.log("str(x)=", R.str(x.value()));
 
 c.log("rbinom(10, 5, 0.5)=", R.rbinom(10,5,0.5));
