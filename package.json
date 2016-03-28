@@ -10,7 +10,7 @@
   },
   "devDependencies": {},
   "scripts": {
-	  "start" : "node rserver.js" }
+	  "start" : "node rserver.js"
 	},
   "repository": {},
   "keywords": [],
