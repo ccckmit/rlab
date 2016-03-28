@@ -4,16 +4,18 @@
   "description": "Javascript scientific library like R based on lodash",
   "main": "rlab.js",
   "dependencies": {
+    "express": "^4.13.4",
     "jStat": "^1.5.2",
     "lodash": "^4.6.1",
-    "numeric": "^1.2.6"
+    "numeric": "^1.2.6",
+    "serve-index": "^1.7.3"
   },
   "devDependencies": {},
   "scripts": {
     "start": "node rserver.js"
   },
   "bin": {
-    "rserver": "./rserver.js"
+    "rserver": "bin/rserver.js"
   },
   "repository": {},
   "keywords": [
