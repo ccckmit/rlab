@@ -1,17 +1,17 @@
-var R=require("lodash");
-var J=require("jStat").jStat;
+var _ = require("lodash");
+var J = require("jStat").jStat;
+var M = require("numeric");
+R     = _;
+R.M   = M;
+R.J   = J;
 
-R.M=require("numeric");
-
-var repeats=function(f, x, n) {
-  var a=[];
-  for (var i=0; i<n; i++) {
-    a.push(f(x));
-  }
-  return R(a);
+function _def(pair) {
+	_.mixin(pair, {chain:false});
 }
 
-R.mixin({repeats:repeats});
+function _mix(pair) {
+	_.mixin(pair, {chain:true});
+}
 
 var calls=function() {
   var args = Array.prototype.slice.call(arguments);
@@ -21,28 +21,47 @@ var calls=function() {
   var a=[];
   for (var i=0; i<n; i++)
     a.push(f.apply(null, params));
-  return R(a);  
+  return _.map(a);
 }
 
-R.mixin({calls:calls});
+_mix({calls:calls});
+
+var fx = function() {
+  var args = Array.prototype.slice.call(arguments);
+  var f = args[0];
+  var fargs = args.slice(1, arguments.length);
+  return function(x) {
+    return f.apply(null, [x].concat(fargs));
+  };
+}
+
+_mix({fx:fx});
 
 var samples=function(space, size, arg) {
-  var arg = R.defaults(arg, {replace:true});
+  var arg = _.defaults(arg, {replace:true});
   if (arg.replace)
-    return R.chain(R.sampleSize(space, size));
+    return R.calls(size, function() { return _.sample(space); });
   else
-    return R.repeats(R.sample, space, size);
+    return _.sampleSize(space, size);
 }
 
-R.mixin({samples:samples});
+_mix({samples:samples});
 
-R.steps=function(start, end, step) {
-  step = step || 1;
-  return R.range(start,end+0.00001*step, step); 
+var steps=function(start, end, step) {
+	step = step || 1;
+  return _.range(start, end+0.00001*step, step); 
 }
+
+_mix({steps:steps});
 
 // ============== format ==================
-R.precision = 2;
+R.setPrecision=function(n) {
+  R.precision = n;
+	R.M.precision = n;
+}
+
+R.setPrecision(2);
+
 // R.largeArray = 50;
 
 R.num2str=function(x) {
@@ -50,9 +69,10 @@ R.num2str=function(x) {
     return "NaN";
   else if (Math.floor(x) === x) // 整數
     return x.toString();
-  else if (isFinite(x)) // 有小數點
-    return R.ctrim(x.toFixed(R.precision), "0", "right");
-  else if (x < 0)
+  else if (isFinite(x)) { // 有小數點
+//	  return x.toFixed(R.precision);
+	  return _.round(x, R.precision).toString();
+  } else if (x < 0)
     return "-Infinity";
   else
     return "Infinity";
@@ -84,121 +104,126 @@ R.obj2str=function(x, sp) {
 }
 
 var str = function(x) {
-  if (typeof x === "number") return R.num2str(x);
+	if (typeof x === 'undefined') return 'undefined';
+  else if (x === null) return 'null';
+  else if (typeof x === "number") return R.num2str(x);
   else if(typeof x === "string") return '\"'+x.toString()+'\"';
   else if (x instanceof Array)  return R.array2str(x);
-  else if (typeof x === "object") return R.obj2str(x, ",");
+//  else if (typeof x === "object") return R.obj2str(x, ",");
+  else if (typeof x === "object") return x.toString();
+	else if (typeof x === "function") return "";
   else return x.toString();
 }
 
-R.mixin({str:str}, {chain:false});
+// Number.prototype.str = function() { return R.num2str(this); }
+Array.prototype.str = function() { return R.array2str(this); }
+// Array.prototype.str = function() { return M.str(this); }
+
+var _str = function(x) { return str(x); }
+
+_def({str:_str});
 
 // ============== /format ==================
 
-var sd = function(a, flag) { 
-  flag = flag || 1;
-  return J.stdev(a, flag); 
-}
-
-R.mixin({sd:sd}, {chain:false});
-
+// 標準差
+_def({sd:function(a, flag) { return J.stdev(a, flag || 1); }});
 // 協方差
-R.cov = function(x, y) { return J.stdev(x, y); }
+_def({cov:function(x, y) { return J.stdev(x, y); }});
 // 相關係數
-R.cor = function(x, y) { return J.corrcoeff(x, y); }
+_def({cor:function(x, y) { return J.corrcoeff(x, y); }});
 // 階層 n!
-R.factorial = function(n) { return J.factorial(n); }
+_def({factorial : function(n) { return J.factorial(n); }});
 // log(n!)
-R.lfactorial = function(n) { return J.factorialln(n); }
+_def({lfactorial : function(n) { return J.factorialln(n); }});
 // 組合 C(n,m)
-R.choose = function(n,m) { return J.combination(n, m); }
+_def({choose : function(n,m) { return J.combination(n, m); }});
 // log C(n,m)
-R.lchoose = function(n,m) { return J.combinationln(n, m); }
+_def({lchoose : function(n,m) { return J.combinationln(n, m); }});
 // 組合 C(n,m)
-R.permutation = function(n,m) { return J.permutation(n, m); }
+_def({permutation : function(n,m) { return J.permutation(n, m); }});
 // log C(n,m)
-R.lchoose = function(n,m) { return J.combinationln(n, m); }
+_def({lchoose : function(n,m) { return J.combinationln(n, m); }});
 
 // 均等分布
-R.runif=function(n, a, b) { return R.calls(n, J.uniform.sample, a, b); }
-R.dunif=function(x, a, b) { return J.uniform.pdf(x, a, b); }
-R.punif=function(q, a, b) { return J.uniform.cdf(q, a, b); }
-R.qunif=function(p, a, b) { return J.uniform.inv(p, a, b); }
+_mix({runif:function(n, a, b) { return R.calls(n, J.uniform.sample, a, b); }});
+_def({dunif:function(x, a, b) { return J.uniform.pdf(x, a, b); }});
+_def({punif:function(q, a, b) { return J.uniform.cdf(q, a, b); }});
+_def({qunif:function(p, a, b) { return J.uniform.inv(p, a, b); }});
 // 常態分布
-R.rnorm=function(n, mean, sd) { return R.calls(n, J.normal.sample, mean, sd); }
-R.dnorm=function(x, mean, sd) { return J.normal.pdf(x, mean, sd); }
-R.pnorm=function(q, mean, sd) { return J.normal.cdf(q, mean, sd); }
-R.qnorm=function(p, mean, sd) { return J.normal.inv(p, mean, sd); }
+_mix({rnorm:function(n, mean, sd) { return R.calls(n, J.normal.sample, mean, sd); }});
+_def({dnorm:function(x, mean, sd) { return J.normal.pdf(x, mean, sd); }});
+_def({pnorm:function(q, mean, sd) { return J.normal.cdf(q, mean, sd); }});
+_def({qnorm:function(p, mean, sd) { return J.normal.inv(p, mean, sd); }});
 // 布瓦松分布
-R.rpois=function(n, l) { return R.calls(n, J.poisson.sample, l); }
-R.dpois=function(x, l) { return J.poisson.pdf(x, l); }
-R.ppois=function(q, l) { return J.poisson.cdf(q, l); }
-R.qpois=function(p, l) { return J.poisson.inv(p, l); }
+_mix({rpois:function(n, l) { return R.calls(n, J.poisson.sample, l); }});
+_def({dpois:function(x, l) { return J.poisson.pdf(x, l); }});
+_def({ppois:function(q, l) { return J.poisson.cdf(q, l); }});
+_def({qpois:function(p, l) { return J.poisson.inv(p, l); }});
 // F 分布
-R.rf=function(n, df1, df2) { return R.calls(n, J.centralF.sample, df1, df2); }
-R.df=function(x, df1, df2) { return J.centralF.pdf(x, df1, df2); }
-R.pf=function(q, df1, df2) { return J.centralF.cdf(q, df1, df2); }
-R.qf=function(p, df1, df2) { return J.centralF.inv(p, df1, df2); }
+_mix({rf:function(n, df1, df2) { return R.calls(n, J.centralF.sample, df1, df2); }});
+_def({df:function(x, df1, df2) { return J.centralF.pdf(x, df1, df2); }});
+_def({pf:function(q, df1, df2) { return J.centralF.cdf(q, df1, df2); }});
+_def({qf:function(p, df1, df2) { return J.centralF.inv(p, df1, df2); }});
 // T 分布
-R.rt=function(n, dof) { return R.calls(n, J.studentt.sample, dof); }
-R.dt=function(x, dof) { return J.studentt.pdf(x, dof); }
-R.pt=function(q, dof) { return J.studentt.cdf(q, dof); }
-R.qt=function(p, dof) { return J.studentt.inv(p, dof); }
+_mix({rt:function(n, dof) { return R.calls(n, J.studentt.sample, dof); }});
+_def({dt:function(x, dof) { return J.studentt.pdf(x, dof); }});
+_def({pt:function(q, dof) { return J.studentt.cdf(q, dof); }});
+_def({qt:function(p, dof) { return J.studentt.inv(p, dof); }});
 // Beta 分布
-R.rbeta=function(n, alpha, beta) { return R.calls(n, J.beta.sample, alpha, beta); }
-R.dbeta=function(x, alpha, beta) { return J.beta.pdf(x, alpha, beta); }
-R.pbeta=function(q, alpha, beta) { return J.beta.cdf(q, alpha, beta); }
-R.qbeta=function(p, alpha, beta) { return J.beta.inv(p, alpha, beta); }
+_mix({rbeta:function(n, alpha, beta) { return R.calls(n, J.beta.sample, alpha, beta); }});
+_def({dbeta:function(x, alpha, beta) { return J.beta.pdf(x, alpha, beta); }});
+_def({pbeta:function(q, alpha, beta) { return J.beta.cdf(q, alpha, beta); }});
+_def({qbeta:function(p, alpha, beta) { return J.beta.inv(p, alpha, beta); }});
 // 柯西分布
-R.rcauchy=function(n, local, scale) { return R.calls(n, J.cauchy.sample, local, scale); }
-R.dcauchy=function(x, local, scale) { return J.cauchy.pdf(x, local, scale); }
-R.pcauchy=function(q, local, scale) { return J.cauchy.cdf(q, local, scale); }
-R.qcauchy=function(p, local, scale) { return J.cauchy.inv(p, local, scale); }
+_mix({rcauchy:function(n, local, scale) { return R.calls(n, J.cauchy.sample, local, scale); }});
+_def({dcauchy:function(x, local, scale) { return J.cauchy.pdf(x, local, scale); }});
+_def({pcauchy:function(q, local, scale) { return J.cauchy.cdf(q, local, scale); }});
+_def({qcauchy:function(p, local, scale) { return J.cauchy.inv(p, local, scale); }});
 // chisquare 分布
-R.rchisq=function(n, dof) { return R.calls(n, J.chisquare.sample, dof); }
-R.dchisq=function(x, dof) { return J.chisquare.pdf(x, dof); }
-R.pchisq=function(q, dof) { return J.chisquare.cdf(q, dof); }
-R.qchisq=function(p, dof) { return J.chisquare.inv(p, dof); }
+_mix({rchisq:function(n, dof) { return R.calls(n, J.chisquare.sample, dof); }});
+_def({dchisq:function(x, dof) { return J.chisquare.pdf(x, dof); }});
+_def({pchisq:function(q, dof) { return J.chisquare.cdf(q, dof); }});
+_def({qchisq:function(p, dof) { return J.chisquare.inv(p, dof); }});
 // 指數分布
-R.rexp=function(n, rate) { return R.calls(n, J.exponential.sample, rate); }
-R.dexp=function(x, rate) { return J.exponential.pdf(x, rate); }
-R.pexp=function(q, rate) { return J.exponential.cdf(q, rate); }
-R.qexp=function(p, rate) { return J.exponential.inv(p, rate); }
+_mix({rexp:function(n, rate) { return R.calls(n, J.exponential.sample, rate); }});
+_def({dexp:function(x, rate) { return J.exponential.pdf(x, rate); }});
+_def({pexp:function(q, rate) { return J.exponential.cdf(q, rate); }});
+_def({qexp:function(p, rate) { return J.exponential.inv(p, rate); }});
 // Gamma 分布
-R.rgamma=function(n, shape, scale) { return R.calls(n, J.gamma.sample, shape, scale); }
-R.dgamma=function(x, shape, scale) { return J.gamma.pdf(x, shape, scale); }
-R.pgamma=function(q, shape, scale) { return J.gamma.cdf(q, shape, scale); }
-R.qgamma=function(p, shape, scale) { return J.gamma.inv(p, shape, scale); }
+_mix({rgamma:function(n, shape, scale) { return R.calls(n, J.gamma.sample, shape, scale); }});
+_def({dgamma:function(x, shape, scale) { return J.gamma.pdf(x, shape, scale); }});
+_def({pgamma:function(q, shape, scale) { return J.gamma.cdf(q, shape, scale); }});
+_def({qgamma:function(p, shape, scale) { return J.gamma.inv(p, shape, scale); }});
 // 反 Gamma 分布
-R.rinvgamma=function(n, shape, scale) { return R.calls(n, J.invgamma.sample, shape, scale); }
-R.dinvgamma=function(x, shape, scale) { return J.invgamma.pdf(x, shape, scale); }
-R.pinvgamma=function(q, shape, scale) { return J.invgamma.cdf(q, shape, scale); }
-R.qinvgamma=function(p, shape, scale) { return J.invgamma.inv(p, shape, scale); }
+_mix({rinvgamma:function(n, shape, scale) { return R.calls(n, J.invgamma.sample, shape, scale); }});
+_def({dinvgamma:function(x, shape, scale) { return J.invgamma.pdf(x, shape, scale); }});
+_def({pinvgamma:function(q, shape, scale) { return J.invgamma.cdf(q, shape, scale); }});
+_def({qinvgamma:function(p, shape, scale) { return J.invgamma.inv(p, shape, scale); }});
 // 對數常態分布
-R.rlognormal=function(n, mu, sigma) { return R.calls(n, J.lognormal.sample, mu, sigma); }
-R.dlognormal=function(x, mu, sigma) { return J.lognormal.pdf(x, mu, sigma); }
-R.plognormal=function(q, mu, sigma) { return J.lognormal.cdf(q, mu, sigma); }
-R.qlognormal=function(p, mu, sigma) { return J.lognormal.inv(p, mu, sigma); }
+_mix({rlognormal:function(n, mu, sigma) { return R.calls(n, J.lognormal.sample, mu, sigma); }});
+_def({dlognormal:function(x, mu, sigma) { return J.lognormal.pdf(x, mu, sigma); }});
+_def({plognormal:function(q, mu, sigma) { return J.lognormal.cdf(q, mu, sigma); }});
+_def({qlognormal:function(p, mu, sigma) { return J.lognormal.inv(p, mu, sigma); }});
 // Pareto 分布
-R.rpareto=function(n, scale, shape) { return R.calls(n, J.pareto.sample, scale, shape); }
-R.dpareto=function(x, scale, shape) { return J.pareto.pdf(x, scale, shape); }
-R.ppareto=function(q, scale, shape) { return J.pareto.cdf(q, scale, shape); }
-R.qpareto=function(p, scale, shape) { return J.pareto.inv(p, scale, shape); }
+_mix({rpareto:function(n, scale, shape) { return R.calls(n, J.pareto.sample, scale, shape); }});
+_def({dpareto:function(x, scale, shape) { return J.pareto.pdf(x, scale, shape); }});
+_def({ppareto:function(q, scale, shape) { return J.pareto.cdf(q, scale, shape); }});
+_def({qpareto:function(p, scale, shape) { return J.pareto.inv(p, scale, shape); }});
 // Weibull 分布
-R.rweibull=function(n, scale, shape) { return R.calls(n, J.weibull.sample, scale, shape); }
-R.dweibull=function(x, scale, shape) { return J.weibull.pdf(x, scale, shape); }
-R.pweibull=function(q, scale, shape) { return J.weibull.cdf(q, scale, shape); }
-R.qweibull=function(p, scale, shape) { return J.weibull.inv(p, scale, shape); }
+_mix({rweibull:function(n, scale, shape) { return R.calls(n, J.weibull.sample, scale, shape); }});
+_def({dweibull:function(x, scale, shape) { return J.weibull.pdf(x, scale, shape); }});
+_def({pweibull:function(q, scale, shape) { return J.weibull.cdf(q, scale, shape); }});
+_def({qweibull:function(p, scale, shape) { return J.weibull.inv(p, scale, shape); }});
 // 三角分布
-R.rtriangular=function(n, a, b, c) { return R.calls(n, J.triangular.sample, a, b, c); }
-R.dtriangular=function(x, a, b, c) { return J.triangular.pdf(x, a, b, c); }
-R.ptriangular=function(q, a, b, c) { return J.triangular.cdf(q, a, b, c); }
-R.qtriangular=function(p, a, b, c) { return J.triangular.inv(p, a, b, c); }
+_mix({rtriangular:function(n, a, b, c) { return R.calls(n, J.triangular.sample, a, b, c); }});
+_def({dtriangular:function(x, a, b, c) { return J.triangular.pdf(x, a, b, c); }});
+_def({ptriangular:function(q, a, b, c) { return J.triangular.cdf(q, a, b, c); }});
+_def({qtriangular:function(p, a, b, c) { return J.triangular.inv(p, a, b, c); }});
 // 類似 Beta 分布，但計算更簡單
-R.rkumaraswamy=function(n, alpha, beta) { return R.calls(n, J.kumaraswamy.sample, alpha, beta); }
-R.dkumaraswamy=function(x, alpha, beta) { return J.kumaraswamy.pdf(x, alpha, beta); }
-R.pkumaraswamy=function(q, alpha, beta) { return J.kumaraswamy.cdf(q, alpha, beta); }
-R.qkumaraswamy=function(p, alpha, beta) { return J.kumaraswamy.inv(p, alpha, beta); }
+_mix({rkumaraswamy:function(n, alpha, beta) { return R.calls(n, J.kumaraswamy.sample, alpha, beta); }});
+_def({dkumaraswamy:function(x, alpha, beta) { return J.kumaraswamy.pdf(x, alpha, beta); }});
+_def({pkumaraswamy:function(q, alpha, beta) { return J.kumaraswamy.cdf(q, alpha, beta); }});
+_def({qkumaraswamy:function(p, alpha, beta) { return J.kumaraswamy.inv(p, alpha, beta); }});
 
 // ============= 離散分佈 ============
 var qf=function(cdf, q, N, p) {
@@ -206,30 +231,30 @@ var qf=function(cdf, q, N, p) {
     if (cdf(i, N, p) > q) return i;
   }
   return N;
-} 
+}
 var rf=function(cdf, n, N, p) {
-  var samples = [];
+  var a = [];
   for (var i=0; i<n; i++) {
     var q = Math.random();
-    samples.push(cdf(q, N, p));
+    a.push(cdf(q, N, p));
   }
-  return samples;
+  return a;
 } 
 // 二項分布
-R.dbinom=function(x, N, p) { return J.binomial.pdf(x, N, p); }
-R.pbinom=function(k, N, p) { return J.binomial.cdf(k, N, p); }
-R.qbinom=function(q, N, p) { return qf(R.pbinom, q, N, p); } 
-R.rbinom=function(n, N, p) { return rf(R.qbinom, n, N, p); }
+_def({dbinom:function(x, N, p) { return J.binomial.pdf(x, N, p); }});
+_def({pbinom:function(k, N, p) { return J.binomial.cdf(k, N, p); }});
+_def({qbinom:function(q, N, p) { return qf(R.pbinom, q, N, p); }});
+_mix({rbinom:function(n, N, p) { return rf(R.qbinom, n, N, p); }});
 // 負二項分布
-R.dnbinom=function(x, N, p) { return jStat.negbin.pdf(x, N, p); }
-R.pnbinom=function(k, N, p) { return jStat.negbin.cdf(k, N, p); }
-R.qnbinom=function(q, N, p) { return qf(R.pnbinom, q, N, p); } 
-R.rnbinom=function(n, N, p) { return rf(R.qnbinom, n, N, p); }
+_def({dnbinom:function(x, N, p) { return jStat.negbin.pdf(x, N, p); }});
+_def({pnbinom:function(k, N, p) { return jStat.negbin.cdf(k, N, p); }});
+_def({qnbinom:function(q, N, p) { return qf(R.pnbinom, q, N, p); } });
+_mix({rnbinom:function(n, N, p) { return rf(R.qnbinom, n, N, p); }});
 // 超幾何分布
-R.dhyper=function(x, N, m, n) { return jStat.hypgeom.pdf(x, N, m, n); }
-R.phyper=function(k, N, m, n) { return jStat.hypgeom.cdf(k, N, m, n); }
-R.qhyper=function(q, N, m, n) { return qf(R.phyper, q, N, p); } 
-R.rhyper=function(n, N, m, k) { return rf(R.qhyper, n, N, p); }
+_def({dhyper:function(x, N, m, n) { return jStat.hypgeom.pdf(x, N, m, n); }});
+_def({phyper:function(k, N, m, n) { return jStat.hypgeom.cdf(k, N, m, n); }});
+_def({qhyper:function(q, N, m, n) { return qf(R.phyper, q, N, p); } });
+_mix({rhyper:function(n, N, m, k) { return rf(R.qhyper, n, N, p); }});
 
 // =============== 檢定 ==============================
 
@@ -243,7 +268,7 @@ function opAlt(op) {
 
 R.test = function(o) { // name, D, x, mu, sd, y, alpha, op
   o = R.defaults(o, {alpha:0.05, op:"="});
-	var alpha = o.alpha;
+  var alpha = o.alpha;
   var pvalue, interval;
   var D      = o.D;
   var q1     = D.o2q(o); // 單尾檢定的 pvalue
@@ -640,4 +665,36 @@ R.anovaftest = function() {
   };
 }
 
+// ========================= MATRIX ===================
+M.str = M.prettyPrint;
+
 module.exports = R;
+
+
+/*
+R.fx = function() {
+  var args = Array.prototype.slice.call(arguments);
+  var f = args[0];
+  var fargs = args.slice(1, arguments.length);
+  return function(x) {
+    return f.apply(null, [x].concat(fargs));
+  };
+}
+
+*/
+/*
+// list(from, from+step, ..., to)
+R.steps=function(from, to, step) {
+  step = step || 1;
+  var a=[];
+  for (var i=0; from+i*step<=to; i++)
+    a.push(from+i*step);
+  return a;
+}
+*/
+
+/*
+var calls=function(n,f) {
+	return _.range(n).map(f);
+}
+*/
