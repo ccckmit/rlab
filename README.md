@@ -1,5 +1,16 @@
-rlab -- A JavaScript Scientific Library like R based on lodash and jStat
+rlab -- A JavaScript Scientific Library like R
 
+## introduction
+
+The rlab is a A JavaScript Scientific Library like R.
+
+It's based on `lodash.js , jStat.js and numeric.js`
+
+There is a webIDE server based on rlab , you may start it by :
+
+```
+node rserver.js
+```
 
 ## install
 

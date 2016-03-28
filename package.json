@@ -9,7 +9,9 @@
     "numeric": "^1.2.6"
   },
   "devDependencies": {},
-  "scripts": {},
+  "scripts": {
+	  "start" : "node rserver.js" }
+	},
   "repository": {},
   "keywords": [],
   "author": "ccckmit",
