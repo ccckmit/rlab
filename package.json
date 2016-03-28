@@ -12,8 +12,11 @@
   "scripts": {
     "start": "node rserver.js"
   },
+	"bin" : { 
+	  "rserver" : "./rserver.js" 
+	}
   "repository": {},
-  "keywords": [],
+  "keywords": [ "R", "Matlab", "Scientific Computing", "Statistics", "Probability", "Matrix"],
   "author": "ccckmit",
   "license": "BSD-3-Clause",
   "homepage": "https://github.com/ccckmit/rlab"
