@@ -14,7 +14,7 @@
   },
 	"bin" : { 
 	  "rserver" : "./rserver.js" 
-	}
+	},
   "repository": {},
   "keywords": [ "R", "Matlab", "Scientific Computing", "Statistics", "Probability", "Matrix"],
   "author": "ccckmit",
