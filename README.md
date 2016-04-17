@@ -55,7 +55,7 @@ qbinom(0.9, 5, 0.5)= 4
 file : statisticsEx.js
 
 ```javascript
-var R = require("../rlab");
+var R = require("rlab");
 var c = console;
 var v = [1,3,5];
 c.log("v.max()=", v.max());
@@ -99,7 +99,7 @@ factorial(5)= 120
 file : matrixEx.js
 
 ```javascript
-var M = require("../rlab").M;
+var M = require("rlab").M;
 
 var c = console;
 var v = [1,2,3];
