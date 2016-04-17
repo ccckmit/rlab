@@ -2,6 +2,7 @@ var _ = require("lodash");
 var J = require("jStat").jStat;
 var M = require("numeric");
 R     = _;
+R._   = _;
 R.M   = M;
 R.J   = J;
 
