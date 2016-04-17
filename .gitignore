@@ -5,6 +5,10 @@ logs
 # exe
 *.exe
 
+# bak
+*.bak
+bak
+
 # node 
 node_modules
 
