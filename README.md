@@ -165,11 +165,7 @@ E*[λ]*E-1= [[          1,          2,          3],
 
 ## IDE
 
-There is a webIDE server based on rlab , you may start it by :
-
-```
-node rserver.js
-```
+There is a webIDE for rlab , you may start it by open rlab.html
 
 ## Author
 
