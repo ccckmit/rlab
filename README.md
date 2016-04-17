@@ -6,12 +6,6 @@ The rlab is a A JavaScript Scientific Library like R.
 
 It's based on `lodash.js , jStat.js and numeric.js`
 
-There is a webIDE server based on rlab , you may start it by :
-
-```
-node rserver.js
-```
-
 ## install
 
 ```
@@ -20,112 +14,167 @@ npm install rlab
 
 ## use rlab
 
-file : rtest.js
+file : probabilityEx.js
 
 ```javascript
 var R = require("rlab");
-var M = R.M;
 var c = console;
-
 var dice = R.steps(1,6);
-c.log("dice=", dice);
-
-var x = R.samples(dice, 6, {replace:false});
-c.log("x=", x);
-
-var x = R(dice).samples(6, {replace:false}).value();
-c.log("chain1:x=", x);
-
-var x = R(dice).samples(10).str();
-c.log("chain2:x=", x);
-
-var x = R.samples(dice, 10);
-c.log("x=", x, "max=", R.max(x), "min=", R.min(x), 
-      "mean=", R.mean(x), "sd=", R.sd(x));
-			
-c.log("cov(x,x)=", R.cov(x,x));
-c.log("cor(x,x)=", R.cor(x,x)); // 相關係數
-c.log("factorial(10)=", R.factorial(10)); // 階層 n!
-c.log("lfactorial(10)=", R.lfactorial(10).toFixed(4)); // log(n!)
-c.log("choose(5,2)=", R.choose(5,2)); // 組合 C(n,m)
-c.log("lchoose(5,2)=", R.lchoose(5,2)); // log C(n,m)
-c.log("permutation(5,2)=", R.permutation(5,2)); // P(n,m)
-c.log("runif(10, -5, -1)=", R.runif(10, -5, -1).str()); 
-// c.log(".chain(10).runif(-5,-1)=", R.chain(10).runif(-5,-1)); 
-c.log("dunif(-3, -5, -1)=", R.dunif(-3, -5, -1)); 
-c.log("punif(-3, -5, -1)=", R.punif(-3, -5, -1)); 
-c.log("qunif(0.5, -5, -1)=", R.qunif(0.5, -5, -1)); 
-
-var x = R.rnorm(10, 0, 1);
-c.log("x=", R.str(x));
-c.log("x.sort()=", x.sort().str());
-
+c.log("sample(1:6, 10)", R.samples(dice, 10));
+c.log("runif(10,0,1)=", R.runif(10, 0, 1).str());
+c.log("rnorm(10,5,1)=", R.rnorm(10, 5, 1).str());
+c.log("dnorm(5,5,1)=", R.dnorm(5, 5, 1));
+c.log("pnorm(5,5,1)=", R.pnorm(5, 5, 1));
+c.log("qnorm(0.5,5,1)=", R.qnorm(0.5, 5, 1));
 c.log("rbinom(10, 5, 0.5)=", R.rbinom(10,5,0.5));
 c.log("dbinom(4, 5, 0.5)=", R.dbinom(4,5,0.5));
 c.log("dbinom(5, 5, 0.5)=", R.dbinom(5,5,0.5));
 c.log("pbinom(4, 5, 0.5)=", R.pbinom(4,5,0.5));
 c.log("qbinom(0.9, 5, 0.5)=", R.qbinom(0.9,5,0.5));
-
-var t1=R.ttest({x:x, mu:0} );
-R.report(t1);
-
-var A = [[1,2,3],[4,5,6],[7,3,9]];
-var iA = M.inv(A);
-c.log("A=", R.str(A));
-c.log("iA=", R.str(iA));
-var AiA = M.dot(A, iA);
-
-c.log("AiA=", R.str(AiA));
-
-c.log("====iA=====\n", M.str(iA))
 ```
 
-## run
+run :
 
 ```
-D:\Dropbox\github\rlab>node rtest
-dice= [ 1, 2, 3, 4, 5, 6 ]
-x= [ 2, 1, 3, 4, 6, 5 ]
-chain1:x= [ 6, 2, 3, 5, 1, 4 ]
-chain2:x= [1, 2, 5, 6, 6, 3, 6, 6, 2, 5]
-x= [ 5, 6, 3, 4, 6, 3, 4, 2, 5, 2 ] max= 6 min= 2 mean= 4 sd= 1.4907119849998598
-
-cov(x,x)= 1.4907119849998598
-cor(x,x)= 1
-factorial(10)= 3628800
-lfactorial(10)= 15.1044
-choose(5,2)= 10
-lchoose(5,2)= 2.302585092994045
-permutation(5,2)= 20
-runif(10, -5, -1)= [-3.3, -2.68, -3.5, -2.96, -4.48, -1.9, -2.12, -2.02, -4.59,
--4.09]
-dunif(-3, -5, -1)= 0.25
-punif(-3, -5, -1)= 0.5
-qunif(0.5, -5, -1)= -3
-x= [0.79, 0.49, 1.01, -1.13, 0.19, 0.4, -0.14, 1.01, 0.1, -1]
-x.sort()= [-0.14, -1, -1.13, 0.1, 0.19, 0.4, 0.49, 0.79, 1.01, 1.01]
-rbinom(10, 5, 0.5)= [ 3, 2, 3, 2, 3, 2, 3, 1, 2, 1 ]
+$ node probabilityEx.js
+sample(1:6, 10) [ 3, 5, 3, 2, 3, 3, 1, 2, 4, 3 ]
+runif(10,0,1)= [0.9119,0.5899,0.6839,0.1350,0.6894,0.9512,0.8186,0.5826,0.4279,0
+.5125]
+rnorm(10,5,1)= [5.8961,5.4312,6.0002,5.3623,5.5281,4.4413,6.2144,5.7173,5.3111,1
+.3146]
+dnorm(5,5,1)= 0.3989422804014327
+pnorm(5,5,1)= 0.5
+qnorm(0.5,5,1)= 5
+rbinom(10, 5, 0.5)= [ 2, 1, 2, 2, 4, 4, 1, 4, 3, 2 ]
 dbinom(4, 5, 0.5)= 0.15625
 dbinom(5, 5, 0.5)= 0.03125
 pbinom(4, 5, 0.5)= 0.96875
 qbinom(0.9, 5, 0.5)= 4
-=========== report ==========
-name    : "ttest(X)"
-h       : "H0:mu=0"
-alpha   : 0.05
-op      : "="
-pvalue  : 0.49
-ci      : [-0.37, 0.71]
-df      : 9
-mean    : 0.17
-sd      : 0.75
-A= [[1, 2, 3], [4, 5, 6], [7, 3, 9]]
-iA= [[-0.9, 0.3, 0.1], [-0.2, 0.4, -0.2], [0.77, -0.37, 0.1]]
-AiA= [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
-====iA=====
- [[     -0.9,      0.3,      0.1],
- [     -0.2,      0.4,     -0.2],
- [     0.77,    -0.37,      0.1]]
 ```
+
+file : statisticsEx.js
+
+```javascript
+var R = require("../rlab");
+var c = console;
+var v = [1,3,5];
+c.log("v.max()=", v.max());
+c.log("v.min()=", v.min());
+c.log("v.sum()=", v.sum());
+c.log("v.normalize()=", v.normalize());
+c.log("v.normalize().sum()=", v.normalize().sum());
+c.log("v.product()=", v.product());
+c.log("v.mean()=", v.mean());
+c.log("v.range()=", v.range());
+c.log("v.unique()=", v.unique());
+c.log("v.median()=", v.median());
+c.log("v.variance()=", v.variance());
+c.log("v.deviation()=", v.deviation());
+c.log("v.sd()=", v.sd(), " sd^2=", v.sd()*v.sd());
+c.log("v.cov(v)=", v.cov(v), "v.cor(v)=", v.cor(v));
+c.log("factorial(5)=", R.factorial(5));
+```
+
+run : 
+
+```
+$ node statisticsEx.js
+v.max()= 5
+v.min()= 1
+v.sum()= 9
+v.normalize()= [ 0.1111111111111111, 0.3333333333333333, 0.5555555555555556 ]
+v.normalize().sum()= 1
+v.product()= 15
+v.mean()= 3
+v.range()= 4
+v.unique()= [ 1, 3, 5 ]
+v.median()= 3
+v.variance()= 2.6666666666666665
+v.deviation()= [ -2, 0, 2 ]
+v.sd()= 1.632993161855452  sd^2= 2.6666666666666665
+v.cov(v)= 2 v.cor(v)= 1
+factorial(5)= 120
+```
+
+file : matrixEx.js
+
+```javascript
+var M = require("../rlab").M;
+
+var c = console;
+var v = [1,2,3];
+c.log("v.sin()=", v.sin());
+c.log("v.norm2()=", v.norm2());
+c.log("v.norm2Squared()=", v.norm2Squared());
+
+var A = [[1,2,3],[4,5,6],[7,3,9]];
+var AiA = A.inv().dot(A);
+c.log("AiA=\n", AiA.strM());
+c.log("AiA.tr()=\n", AiA.tr().strM());
+c.log("A=\n", A.str());
+c.log("A.mul(0.1)=\n", A.mul(0.1).strM());
+c.log("A.row(1)=", A.row(1));
+c.log("A.col(1)=", A.col(1));
+c.log("A.sumM()=", A.sumM());
+c.log("A.rowSum(2)=", A.rowSum(2));
+c.log("A.colSum(2)=", A.colSum(2));
+c.log("A.mean(row)=", A.rowMean().str());
+c.log("A.mean(col)=", A.colMean().str());
+
+var D = M.diag(v);
+c.log("D=", D);
+
+var Eλ = M.eigR(A);
+var E = Eλ.E, λ=Eλ.lambda;
+c.log("E*[λ]*E-1=", E.dot(λ.diag()).dot(E.inv()).strM());
+```
+
+run : 
+
+```
+$ node matrixEx.js
+v.sin()= [ 0.8414709848078965, 0.9092974268256817, 0.1411200080598672 ]
+v.norm2()= 3.7416573867739413
+v.norm2Squared()= 14
+AiA=
+ [[          1,   1.11e-16,  -1.11e-16],
+ [          0,          1,  4.441e-16],
+ [ -3.331e-16, -3.331e-16,          1]]
+AiA.tr()=
+ [[          1,          0, -3.331e-16],
+ [   1.11e-16,          1, -3.331e-16],
+ [  -1.11e-16,  4.441e-16,          1]]
+A=
+ [[1.0000,2.0000,3.0000],[4.0000,5.0000,6.0000],[7.0000,3.0000,9.0000]]
+A.mul(0.1)=
+ [[        0.1,        0.2,        0.3],
+ [        0.4,        0.5,        0.6],
+ [        0.7,        0.3,        0.9]]
+A.row(1)= [ 4, 5, 6 ]
+A.col(1)= [ 2, 5, 3 ]
+A.sumM()= 40
+A.rowSum(2)= [ 6, 15, 19 ]
+A.colSum(2)= [ 12, 10, 18 ]
+A.mean(row)= [2.0000,5.0000,6.3333]
+A.mean(col)= [4.0000,3.3333,6.0000]
+D= [ [ 1, 0, 0 ], [ 0, 2, 0 ], [ 0, 0, 3 ] ]
+E*[λ]*E-1= [[          1,          2,          3],
+ [          4,          5,          6],
+ [          7,          3,          9]]
+```
+
+## IDE
+
+There is a webIDE server based on rlab , you may start it by :
+
+```
+node rserver.js
+```
+
+## Author
+
+Author: ccckmit
+
+Email : ccckmit@gmail.com 
 
 
