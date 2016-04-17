@@ -1,15 +1,12 @@
 {
   "name": "rlab",
   "version": "0.4.1",
-  "description": "Javascript scientific library like R based on lodash",
+  "description": "Javascript scientific library like R",
   "main": "rlab.js",
   "dependencies": {
-    "bootstrap": "^3.3.6",
-    "express": "^4.13.4",
     "jStat": "^1.5.2",
     "lodash": "^4.6.1",
     "numeric": "^1.2.6",
-    "serve-index": "^1.7.3"
   },
   "devDependencies": {},
   "scripts": {

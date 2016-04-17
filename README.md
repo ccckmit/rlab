@@ -1,18 +1,18 @@
 rlab -- A JavaScript Scientific Library like R
 
-## introduction
+## Introduction
 
 The rlab is a A JavaScript Scientific Library like R.
 
 It's based on `lodash.js , jStat.js and numeric.js`
 
-## install
+## Install
 
 ```
 npm install rlab
 ```
 
-## use rlab
+## Use rlab
 
 file : probabilityEx.js
 
