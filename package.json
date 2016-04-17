@@ -1,6 +1,6 @@
 {
   "name": "rlab",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Javascript scientific library like R based on lodash",
   "main": "rlab.js",
   "dependencies": {
