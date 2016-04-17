@@ -56,7 +56,7 @@ C3G.prototype.curve = function(f, options) {
   this.g.data.types[name] = "line";
   this.g.data.xs[name] = name+"x";
   var x = R.steps(from, to, step), y=[];
-	var y = R.map(x, f);
+	var y = x.map(f);
 /*	
 	console.log("x=", x, "y=", y);
 	console.log("f=", f, "curve:x=", x);
@@ -82,7 +82,7 @@ C3G.prototype.hist = function(x, options) {
   this.g.data.xs[name] = name+"x";
   var xc = R.steps(from+step/2.0, to, step);
   var n = (to-from)/step + 1;
-  var count = R.fill(Array(n), 0);
+  var count = R._.fill(Array(n), 0);
   for (var i in x) {
     var slot=Math.floor((x[i]-from)/step);
     if (slot>=0 && slot < n)
