@@ -34,7 +34,7 @@ R.samples = function(space, size, arg) {
 		return _.sampleSize(space, size);
 }
 
-R.fmix(Array.prototype, {
+R.mixThis(Array.prototype, {
 // matrix
 rows:M.rows,
 cols:M.cols,
