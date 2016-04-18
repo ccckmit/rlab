@@ -8,14 +8,11 @@
     "lodash": "^4.6.1",
     "numeric": "^1.2.6"
   },
-  "devDependencies": {},
-  "scripts": {
-    "start": "node rserver.js"
-  },
-  "bin": {
-    "rserver": "rserver.js"
-  },
-  "repository": {},
+  "devDependencies": {
+    "browserify": "^13.0.0",	
+	},
+  "scripts": {},
+  "bin": {},
   "keywords": [
     "R",
     "Matlab",
@@ -24,7 +21,21 @@
     "Probability",
     "Matrix"
   ],
-  "author": "ccckmit",
-  "license": "MIT-Clause",
+  "homepage": "http://github.com/ccckmit/rlab",	
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/ccckmit/rlab.git"
+  },
+  "author": {
+    "name": "Chung-Chen Chen",
+    "email": "ccckmit@gmail.com",
+    "url": "http://ccc.nqu.edu.tw"
+  },	
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],	
   "homepage": "https://github.com/ccckmit/rlab"
 }
