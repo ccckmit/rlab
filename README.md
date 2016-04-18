@@ -17,7 +17,7 @@ npm install rlab
 file : probabilityEx.js
 
 ```javascript
-var R = require("../rlab");
+var R = require("rlab");
 var dice = R.steps(1,6);
 log("sample(1:6, 10)", R.samples(dice, 10));
 log("runif(10,0,1)=", R.runif(10, 0, 1).str());
@@ -55,7 +55,7 @@ qbinom(0.9, 5, 0.5)= 4
 file : statisticsEx.js
 
 ```javascript
-var R = require("../rlab");
+var R = require("rlab");
 var v = [1,3,5];
 log("v.max()=", v.max());
 log("v.min()=", v.min());
@@ -94,7 +94,7 @@ factorial(5)= 120
 file : testEx.js
 
 ```javascript
-var R = require("../rlab");
+var R = require("rlab");
 var v = [1,3,5];
 
 var x = R.rnorm(10, 0, 0.1);
@@ -128,7 +128,7 @@ sd      : 0.1047
 file : matrixEx.js
 
 ```javascript
-var M = require("../rlab").M;
+var M = require("rlab").M;
 var v = [1,2,3];
 log("v.sin()=", v.sin());
 log("v.norm2()=", v.norm2());
@@ -193,7 +193,7 @@ E*[λ]*E-1= [[          1,          2,          3],
 file : differentialEx.js
 
 ```javascript
-var R = require("../rlab");
+var R = require("rlab");
 
 var d = R.D.d, i=R.D.i, sin=R.sin, PI = R.PI, x2=(x)=>x*x;
 
