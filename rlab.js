@@ -1,20 +1,37 @@
 var _ = require("lodash");
 var R = require("./lib/R");
 var M = require("./lib/matrix");
+var math = require("./lib/math");
 var T = require("./lib/test");
+var D = require("./lib/differential");
 R.NN = require("./plugin/neural");
 R.NN.RBM = require("./plugin/neural/rbm");
 
 R.M = M;
-R.T = T;
+R.D = D;
 R._ = _;
 
+R.mix(R, math);
+R.mix(R, T);
+
+// Global
+debug = function() {
+	var arg = B.slice(arguments);
+	console.debug.apply(console, arg);
+}
+
+log = function() {
+	var arg = B.slice(arguments);
+	console.log.apply(console, arg);
+}
+
+// space 沒有加上機率參數 , 不能指定機率
 R.samples = function(space, size, arg) {
-		var arg = _.defaults(arg, {replace:true});
-		if (arg.replace)
-			return R.calls(size, function() { return _.sample(space); });
-		else
-			return _.sampleSize(space, size);
+	var arg = _.defaults(arg, {replace:true});
+	if (arg.replace)
+		return R.calls(size, function() { return _.sample(space); });
+	else
+		return _.sampleSize(space, size);
 }
 
 R.fmix(Array.prototype, {
@@ -103,7 +120,6 @@ sum:R.sum,
 product:R.product,
 mean:R.mean,
 range:R.range,
-unique:R.unique,
 median:R.median,
 variance:R.variance,
 deviation:R.deviation,

@@ -17,20 +17,20 @@ npm install rlab
 file : probabilityEx.js
 
 ```javascript
-var R = require("rlab");
-var c = console;
+var R = require("../rlab");
 var dice = R.steps(1,6);
-c.log("sample(1:6, 10)", R.samples(dice, 10));
-c.log("runif(10,0,1)=", R.runif(10, 0, 1).str());
-c.log("rnorm(10,5,1)=", R.rnorm(10, 5, 1).str());
-c.log("dnorm(5,5,1)=", R.dnorm(5, 5, 1));
-c.log("pnorm(5,5,1)=", R.pnorm(5, 5, 1));
-c.log("qnorm(0.5,5,1)=", R.qnorm(0.5, 5, 1));
-c.log("rbinom(10, 5, 0.5)=", R.rbinom(10,5,0.5));
-c.log("dbinom(4, 5, 0.5)=", R.dbinom(4,5,0.5));
-c.log("dbinom(5, 5, 0.5)=", R.dbinom(5,5,0.5));
-c.log("pbinom(4, 5, 0.5)=", R.pbinom(4,5,0.5));
-c.log("qbinom(0.9, 5, 0.5)=", R.qbinom(0.9,5,0.5));
+log("sample(1:6, 10)", R.samples(dice, 10));
+log("runif(10,0,1)=", R.runif(10, 0, 1).str());
+log("rnorm(10,5,1)=", R.rnorm(10, 5, 1).str());
+log("dnorm(5,5,1)=", R.dnorm(5, 5, 1));
+log("pnorm(5,5,1)=", R.pnorm(5, 5, 1));
+log("qnorm(0.5,5,1)=", R.qnorm(0.5, 5, 1));
+log("rbinom(10, 5, 0.5)=", R.rbinom(10,5,0.5));
+log("dbinom(4, 5, 0.5)=", R.dbinom(4,5,0.5));
+log("dbinom(5, 5, 0.5)=", R.dbinom(5,5,0.5));
+log("pbinom(4, 5, 0.5)=", R.pbinom(4,5,0.5));
+log("qbinom(0.9, 5, 0.5)=", R.qbinom(0.9,5,0.5));
+
 ```
 
 run :
@@ -55,24 +55,21 @@ qbinom(0.9, 5, 0.5)= 4
 file : statisticsEx.js
 
 ```javascript
-var R = require("rlab");
-var c = console;
+var R = require("../rlab");
 var v = [1,3,5];
-c.log("v.max()=", v.max());
-c.log("v.min()=", v.min());
-c.log("v.sum()=", v.sum());
-c.log("v.normalize()=", v.normalize());
-c.log("v.normalize().sum()=", v.normalize().sum());
-c.log("v.product()=", v.product());
-c.log("v.mean()=", v.mean());
-c.log("v.range()=", v.range());
-c.log("v.unique()=", v.unique());
-c.log("v.median()=", v.median());
-c.log("v.variance()=", v.variance());
-c.log("v.deviation()=", v.deviation());
-c.log("v.sd()=", v.sd(), " sd^2=", v.sd()*v.sd());
-c.log("v.cov(v)=", v.cov(v), "v.cor(v)=", v.cor(v));
-c.log("factorial(5)=", R.factorial(5));
+log("v.max()=", v.max());
+log("v.min()=", v.min());
+log("v.sum()=", v.sum());
+log("v.normalize()=", v.normalize());
+log("v.normalize().sum()=", v.normalize().sum());
+log("v.product()=", v.product());
+log("v.mean()=", v.mean());
+log("v.range()=", v.range());
+log("v.median()=", v.median());
+log("v.variance()=", v.variance());
+log("v.sd()=", v.sd(), " sd^2=", v.sd()*v.sd());
+log("v.cov(v)=", v.cov(v), "v.cor(v)=", v.cor(v));
+log("factorial(5)=", R.factorial(5));
 ```
 
 run : 
@@ -85,48 +82,78 @@ v.sum()= 9
 v.normalize()= [ 0.1111111111111111, 0.3333333333333333, 0.5555555555555556 ]
 v.normalize().sum()= 1
 v.product()= 15
-v.mean()= 3
+v.mean()= 1
 v.range()= 4
-v.unique()= [ 1, 3, 5 ]
 v.median()= 3
 v.variance()= 2.6666666666666665
-v.deviation()= [ -2, 0, 2 ]
 v.sd()= 1.632993161855452  sd^2= 2.6666666666666665
-v.cov(v)= 2 v.cor(v)= 1
+v.cov(v)= 4 v.cor(v)= 1
 factorial(5)= 120
+```
+
+file : testEx.js
+
+```javascript
+var R = require("../rlab");
+var v = [1,3,5];
+
+var x = R.rnorm(10, 0, 0.1);
+log("x=", x.str());
+log("x.sort()=", x.sort().str());
+
+var t1=R.ttest({x:x, mu:0});
+R.report(t1);
+```
+
+run :
+
+```
+$ node testEx.js
+x= [-0.1405,0.0495,-0.1850,0.0824,0.0687,-0.0854,-0.1049,-0.1171,0.0947,-0.1592]
+
+x.sort()= [-0.0854,-0.1049,-0.1171,-0.1405,-0.1592,-0.1850,0.0495,0.0687,0.0824,
+0.0947]
+=========== report ==========
+name    : ttest(X)
+h       : H0:mu=0
+alpha   : 0.0500
+op      : =
+pvalue  : 0.0003
+ci      : [-0.2599,-0.1101]
+df      : 9.0000
+mean    : -0.1850
+sd      : 0.1047
 ```
 
 file : matrixEx.js
 
 ```javascript
-var M = require("rlab").M;
-
-var c = console;
+var M = require("../rlab").M;
 var v = [1,2,3];
-c.log("v.sin()=", v.sin());
-c.log("v.norm2()=", v.norm2());
-c.log("v.norm2Squared()=", v.norm2Squared());
+log("v.sin()=", v.sin());
+log("v.norm2()=", v.norm2());
+log("v.norm2Squared()=", v.norm2Squared());
 
 var A = [[1,2,3],[4,5,6],[7,3,9]];
 var AiA = A.inv().dot(A);
-c.log("AiA=\n", AiA.strM());
-c.log("AiA.tr()=\n", AiA.tr().strM());
-c.log("A=\n", A.str());
-c.log("A.mul(0.1)=\n", A.mul(0.1).strM());
-c.log("A.row(1)=", A.row(1));
-c.log("A.col(1)=", A.col(1));
-c.log("A.sumM()=", A.sumM());
-c.log("A.rowSum(2)=", A.rowSum(2));
-c.log("A.colSum(2)=", A.colSum(2));
-c.log("A.mean(row)=", A.rowMean().str());
-c.log("A.mean(col)=", A.colMean().str());
+log("AiA=\n", AiA.strM());
+log("AiA.tr()=\n", AiA.tr().strM());
+log("A=\n", A.str());
+log("A.mul(0.1)=\n", A.mul(0.1).strM());
+log("A.row(1)=", A.row(1));
+log("A.col(1)=", A.col(1));
+log("A.sumM()=", A.sumM());
+log("A.rowSum()=", A.rowSum());
+log("A.colSum()=", A.colSum());
+log("A.mean(row)=", A.rowMean().str());
+log("A.mean(col)=", A.colMean().str());
 
 var D = M.diag(v);
-c.log("D=", D);
+log("D=", D);
 
 var Eλ = M.eigR(A);
 var E = Eλ.E, λ=Eλ.lambda;
-c.log("E*[λ]*E-1=", E.dot(λ.diag()).dot(E.inv()).strM());
+log("E*[λ]*E-1=", E.dot(λ.diag()).dot(E.inv()).strM());
 ```
 
 run : 
@@ -161,6 +188,30 @@ D= [ [ 1, 0, 0 ], [ 0, 2, 0 ], [ 0, 0, 3 ] ]
 E*[λ]*E-1= [[          1,          2,          3],
  [          4,          5,          6],
  [          7,          3,          9]]
+```
+
+file : differentialEx.js
+
+```javascript
+var R = require("../rlab");
+
+var d = R.D.d, i=R.D.i, sin=R.sin, PI = R.PI, x2=(x)=>x*x;
+
+log('d(x^2,2)=', d(x2, 2));
+log('d(sin(x/4),pi/4)=', d(sin, PI/4));
+log('i(x^2,0,1)=', i(x2,0,1));
+log('i(sin(x),0,pi/2)=', i(sin,0,PI/2));
+
+```
+
+run :
+
+```
+D:\Dropbox\github\rlab\example>node differentialEx.js
+d(x^2,2)= 4.000999999999699
+d(sin(x/4),pi/4)= 0.7067531099743674
+i(x^2,0,1)= 0.33283350000000095
+i(sin(x),0,pi/2)= 0.9997035898637557
 ```
 
 ## IDE
