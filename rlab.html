@@ -1,0 +1,58 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="web/c3.css">	
+	
+</head>
+<body>
+  <title>A Javascript IDE like R</title>
+  <fieldset>
+    <legend>Graph</legend>
+    <div id="chart" style="height:80%; width:100%"></div>
+  </fieldset>
+  <script src="web/d3.js"></script>
+  <script src="web/c3.js"></script>
+  <script src="web/vis.js"></script>
+  <script src="web/rlab.js"></script>
+  <script src="web/G.js"></script>
+  <script src="web/coffeequate.min.js"></script>	
+<script>
+var R=rlab, fx = R.fx, dt=R.dt;
+
+function curve() {
+  dt = R.dt;
+  G.curve((x)=>dt(x,3) ,{name:"dt(3)",  step:0.1});
+  G.curve((x)=>dt(x,10),{name:"dt(10)", step:0.1});
+  G.curve((x)=>dt(x,25),{name:"dt(25)", step:0.1});
+}
+
+function hist() {
+  var x = R.rnorm(10000, 5, 2);
+  G.hist(x, {name:"x", mode:"normalized", step:0.2});
+  G.curve((x)=>R.dnorm(x, 5,2), {name:"N(5,2)", step:0.2});
+}
+
+function f(x, y) { 
+  return (Math.sin(x/50) * Math.cos(y/50) * 50 + 50); 
+}
+
+function curve3D() { G.curve3d(f); }
+
+function plot() {
+  Ax = R.rnorm(100, 10, 1);
+  Ay = R.rnorm(100, 0, 0.5);
+  Bx = R.rnorm(100, 0, 1);
+  By = R.rnorm(100, 0, 0.5);
+  G.plot(Ax, Ay, {name:"A"});
+  G.plot(Bx, By, {name:"B"});
+}
+
+var chartbox = document.getElementById("chart");
+G.newGraph(chartbox);
+// hist();
+// curve();
+curve3D();
+// plot();
+</script>
+</body>
+</html>

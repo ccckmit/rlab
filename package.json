@@ -4,6 +4,7 @@
   "description": "Javascript scientific library like R",
   "main": "rlab.js",
   "dependencies": {
+    "coffeequate": "^1.2.2",
     "jStat": "^1.5.2",
     "lodash": "^4.6.1",
     "numeric": "^1.2.6"
@@ -31,10 +32,5 @@
     "email": "ccckmit@gmail.com",
     "url": "http://ccc.nqu.edu.tw"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://www.opensource.org/licenses/mit-license.php"
-    }
-  ]
+  "license": "MIT"
 }
