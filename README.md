@@ -214,6 +214,15 @@ i(x^2,0,1)= 0.33283350000000095
 i(sin(x),0,pi/2)= 0.9997035898637557
 ```
 
+## build web version
+
+```
+$npm run-script build-web
+
+> rlab@0.5.4 build-web D:\Dropbox\github\rlab
+> browserify web/_rlab.js -o web/rlab.js
+```
+
 ## IDE
 
 There is a webIDE for rlab , you may start it by open rlab.html

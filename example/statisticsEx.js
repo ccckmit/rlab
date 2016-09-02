@@ -13,3 +13,4 @@ log("v.variance()=", v.variance());
 log("v.sd()=", v.sd(), " sd^2=", v.sd()*v.sd());
 log("v.cov(v)=", v.cov(v), "v.cor(v)=", v.cor(v));
 log("factorial(5)=", R.factorial(5));
+log('hist(rnorm(10000,5,2))=', R.rnorm(10000, 5, 2).hist().str(0));

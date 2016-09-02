@@ -4,6 +4,7 @@
   "description": "Javascript scientific library like R",
   "main": "rlab.js",
   "dependencies": {
+    "algebrite": "^0.2.23",
     "coffeequate": "^1.2.2",
     "jStat": "^1.5.2",
     "lodash": "^4.6.1",
@@ -12,7 +13,9 @@
   "devDependencies": {
     "browserify": "^13.0.0"
   },
-  "scripts": {},
+  "scripts": {
+    "build-web": "browserify web/_rlab.js -o web/rlab.js"	
+	},
   "bin": {},
   "keywords": [
     "R",

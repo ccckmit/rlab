@@ -1,22 +1,45 @@
 var R = require("../rlab");
-var s = R.S.sym;
+var S = R.Symbol;
 
-var changeLabel = function(variable) {
-    variable.label += "s";
-    return variable;
-};
+console.log('x+x=', S.run('x + x')) // => 2 x"
 
-var E = s("E = m*\\c**2");
-log("E=MC2\nstr:", E.toString());
-log(" latex:", E.toLaTeX());
-log(" nmathml:", E.toMathML());
-log("E.simplify()=", E.simplify().str()); 
-log("E.approx()=", E.approx().str()); 
-log("E.getAllVariables()=", E.getAllVariables().str()); 
-log("E.mapOverVariables(changeLabel)=", E.mapOverVariables(changeLabel).str());  // 有錯
-log("E.copy()=", E.copy().str());
-log("E.getUncertainty()=", E.getUncertainty().str());
-log("E.differentiate('m')=", E.differentiate("m").str());
+console.log('10!=', S.factor('10!').toString()); // => "2^8 3^4 5^2 7"
 
-var f = s("a*x**2 + b*x + c - y").toFunction("x", "y");
-log("(a*x**2 + b*x + c - y).toFunction(x, y)(3,2)=", f(3,2).str());
+console.log('integral(x^2)=', S.eval('integral(x^2)').toString()); // => "1/3 x^3"
+
+// composing...
+console.log('integral(x)=', S.integral(S.eval('x')).toString()); // => "1/2 x^2"
+
+var questions=[
+'13579/99999 + 13580/100000',
+'numerator(1/a+1/b)',
+'denominator(1/(x-1)/(x-2))',
+'rationalize(a/b+b/a)',
+'A=1+i;B=sqrt(2)*exp(i*pi/4);A-B',
+'simplify(cos(x)^2 + sin(x)^2)',
+'simplify(a*b+a*c)',
+'simplify(n!/(n+1)!)',
+'(x-1)(x-2)^3',
+'subst( u, exp(x), 2*exp(x) )',
+'roots(3 x + 12 + y = 24)',
+'roots(a*x^2+b*x+c)',
+'roots(x^4 + x^3 + x^2 + x + 1)',
+'roots(m*x^9 + n)',
+'roots((x^4+x^3)*(x^4*x^2))',
+'nroots(x^4+1)',
+'velocity=17000*"mile"/"hr";time=8*"min"/(60*"min"/"hr");velocity/time',
+'A=((a,b),(c,d));inv(A);adj(A);det(A);inv(A)-adj(A)/det(A)',
+'d(x^2);r=sqrt(x^2+y^2);d(r,(x,y))',
+'F=(x+2y,3x+4y);d(F,(x,y))',
+'integral(x^2)',
+'integral(x*y,x,y)',
+'defint(x^2,y,0,sqrt(1-x^2),x,-1,1)',
+'f=sin(t)^4-2*cos(t/2)^3*sin(t);f=circexp(f);defint(f,t,0,2*pi)',
+];
+
+console.log("=========== Q&A =============");
+
+for (var i in questions) {
+	var q = questions[i];
+	console.log(q, "=", S.run(q.replace(/;/g, '\n')));
+}

@@ -1,29 +1,29 @@
 var _ = require("lodash");
 var R = require("./lib/R");
 var M = require("./lib/matrix");
-var math = require("./lib/math");
-var symbol = require("./lib/symbolic");
+var Math = require("./lib/math");
+var Symbol = require("./lib/symbolic");
 var T = require("./lib/test");
-var D = require("./lib/differential");
+var D = require("./lib/calculus");
 R.NN = require("./plugin/neural");
 R.NN.RBM = require("./plugin/neural/rbm");
 
-R.matrix = R.M = M;
-R.differential = R.D = D;
+R.Matrix = R.M = M;
+R.Differential = R.D = D;
 R._ = _;
-R.S = R.sym = R.symbol = symbol;
+R.S = R.Sym = R.Symbol = Symbol;
 
-R.mix(R, math);
+R.mix(R, Math);
 R.mix(R, T);
 
 // Global
 debug = function() {
-	var arg = B.slice(arguments);
+	var arg = _.slice(arguments);
 	console.debug.apply(console, arg);
 }
 
 log = function() {
-	var arg = B.slice(arguments);
+	var arg = _.slice(arguments);
 	console.log.apply(console, arg);
 }
 
@@ -36,7 +36,21 @@ R.samples = function(space, size, arg) {
 		return _.sampleSize(space, size);
 }
 
+R.ODE=M.dopri; // dopri(x0,x1,y0,f,tol,maxit,event) #Ordinary Diff Eq
+R.solveLP =M.solveLP; // solveLP(c,A,b,Aeq,beq,tol,maxit) #Linear programming
+R.solveQP =M.solveQP; // solveQP(Dmat, dvec, Amat, bvec, meq, factorized); // Quadratic Programming
+R.minimize=M.uncmin; // uncmin(f,x0,tol,gradient,maxit,callback,options); // Unconstrained optimization
+R.sparse=M.sparse; // Matrix => Sparse
+R.sparse2full=M.sparse2full; // Sparse => Matrix
+R.complex=M.t;
+R.spline=M.spline;
+R.linspace=M.linspace;
+
+// not include : bench, xxxeq, ccsXXX, cgrid, 
 R.mixThis(Array.prototype, {
+cLU:M.cLU,
+cdelsq:M.cdelsq, // Laplacian
+clone:M.clone,
 // matrix
 rows:M.rows,
 cols:M.cols,
@@ -54,6 +68,8 @@ tan:M.tan,
 asin:M.asin,
 acos:M.acos,
 atan:M.atan,
+//https://zh.wikipedia.org/wiki/Atan2
+atan2:M.atan2,
 inv:M.inv,
 all:M.all,
 any:M.any,
@@ -115,6 +131,7 @@ parseFloat:M.parseFloat,
 parseDate:M.parseDate,
 parseCSV:M.parseCSV,
 toCSV:M.toCSV,
+
 // statistics
 max:R.max,
 min:R.min,
@@ -129,6 +146,8 @@ sd:R.sd,
 cov:R.cov,
 cor:R.cor,
 normalize:R.normalize,
+hist:R.hist,
+
 // lodash
 chunk:_.chunk,
 compact:_.compact,
@@ -228,31 +247,35 @@ sortBy:_.sortBy,
 B = R;
 B.precision=4;
 
-B.mix(Number.prototype, { str:function(n) {
-	return this.toFixed(B.precision);
-}});
+B.mixThis(Number.prototype, { 
+str:function(n, precision=B.precision) {
+	return n.toFixed(precision);
+},
+});
 
-B.mix(Array.prototype, { str:function(a) {
+B.mixThis(Array.prototype, { str:function(a, precision=B.precision) {
 	var s="";
-	for (var i in this) {
-		s+=this[i].str()+",";
+	for (var i in a) {
+		s+=a[i].str(precision)+",";
 	}
 	return "["+B.ctrim(s, ',')+"]";
 }});
 
-B.mix(String.prototype, { 
-str:function() {
-	return this.toString();
+B.mixThis(String.prototype, { 
+str:function(s) {
+	return s.toString();
 },
-lpad:B.curryThis(B.lpad),
+lpad:B.lpad,
 });
 
-B.mix(Object.prototype, { str:function(o) {
+B.mixThis(Object.prototype, { str:function(o, precision) {
   var s = "";
   for (var k in o)
-    s+= k+":"+B.str(o[k])+",";
+    s+= k+":"+B.str(o[k], precision)+",";
   return "{"+B.ctrim(s,",")+"}";
 }});
+
+B.mixThis(Object.prototype, { strM:M.str });
 
 B.str=function(o) { return o.str(); }
 
