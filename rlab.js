@@ -1,20 +1,54 @@
 var _ = require("lodash");
-var R = require("./lib/R");
+var R = require("./lib/statistics");
 var M = require("./lib/matrix");
-var Math = require("./lib/math");
 var Symbol = require("./lib/symbolic");
-var T = require("./lib/test");
 var D = require("./lib/calculus");
 R.NN = require("./plugin/neural");
 R.NN.RBM = require("./plugin/neural/rbm");
 
 R.Matrix = R.M = M;
-R.Differential = R.D = D;
 R._ = _;
 R.S = R.Sym = R.Symbol = Symbol;
 
-R.mix(R, Math);
-R.mix(R, T);
+R.PI = Math.PI;
+R.E  = Math.E;
+
+// space 沒有加上機率參數 , 不能指定機率
+R.samples = function(space, size, arg) {
+	var arg = _.defaults(arg, {replace:true});
+	if (arg.replace)
+		return _.times(size, ()=>_.sample(space));
+	else
+		return _.sampleSize(space, size);
+}
+
+// Graph
+
+R.G = G = {}
+
+G.curve=function(f, from=-10, to=10, step=0.1) {
+	var x=R.steps(from, to, step);
+	var y=x.map(f);
+	return { type:"curve", x:x,	y:y	};
+}
+
+G.hist=function(a, from, to, step=1) {
+	from = from||a.min();
+	to = to||a.max();
+  var n = Math.ceil((to-from+R.EPSILON)/step);
+  var xc = R.steps(from+step/2.0, to, step);
+  var bins = R.M.newV(n, 0);
+  for (var i in a) {
+    var slot=Math.floor((a[i]-from)/step);
+    if (slot>=0 && slot < n)
+      bins[slot]++;
+  }
+	return { type:'histogram', xc:xc, bins:bins, from:from, to:to, step:step};
+}
+
+G.ihist=function(a) {
+	return G.hist(a, a.min()-0.5, a.max()+0.5, 1);
+}
 
 // Global
 debug = function() {
@@ -22,261 +56,236 @@ debug = function() {
 	console.debug.apply(console, arg);
 }
 
-log = function() {
+print = function() {
 	var arg = _.slice(arguments);
 	console.log.apply(console, arg);
 }
 
-// space 沒有加上機率參數 , 不能指定機率
-R.samples = function(space, size, arg) {
-	var arg = _.defaults(arg, {replace:true});
-	if (arg.replace)
-		return R.calls(size, function() { return _.sample(space); });
-	else
-		return _.sampleSize(space, size);
-}
+R.debug = debug;
+R.print = print;
 
-R.ODE=M.dopri; // dopri(x0,x1,y0,f,tol,maxit,event) #Ordinary Diff Eq
-R.solveLP =M.solveLP; // solveLP(c,A,b,Aeq,beq,tol,maxit) #Linear programming
-R.solveQP =M.solveQP; // solveQP(Dmat, dvec, Amat, bvec, meq, factorized); // Quadratic Programming
-R.minimize=M.uncmin; // uncmin(f,x0,tol,gradient,maxit,callback,options); // Unconstrained optimization
-R.sparse=M.sparse; // Matrix => Sparse
-R.sparse2full=M.sparse2full; // Sparse => Matrix
-R.complex=M.t;
-R.spline=M.spline;
-R.linspace=M.linspace;
+// ==== Copy functions to R ======
+R.copyFunctions(R, D, "differential,integral".split(","));
+R.copyFunctions(R, Math, "abs,acos,asin,atan,ceil,cos,exp,floor,log,pow,random,round,sin,sqrt,tan".split(","));
+
+R.copyFunctions(R, M, "solveLP,solveMP,ODE,minimize,complex,spline,linspace".split(","));
+
 
 // not include : bench, xxxeq, ccsXXX, cgrid, 
-R.mixThis(Array.prototype, {
-cLU:M.cLU,
-cdelsq:M.cdelsq, // Laplacian
-clone:M.clone,
-// matrix
-rows:M.rows,
-cols:M.cols,
-row:M.row,
-col:M.col,
-tr:M.tr,
-strM:M.str,
-not:M.not,
-bnot:M.bnot,
-neg:M.neg,
-abs:M.abs,
-sin:M.sin,
-cos:M.cos,
-tan:M.tan,
-asin:M.asin,
-acos:M.acos,
-atan:M.atan,
-//https://zh.wikipedia.org/wiki/Atan2
-atan2:M.atan2,
-inv:M.inv,
-all:M.all,
-any:M.any,
-same:M.same,
-isFinite:M.isFinite,
-isNaN:M.isNaN,
-sqrt:M.sqrt,
-ceil:M.ceil,
-floor:M.floor,
-round:M.round,
-log:M.log,
-exp:M.exp,
-pow:M.pow,
-mapreduce:M.mapreduce,
-lshifteq:M.lshifteq,
-rshifteq:M.rshifteq,
-add:M.add,
-sub:M.sub,
-mul:M.mul,
-div:M.div,
-mod:M.mod,
-and:M.and,
-or:M.or,
-xor:M.xor,
-band:M.band,
-bor:M.bor,
-bxor:M.bxor,
-eq:M.eq,
-neq:M.neq,
-geq:M.geq,
-leq:M.leq,
-lt:M.lt,
-gt:M.gt,
-t:M.t,
-det:M.det,
-norm2:M.norm2,
-norm2Squared:M.norm2Squared,
-norm2inf:M.norm2inf,
-dot:M.dot,
-det:M.det,
-dim:M.dim,
-eig:M.eig,
-LU:M.LU,
-svd:M.svd,
-sumM:M.sum,
-rowSum:M.rowSum,
-colSum:M.colSum,
-rowMean:M.rowMean,
-colMean:M.colMean,
-addMV:M.addMV,
-mapM:M.mapM, 
-mapMM:M.mapMM,
-flatM:M.flatM,
-getBlock:M.getBlock,
-setBlock:M.setBlock,
-getDiag:M.getDiag,
-diag:M.diag,
-parseFloat:M.parseFloat,
-parseDate:M.parseDate,
-parseCSV:M.parseCSV,
-toCSV:M.toCSV,
+R.mixThis(Array.prototype, M, [
+"cLU",
+"cdelsq",
+"clone",
+"rows",
+"cols",
+"row",
+"col",
+"tr",
+// "str",
+"not",
+"bnot",
+"neg",
+"abs",
+"sin",
+"cos",
+"tan",
+"asin",
+"acos",
+"atan",
+"atan2",
+"inv",
+"all",
+"any",
+"same",
+"isFinite",
+"isNaN",
+"sqrt",
+"ceil",
+"floor",
+"round",
+"log",
+"exp",
+"pow",
+"mapreduce",
+"lshifteq",
+"rshifteq",
+"add",
+"sub",
+"mul",
+"div",
+"mod",
+"and",
+"or",
+"xor",
+"band",
+"bor",
+"bxor",
+"eq",
+"neq",
+"geq",
+"leq",
+"lt",
+"gt",
+"complex",
+"det",
+"norm2",
+"norm2Squared",
+"norm2inf",
+"dot",
+"dim",
+"eig",
+"LU",
+"svd",
+"sum",
+"rowSum",
+"colSum",
+"rowMean",
+"colMean",
+"addMV",
+"mapM",
+"mapMM",
+"flatM",
+"fillVM",
+"fillMM",
+"getBlock",
+"setBlock",
+"getDiag",
+"diag",
+"parseFloat",
+"parseDate",
+"parseCSV",
+"toCSV",
+"strM",
+"sumM",
+]);
 
+// not include : bench, xxxeq, ccsXXX, cgrid, 
+R.mixThis(Array.prototype, G, [
+"hist",
+"ihist",
+]);
+
+R.mixThis(Array.prototype, R, [
 // statistics
-max:R.max,
-min:R.min,
-sum:R.sum,
-product:R.product,
-mean:R.mean,
-range:R.range,
-median:R.median,
-variance:R.variance,
-deviation:R.deviation,
-sd:R.sd,
-cov:R.cov,
-cor:R.cor,
-normalize:R.normalize,
-hist:R.hist,
+"max",
+"min",
+// "sum",
+"product",
+"mean",
+"range",
+"median",
+"variance",
+"deviation",
+"sd",
+"cov",
+"cor",
+"normalize",
+]);
 
+R.mixThis(Array.prototype, _, [
 // lodash
-chunk:_.chunk,
-compact:_.compact,
+"chunk",
+"compact",
 // concat:_.concat
-difference:_.difference,
-differenceBy:_.differenceBy,
-differenceWith:_.differenceWith,
-drop:_.drop,
-dropRight:_.dropRight,
-dropRightWhile:_.dropRightWhile,
-dropWhile:_.dropWhile,
+"difference",
+"differenceBy",
+"differenceWith",
+"drop",
+"dropRight",
+"dropRightWhile",
+"dropWhile",
 // fill:_.fill,
 // findIndex:_.findIndex,
-findLastIndex:_.findLastIndex,
-flatten:_.flatten,
-flattenDeep:_.flattenDeep,
-flattenDepth:_.flattenDepth,
-fromPairs:_.fromPairs,
-head:_.head,
+"findLastIndex",
+"flatten",
+"flattenDeep",
+"flattenDepth",
+"fromPairs",
+"head",
 // indexOf:_.indexOf,
-initial:_.initial,
-intersection:_.intersection,
-intersectionBy:_.intersectionBy,
-intersectionWith:_.intersectionWith,
+"initial",
+"intersection",
+"intersectionBy",
+"intersectionWith",
 // _.join
-last:_.last,
+"last",
 // _.lastIndexOf
-nth:_.nth,
-pull:_.pull,
-pullAll:_.pullAll,
-pullAllBy:_.pullAllBy,
-pullAllWith:_.pullAllWith,
-pullAt:_.pullAt,
-remove:_.remove,
+"nth",
+"pull",
+"pullAll",
+"pullAllBy",
+"pullAllWith",
+"pullAt",
+"remove",
 // _.reverse
 // _.slice
-sortedIndex:_.sortedIndex,
-sortedIndexBy:_.sortedIndexBy,
-sortedIndexOf:_.sortedIndexOf,
-sortedLastIndex:_.sortedLastIndex,
-sortedLastIndexBy:_.sortedLastIndexBy,
-sortedLastIndexOf:_.sortedLastIndexOf,
-sortedUniq:_.sortedUniq,
-sortedUniqBy:_.sortedUniqBy,
-tail:_.tail,
-take:_.take,
-takeRight:_.takeRight,
-takeRightWhile:_.takeRightWhile,
-takeWhile:_.takeWhile,
-union:_.union,
-unionBy:_.unionBy,
-unionWith:_.unionWith,
-uniq:_.uniq,
-uniqBy:_.uniqBy,
-uniqWith:_.uniqWith,
-unzip:_.unzip,
-unzipWith:_.unzipWith,
-without:_.without,
+"sortedIndex",
+"sortedIndexBy",
+"sortedIndexOf",
+"sortedLastIndex",
+"sortedLastIndexBy",
+"sortedLastIndexOf",
+"sortedUniq",
+"sortedUniqBy",
+"tail",
+"take",
+"takeRight",
+"takeRightWhile",
+"takeWhile",
+"union",
+"unionBy",
+"unionWith",
+"uniq",
+"uniqBy",
+"uniqWith",
+"unzip",
+"unzipWith",
+"without",
 // _.xor
 // _.xorBy
 // _.xorWith
-zip:_.zip,
-zipObject:_.zipObject,
-zipObjectDeep:_.zipObjectDeep,
-zipWith:_.zipWith,
+"zip",
+"zipObject",
+"zipObjectDeep",
+"zipWith",
 // Collection
-countBy:_.countBy,
+"countBy",
 // _.each → forEach
 // _.eachRight → forEachRight
 // every:_.every
 // filter:_.filter
 // find:_.find
-findLast:_.findLast,
-flatMap:_.flatMap,
-flatMapDeep:_.flatMapDeep,
-flatMapDepth:_.flatMapDepth,
+"findLast",
+"flatMap",
+"flatMapDeep",
+"flatMapDepth",
 // _.forEach
-forEachRight:_.forEachRight,
-groupBy:_.groupBy,
+"forEachRight",
+"groupBy",
 // includes:_.includes
-invokeMap:_.invokeMap,
-keyBy:_.keyBy,
+"invokeMap",
+"keyBy",
 // _.map
-orderBy:_.orderBy,
-partition:_.partition,
+"orderBy",
+"partition",
 // _.reduce
 // reduceRight:_.reduceRight,
-reject:_.reject,
-sample:_.sample,
-sampleSize:_.sampleSize,
-shuffle:_.shuffle,
-size:_.size,
+"reject",
+"sample",
+"sampleSize",
+"shuffle",
+"size",
 // some:_.some
-sortBy:_.sortBy,
-});
+"sortBy",
+]);
 
-B = R;
-B.precision=4;
-
-B.mixThis(Number.prototype, { 
-str:function(n, precision=B.precision) {
-	return n.toFixed(precision);
-},
-});
-
-B.mixThis(Array.prototype, { str:function(a, precision=B.precision) {
-	var s="";
-	for (var i in a) {
-		s+=a[i].str(precision)+",";
-	}
-	return "["+B.ctrim(s, ',')+"]";
-}});
-
-B.mixThis(String.prototype, { 
-str:function(s) {
-	return s.toString();
-},
-lpad:B.lpad,
-});
-
-B.mixThis(Object.prototype, { str:function(o, precision) {
-  var s = "";
-  for (var k in o)
-    s+= k+":"+B.str(o[k], precision)+",";
-  return "{"+B.ctrim(s,",")+"}";
-}});
-
-B.mixThis(Object.prototype, { strM:M.str });
-
-B.str=function(o) { return o.str(); }
+// R.mixThis(Array.prototype,  {str:R.astr}, ['str']);
+R.mixThisMap(Array.prototype,  R, {astr:'str',print:'print'});
+R.mixThisMap(Number.prototype, R, {nstr:'str',print:'print'});
+R.mixThisMap(String.prototype, R, {sstr:'str',print:'print'});
+R.mixThisMap(Object.prototype, R, {ostr:'str',print:'print'});
+R.mixThisMap(Object.prototype, M, {strM:'strM'});
 
 module.exports = R;
+
+

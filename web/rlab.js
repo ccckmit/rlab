@@ -1,252 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-// jStat API : https://jstat.github.io/all.html
-var B = require("./base");
-var P = require("./probability");
-var S = require("./statistics");
-var M = require("./matrix");
-
-var R = B;
-B.mix(R, P);
-B.mix(R, S);
-// B.mix(R, M);
-
-module.exports = R;
-
-// var T = require("./lib/test");
-// var M = require("./lib/matrix");
-// var _ = require("lodash");
-/*
-console.log("S=", S);
-
-R.M = M;
-R.NN = require("./lib/neural");
-R.NN.RBM = require("./lib/neural/rbm");
-
-M.precision = R.precision;
-*/
-/*
-console.log("mix B");
-B.mix(R, B);
-console.log("mix M");
-R.mix(R, M);
-console.log("mix S");
-R.mix(R, S);
-console.log("mix P");
-R.mix(R, P);
-console.log("mix T");
-R.mix(R, T);
-console.log("mix _");
-R.mix(R, _);
-// R.mix(R, NN);
-R.NN = NN;
-R.NN.RBM = RBM;
-*/
-/*
-console.log("mix ...");
-B.mix(R, {
-samples:function(space, size, arg) { 
-		var arg = _.defaults(arg, {replace:true});
-		if (arg.replace)
-			return R.calls(size, function() { return _.sample(space); });
-		else
-			return _.sampleSize(space, size);
-},
-});
-// console.log("R.randomM=", R.randomM);
-
-console.log("amix");
-B.amix({
-// matrix
-rows:M.rows,
-cols:M.cols,
-row:M.row,
-col:M.col,
-tr:M.tr,
-strM:M.strM,
-not:M.not,
-bnot:M.bnot,
-neg:M.neg,
-abs:M.abs,
-sin:M.sin,
-cos:M.cos,
-tan:M.tan,
-asin:M.asin,
-acos:M.acos,
-atan:M.atan,
-inv:M.inv,
-all:M.all,
-any:M.any,
-same:M.same,
-isFinite:M.isFinite,
-isNaN:M.isNaN,
-sqrt:M.sqrt,
-ceil:M.ceil,
-floor:M.floor,
-round:M.round,
-log:M.log,
-exp:M.exp,
-pow:M.pow,
-mapreduce:M.mapreduce,
-lshifteq:M.lshifteq,
-rshifteq:M.rshifteq,
-add:M.add,
-sub:M.sub,
-mul:M.mul,
-div:M.div,
-mod:M.mod,
-and:M.and,
-or:M.or,
-xor:M.xor,
-band:M.band,
-bor:M.bor,
-bxor:M.bxor,
-eq:M.eq,
-neq:M.neq,
-geq:M.geq,
-leq:M.leq,
-lt:M.lt,
-gt:M.gt,
-t:M.t,
-det:M.det,
-norm2:M.norm2,
-norm2Squared:M.norm2Squared,
-norm2inf:M.norm2inf,
-dot:M.dot,
-det:M.det,
-dim:M.dim,
-eig:M.eig,
-LU:M.LU,
-svd:M.svd,
-sumM:M.sumM,
-rowSum:M.rowSum,
-colSum:M.colSum,
-rowMean:M.rowMean,
-colMean:M.colMean,
-addMV:M.addMV,
-mapM:M.mapM, 
-mapMM:M.mapMM,
-flatM:M.flatM,
-getBlock:M.getBlock,
-setBlock:M.setBlock,
-getDiag:M.getDiag,
-diag:M.diag,
-parseFloat:M.parseFloat,
-parseDate:M.parseDate,
-parseCSV:M.parseCSV,
-toCSV:M.toCSV,
-// statistics
-max:S.max,
-min:S.min,
-sum:S.sum,
-product:S.product,
-mean:S.mean,
-range:S.range,
-unique:S.unique,
-median:S.median,
-variance:S.variance,
-deviation:S.deviation,
-sd:S.sd,
-cov:S.cov,
-cor:S.cor,
-normalize:S.normalize,
-// lodash
-chunk:_.chunk,
-compact:_.compact,
-// concat:_.concat
-difference:_.difference,
-differenceBy:_.differenceBy,
-differenceWith:_.differenceWith,
-drop:_.drop,
-dropRight:_.dropRight,
-dropRightWhile:_.dropRightWhile,
-dropWhile:_.dropWhile,
-fill:_.fill,
-findIndex:_.findIndex,
-findLastIndex:_.findLastIndex,
-flatten:_.flatten,
-flattenDeep:_.flattenDeep,
-flattenDepth:_.flattenDepth,
-fromPairs:_.fromPairs,
-head:_.head,
-indexOf:_.indexOf,
-initial:_.initial,
-intersection:_.intersection,
-intersectionBy:_.intersectionBy,
-intersectionWith:_.intersectionWith,
-// _.join
-last:_.last,
-// _.lastIndexOf
-nth:_.nth,
-pull:_.pull,
-pullAll:_.pullAll,
-pullAllBy:_.pullAllBy,
-pullAllWith:_.pullAllWith,
-pullAt:_.pullAt,
-remove:_.remove,
-// _.reverse
-// _.slice
-sortedIndex:_.sortedIndex,
-sortedIndexBy:_.sortedIndexBy,
-sortedIndexOf:_.sortedIndexOf,
-sortedLastIndex:_.sortedLastIndex,
-sortedLastIndexBy:_.sortedLastIndexBy,
-sortedLastIndexOf:_.sortedLastIndexOf,
-sortedUniq:_.sortedUniq,
-sortedUniqBy:_.sortedUniqBy,
-tail:_.tail,
-take:_.take,
-takeRight:_.takeRight,
-takeRightWhile:_.takeRightWhile,
-takeWhile:_.takeWhile,
-union:_.union,
-unionBy:_.unionBy,
-unionWith:_.unionWith,
-uniq:_.uniq,
-uniqBy:_.uniqBy,
-uniqWith:_.uniqWith,
-unzip:_.unzip,
-unzipWith:_.unzipWith,
-without:_.without,
-// _.xor
-// _.xorBy
-// _.xorWith
-zip:_.zip,
-zipObject:_.zipObject,
-zipObjectDeep:_.zipObjectDeep,
-zipWith:_.zipWith,
-// Collection
-countBy:_.countBy,
-// _.each → forEach
-// _.eachRight → forEachRight
-// every:_.every
-// filter:_.filter
-// find:_.find
-findLast:_.findLast,
-flatMap:_.flatMap,
-flatMapDeep:_.flatMapDeep,
-flatMapDepth:_.flatMapDepth,
-// _.forEach
-forEachRight:_.forEachRight,
-groupBy:_.groupBy,
-// includes:_.includes
-invokeMap:_.invokeMap,
-keyBy:_.keyBy,
-// _.map
-orderBy:_.orderBy,
-partition:_.partition,
-// _.reduce
-reduceRight:_.reduceRight,
-reject:_.reject,
-sample:_.sample,
-sampleSize:_.sampleSize,
-shuffle:_.shuffle,
-size:_.size,
-// some:_.some
-sortBy:_.sortBy,
-});
-*/
-
-},{"./base":2,"./matrix":5,"./probability":6,"./statistics":7}],2:[function(require,module,exports){
 // http://blog.smartbear.com/testing/four-serious-math-libraries-for-javascript/
 
 // Four Serious Math Libraries for JavaScript
@@ -257,55 +9,94 @@ B.slice = function(a) {
 	return Array.prototype.slice.call(a);
 }
 
-B.curry = function(f,o) {
-  return function() {
-		var args = Array.prototype.slice.call(arguments);
-    return f.apply(null, [o].concat(args));
-  }
+B.bind=function(o, member) {
+	if (typeof o[member]==='Function')
+		return o[member].bind(o); 
+	else
+		return o[member];
 }
 
-B.curryThis = function(f) {
-  return function() {
-		var args = Array.prototype.slice.call(arguments);
-    return f.apply(null, [this].concat(args));
-  }
-}
-
-B.calls = function() {
-  var args = Array.prototype.slice.call(arguments);
+B.ncall = function() {
+  var args = B.slice(arguments);
   var n = args[0];
-  var f = args[1];
-  var params = args.slice(2);
+  var o = args[1];
+  var fname = args[2];
+  var params = args.slice(3);
   var a=[];
   for (var i=0; i<n; i++)
-    a.push(f.apply(null, params));
+    a.push(o[fname].apply(o, params));
   return a;
 }
 
-// options={thisify:, enumerable:, override:}
-B.mix=function(o, map, options) {
-	options = options || {};
-	for (var name in map) {
-		f = map[name];
-		if (options.thisify) {
-			f = B.curryThis(f);
-		}
-		if (typeof o[name] === 'undefined' || options.override) {
-      if (options.override) {
-		    console.log("B.mix:", name, " overrided!");
-			}
-			Object.defineProperty(o, name, {
-				enumerable: options.enumerable || false,
+B.mapFunctions=function(host, obj, pairs) {
+	for (var h in pairs) {
+		var o = pairs[h];
+		if (typeof host[h] !=='undefined')
+			console.log('mapBind: error!', h, ' has been defined!');
+		host[h]=B.bind(obj, o);
+	}
+}
+
+B.copyFunctions=function(host, obj, names) {
+	for (var name of names) {
+		if (typeof host[name] !=='undefined')
+			console.log('namesBind: error!', name, ' has been defined!');
+		host[name]=B.bind(obj, name);
+	}
+}
+
+B.mix=function(self, members) {
+	for (var name in members) {
+		var member = members[name];
+		if (typeof self[name] === 'undefined') {
+			Object.defineProperty(self, name, {
+				enumerable: true,
 				writable: true,
-				value: f,
+				value: member,
 			});
-		} else if (typeof o[name] !== 'undefined') {
-	    console.log("B.mix:", name, " skipped!");
+		} else {
+	    console.log("B.mix fail:", name, " already exists!");
 		}
 	}
 }
 
-B.mixThis=function(o, map) { B.mix(o, map, {thisify:true}); }
+B.arg1this = function(f,obj) { // 傳回一個已經綁定 f, obj 的函數
+  return function() { 
+		var args = B.slice(arguments);
+    return f.apply(obj, [this].concat(args)); // 效果相當於 obj.f(this, args)
+  }
+}
+
+B.mixThis=function(proto, obj, fmembers) {
+	for (var fname of fmembers) {
+		var f = obj[fname];
+		if (typeof proto[fname] === 'undefined') {
+			Object.defineProperty(proto, fname, {
+				enumerable: false,
+				writable: true,
+				value: B.arg1this(f,obj), // proto.f(args) => obj.f(this, args) , 這行盡量不要動，除非想得很清楚了！
+			});
+		} else {
+	    console.log("B.mixThis:", fname, " fail!");
+		}
+	}
+}
+
+B.mixThisMap=function(proto, obj, opMap) {
+	for (var oname in opMap) {
+		var f = obj[oname];
+		var pname = opMap[oname];
+		if (typeof proto[pname] === 'undefined') {
+			Object.defineProperty(proto, pname, {
+				enumerable: false,
+				writable: true,
+				value: B.arg1this(f,obj), // proto.f(args) = f(this, args) , 這行盡量不要動，除非想得很清楚了！
+			});
+		} else {
+	    console.log("B.mixThisMap:", oname, " fail!");
+		}
+	}
+}
 
 B.ctrim=function(s, set, side) {
   side = side||"both";
@@ -330,18 +121,119 @@ B.steps = function(from, to, step) {
 	return a;
 }
 
+B.def = function(x, value) {
+	return (typeof x !== 'undefined')?x:value;
+}
+
+B.precision=4;
+
+B.nstr = function(n, precision=B.precision) {
+	return n.toFixed(precision);
+}
+
+B.astr = function(a, precision=B.precision) {
+	var s="";
+	for (var i in a) {
+		s+=a[i].str(precision)+",";
+	}
+	return "["+B.ctrim(s, ',')+"]";
+}
+
+B.sstr = function(s) { return s.toString(); }
+
+B.ostr = function(o, precision=B.precision) {
+  var s = "";
+  for (var k in o)
+    s+= k+":"+B.str(o[k], precision)+",";
+  return "{"+B.ctrim(s,",")+"}";
+}
+
+B.str = function(o, precision=B.precision) {
+	if (typeof o ==='undefined')
+		return 'undefined';
+	else
+		return o.str(precision);
+}
+
 module.exports = B;
 
+/*
+B.calls = function() {
+  var args = B.slice(arguments);
+  var n = args[0];
+  var f = args[1];
+  var params = args.slice(2);
+  var a=[];
+  for (var i=0; i<n; i++)
+    a.push(f.apply(null, params));
+  return a;
+}
+*/
+/*
+B.slice = function(a) {
+	return Array.prototype.slice.call(a);
+}
 
-},{}],3:[function(require,module,exports){
+B.curry = function(f,o) {
+  return function() {
+		var args = Array.prototype.slice.call(arguments);
+    return f.apply(null, [o].concat(args));
+  }
+}
+
+B.mixThis=function(proto, fmap) {
+	for (var name in fmap) {
+		var f = fmap[name];
+		if (typeof proto[name] === 'undefined') {
+			Object.defineProperty(proto, name, {
+				enumerable: false,
+				writable: true,
+				value: B.arg1this(f), // proto.f(args) = f(this, args)
+			});
+		} else {
+	    console.log("B.mixThis:", name, " fail!");
+		}
+	}
+}
+B.thisAsArg1 = function(f) {
+  return function() {
+		var args = B.slice(arguments);
+    return f.apply(null, [this].concat(args));
+  }
+}
+
+*/
+
+/*
+B.mixThis=function(proto, obj, fmembers) {
+	for (var fname of fmembers) {
+//		var f = B.bind(obj, fname);
+		var f = obj[fname];
+		if (typeof proto[fname] === 'undefined') {
+			Object.defineProperty(proto, fname, {
+				enumerable: false,
+				writable: true,
+				value: B.arg1this(f,obj), // proto.f(args) = f(this, args)
+			});
+		} else {
+	    console.log("B.mixThis:", fname, " fail!");
+		}
+	}
+}
+*/
+},{}],2:[function(require,module,exports){
 var D = {	dx:0.001 };
+
+// diff 和 df 都不能用
+//   df 在 statistics 中定義過，f 分布的機率密度函數。
+//   diff 則在 jStat 當中定義過
+// print('R.diff=', R.diff); 
+// print('R.df=', R.df);
 
 D.differential = function(f, x) {
   var dy = f(x+D.dx) - f(x);
   return dy/D.dx;
 }
-
-D.d = D.differential;
 
 D.integral = function(f, a, b) {
   var dx = D.dx;
@@ -352,47 +244,20 @@ D.integral = function(f, a, b) {
   return area;
 }
 
-D.i = D.integral;
-
 module.exports = D;
-},{}],4:[function(require,module,exports){
-// http://mathjs.org/examples/index.html
-var M = {
-	PI:Math.PI,
-	E:Math.E,	
-	abs:Math.abs,
-	acos:Math.acos,
-	asin:Math.acos,
-	atan:Math.atan,
-	ceil:Math.ceil,
-	cos:Math.cos,
-	exp:Math.exp,
-	floor:Math.floor,
-	ln:Math.log,
-	pow:Math.pow,
-	random:Math.random,
-	round:Math.round,
-	sin:Math.sin,
-	sqrt:Math.sqrt,
-	tan:Math.tan,
-};
-
-module.exports = M;
-},{}],5:[function(require,module,exports){
-var B = require("./base");
+},{}],3:[function(require,module,exports){
 var N = require("numeric");
-var M = {};
+var M = N;
 // Advance mathematics
-// M.ODE=N.dopri; // Ordinary differential equation
-// M.solveLP =N.solveLP; // Linear programming
-// M.solveQP =N.solveQP; // Quadratic Programming
-// M.minimize=N.uncmin; // Unconstrained optimization
+M.ODE=N.dopri; // dopri(x0,x1,y0,f,tol,maxit,event) #Ordinary Diff Eq
+M.minimize=N.uncmin; // uncmin(f,x0,tol,gradient,maxit,callback,options) # Unconstrained optimization
 M.sparse=N.ccsSparse; // Matrix => Sparse
 M.sparse2full=N.ccsFull; // Sparse => Matrix
-// M.complex=N.T;
+M.complex=N.t;
 // matrix
 M.tr = N.transpose;
-M.str = N.prettyPrint;
+M.str = M.strM = N.prettyPrint;
+M.sumM = N.sum;
 M.rows=function(m) { return m.length; }
 M.cols=function(m) { return m[0].length; }
 M.row =function(m,i) { return m[i]; }
@@ -417,7 +282,7 @@ M.randomV = function(n, a, b) {
   return M.random([n]).mul(b-a).add(a); 
 }
 
-M.randomM = function(rows, cols, a, b) { 
+M.randomM = function(rows, cols, a, b) {
   return M.random([rows, cols]).mul(b-a).add(a); 
 }
 
@@ -425,7 +290,7 @@ M.rowSum = function(m) {
 	var rows = M.rows(m);
 	var s=M.newV(rows, 0);
 	for (var i=0; i<rows; i++) {
-		s[i] = m[i].sumM();
+		s[i] = m[i].sum();
 	}
 	return s;
 }
@@ -480,221 +345,181 @@ M.flatM=function(m) {
 	return a;
 }
 
+M.fillVM=function(v,rows,cols) {
+	var m = M.newM(rows,cols);
+	for (var r=0; r<rows; r++) {
+		for (var c=0; c<cols; c++) {
+			m[r][c] = v[r*cols+c];
+		}
+	}
+	return m;
+}
+
+M.fillMM=function(m,rows,cols) {
+	var v = M.flatM(m);
+	return M.fillVM(m,rows,cols);
+}
+
 M.eigR=function(m) {
 	var E = M.eig(m);
 	return {lambda:E.lambda.x, E:E.E.x};
 }
 
-B.mix(M, N);
-
 module.exports = M;
-},{"./base":2,"numeric":14}],6:[function(require,module,exports){
-var B = require("./base");
-var J = require("jStat").jStat;
-
-var S = {
-// 均等分布 : jStat.uniform( a, b )
-runif:function(n, a, b) { return B.calls(n, J.uniform.sample, a, b); },
-dunif:J.uniform.pdf,
-punif:J.uniform.cdf,
-qunif:J.uniform.inv,
-// 常態分布 : jStat.normal( mean, std )
-rnorm:function(n, mean, sd) { return B.calls(n, J.normal.sample, mean, sd); },
-dnorm:J.normal.pdf,
-pnorm:J.normal.cdf,
-qnorm:J.normal.inv,
-// 布瓦松分布 : jStat.poisson
-rpois:function(n, l) { return B.calls(n, J.poisson.sample, l); },
-dpois:J.poisson.pdf,
-ppois:J.poisson.cdf,
-qpois:J.poisson.inv,
-// F 分布 : jStat.centralF( df1, df2 )
-rf:function(n, df1, df2) { return B.calls(n, J.centralF.sample, df1, df2); },
-df:J.centralF.pdf,
-pf:J.centralF.cdf,
-qf:J.centralF.inv,
-// T 分布 : jStat.studentt( dof )
-rt:function(n, dof) { return B.calls(n, J.studentt.sample, dof); },
-dt:J.studentt.pdf,
-pt:J.studentt.cdf,
-qt:J.studentt.inv,
-// Beta 分布 : jStat.beta( alpha, beta )
-rbeta:function(n, alpha, beta) { return B.calls(n, J.beta.sample, alpha, beta); },
-beta:J.beta.pdf,
-pbeta:J.beta.cdf,
-qbeta:J.beta.inv,
-// 柯西分布 : jStat.cauchy( local, scale )
-rcauchy:function(n, local, scale) { return B.calls(n, J.cauchy.sample, local, scale); },
-dcauchy:J.cauchy.pdf,
-pcauchy:J.cauchy.cdf,
-qcauchy:J.cauchy.inv,
-// chisquare 分布 : jStat.chisquare( dof )
-rchisq:function(n, dof) { return B.calls(n, J.chisquare.sample, dof); },
-dchisq:J.chisquare.pdf,
-pchisq:J.chisquare.cdf,
-qchisq:J.chisquare.inv,
-// 指數分布 : jStat.exponential( rate )
-rexp:function(n, rate) { return B.calls(n, J.exponential.sample, rate); },
-dexp:J.exponential.pdf,
-pexp:J.exponential.cdf,
-qexp:J.exponential.inv,
-// Gamma 分布 : jStat.gamma( shape, scale )
-rgamma:function(n, shape, scale) { return B.calls(n, J.gamma.sample, shape, scale); },
-dgamma:J.gamma.pdf,
-pgamma:J.gamma.cdf,
-qgamma:J.gamma.inv,
-// 反 Gamma 分布 : jStat.invgamma( shape, scale )
-rinvgamma:function(n, shape, scale) { return B.calls(n, J.invgamma.sample, shape, scale); },
-dinvgamma:J.invgamma.pdf,
-pinvgamma:J.invgamma.cdf,
-qinvgamma:J.invgamma.inv,
-// 對數常態分布 : jStat.lognormal( mu, sigma )
-rlognormal:function(n, mu, sigma) { return B.calls(n, J.dlognormal.sample, mu, sigma); },
-lognormal:J.lognormal.pdf,
-plognormal:J.lognormal.cdf,
-qlognormal:J.lognormal.inv,
-// Pareto 分布 : jStat.pareto( scale, shape )
-rpareto:function(n, scale, shape) { return B.calls(n, J.pareto.sample, scale, shape); },
-dpareto:J.pareto.pdf,
-ppareto:J.pareto.cdf,
-qpareto:J.pareto.inv,
-// Weibull 分布
-rweibull:function(n, scale, shape) { return B.calls(n, J.weibull.sample, scale, shape); },
-dweibull:J.weibull.pdf,
-pweibull:J.weibull.cdf,
-qweibull:J.weibull.inv,
-// 三角分布 : jStat.triangular
-rtriangular:function(n, a, b, c) { return B.calls(n, J.triangular.sample, a, b, c); },
-dtriangular:J.triangular.pdf,
-ptriangular:J.triangular.cdf,
-qtriangular:J.triangular.inv,
-// 類似 Beta 分布，但計算更簡單 : jStat.kumaraswamy( alpha, beta )
-rkumaraswamy:function(n, alpha, beta) { return B.calls(n, J.kumaraswamy.sample, alpha, beta); },
-dkumaraswamy:J.kumaraswamy.pdf,
-pkumaraswamy:J.kumaraswamy.cdf,
-qkumaraswamy:J.kumaraswamy.inv,
+},{"numeric":10}],4:[function(require,module,exports){
+var B = require('./base');
+var J = require('jStat').jStat;
+var ncall = B.ncall;
+var T, R;
 
 // ========== 離散分佈的 r, q 函數 ============
-qcdf:function(cdf, q, N, p) {
+var qcdf=function(cdf, q, N, p) {
   for (var i=0; i<=N; i++) {
     if (cdf(i, N, p) > q) return i;
   }
   return N;
-},
-rcdf:function(cdf, n, N, p) {
+}
+
+var rcdf=function(cdf, n, N, p) {
   var a = [];
   for (var i=0; i<n; i++) {
     var q = Math.random();
     a.push(cdf(q, N, p));
   }
   return a;
-},
-// 二項分布 : jStat.binomial
-dbinom:J.binomial.pdf,
-pbinom:J.binomial.cdf,
-qbinom:function(q, N, p) { return S.qcdf(S.pbinom, q, N, p); },
-rbinom:function(n, N, p) { return S.rcdf(S.qbinom, n, N, p); },
-// 負二項分布 : jStat.negbin
-dnbinom:J.negbin.pdf,
-pnbinom:J.negbin.cdf,
-qnbinom:function(q, N, p) { return S.qcdf(S.pnbinom, q, N, p); },
-rnbinom:function(n, N, p) { return S.rcdf(S.qnbinom, n, N, p); },
-// 超幾何分布 : jStat.hypgeom
-dhyper:J.hypgeom.pdf,
-phyper:J.hypgeom.cdf,
-qhyper:function(q, N, m, n) { return S.qcdf(S.phyper, q, N, p); },
-rhyper:function(n, N, m, k) { return S.rcdf(S.qhyper, n, N, p); },
-
-};
-
-module.exports = S;
-},{"./base":2,"jStat":12}],7:[function(require,module,exports){
-var B = require("./base");
-var J = require("jStat").jStat;
+}
 
 var S = {
-// Vector Functionality
-sum:J.sum,
-sumsqrd:J.sumsqrt,
-sumsqerr:J.sumsqerr,
-sumrow:J.sumrow,
-product:J.product,
-min:J.min,
-max:J.max,
-mean:J.min,
-meansqerr:J.meansqerr,
-geomean:J.geomean,
-median:J.median,
-cumsum:J.cumsum,
-cumprod:J.cumprod,
-diff:J.diff,
-mode:J.mode,
-range:J.range,
-variance:J.variance,
-stdev:J.stdev,
-sd:J.stdev,
-meandev:J.meandev,
-meddev:J.meddev,
-skewness:J.skewness,
-kurtosis:J.kurtosis,
-coeffvar:J.coeffvar,
-quartiles:J.quartiles,
-quantiles:J.quantiles,
-percentile:J.percentile,
-percentileOfScore:J.percentileOfScore,
-histogram:J.histogram,
-covariance:J.covariance,// cov
-cov:J.covariance,// cov
-corrcoeff:J.corrcoeff,// cor
-cor:J.corrcoeff, // cor
-// jStat Utility Methods
-calcRdx:J.utils.calcRdx,
-isArray:J.utils.isArray,
-isFunction:J.utils.isFunction,
-isNumber:J.utils.isNumber,
-// Special Functions
-betafn:J.betafn,
-betaln:J.betaln,
-betacf:J.betacf,
-ibetainv:J.ibetainv,
-ibeta:J.ibeta,
-gammafn:J.gammafn,
-gammaln:J.gammaln,
-gammap:J.gammap,
-lowRegGamma:J.lowRegGamma,
-gammapinv:J.gammapinv,
-factorialln:J.factorialln,
-factorial:J.factorial, // n!
-combination:J.combination, // C(n,m)
-C:J.combination, // C(n,m)
-choose:J.combination, // C(n,m)
-lchoose : J.combinationln, // log C(n,m)
-permutation:J.permutation, // P(n,m)
-P:J.permutation, // P(n,m)
-erf:J.erf,
-erfc:J.erfc,
-erfcinv:J.erfcinv,
-randn:J.randn,
-randg:J.randg,
+EPSILON:0.0000000001,
+// 均等分布 : jStat.uniform( a, b )
+dunif:(x,a=0,b=1)=>J.uniform.pdf(x,a,b),
+punif:(q,a=0,b=1)=>J.uniform.cdf(q,a,b),
+qunif:(p,a=0,b=1)=>J.uniform.inv(p,a,b),
+runif:(n,a=0,b=1)=>ncall(n, J.uniform, 'sample', a, b),
+// 常態分布 : jStat.normal( mean, sd )
+dnorm:(x,mean=0,sd=1)=>J.normal.pdf(x,mean,sd),
+pnorm:(q,mean=0,sd=1)=>J.normal.cdf(q,mean,sd),
+qnorm:(p,mean=0,sd=1)=>J.normal.inv(p,mean,sd),
+rnorm:(n,mean=0,sd=1)=>ncall(n, J.normal, 'sample', mean, sd),
+// F 分布 : jStat.centralF( df1, df2 )
+df:(x,df1,df2)=>J.centralF.pdf(x,df1,df2),
+pf:(q,df1,df2)=>J.centralF.cdf(q,df1,df2),
+qf:(p,df1,df2)=>J.centralF.inv(p,df1,df2),
+rf:(n,df1,df2)=>ncall(n, J.centralF, 'sample', df1, df2),
+// T 分布 : jStat.studentt( dof )
+dt:(x,dof)=>J.studentt.pdf(x,dof),
+pt:(q,dof)=>J.studentt.cdf(q,dof),
+qt:(p,dof)=>J.studentt.inv(p,dof),
+rt:(n,dof)=>ncall(n, J.studentt, 'sample', dof),
+// Beta 分布 : jStat.beta( alpha, beta )
+dbeta:(x,alpha,beta)=>J.beta.pdf(x,alpha,beta),
+pbeta:(q,alpha,beta)=>J.beta.cdf(q,alpha,beta),
+qbeta:(p,alpha,beta)=>J.beta.inv(p,alpha,beta),
+rbeta:(n,alpha,beta)=>ncalls(n, J.beta, 'sample', alpha, beta),
+// 柯西分布 : jStat.cauchy( local, scale )
+dcauchy:(x,local,scale)=>J.cauchy.pdf(x,local,scale),
+pcauchy:(q,local,scale)=>J.cauchy.cdf(q,local,scale),
+qcauchy:(p,local,scale)=>J.cauchy.inv(q,local,scale),
+rcauchy:(n,local,scale)=>ncall(n, J.cauchy, 'sample', local, scale),
+// chisquare 分布 : jStat.chisquare( dof )
+dchisq:(x,dof)=>J.chisquare.pdf(x,dof),
+pchisq:(q,dof)=>J.chisquare.cdf(q,dof),
+qchisq:(p,dof)=>J.chisquare.inv(p,dof),
+rchisq:(n,dof)=>ncall(n, J.chisquare, 'sample', dof),
+// 指數分布 : jStat.exponential( rate )
+dexp:(x,rate)=>J.exponential.pdf(x,rate),
+pexp:(q,rate)=>J.exponential.cdf(q,rate),
+qexp:(p,rate)=>J.exponential.inv(p,rate),
+rexp:(n,rate)=>ncall(n, J.exponential, 'sample', rate),
+// Gamma 分布 : jStat.gamma( shape, scale )
+dgamma:(x,shape,scale)=>J.gamma.pdf(x,shape,scale),
+pgamma:(q,shape,scale)=>J.gamma.cdf(q,shape,scale),
+qgamma:(p,shape,scale)=>J.gamma.inv(p,shape,scale),
+rgamma:(n,shape,scale)=>ncall(n, J.gamma, 'sample', shape, scale),
+// 反 Gamma 分布 : jStat.invgamma( shape, scale )
+rinvgamma:(n,shape,scale)=>ncall(n, J.invgamma, 'sample', shape, scale),
+dinvgamma:(x,shape,scale)=>J.invgamma.pdf(x,shape,scale),
+pinvgamma:(q,shape,scale)=>J.invgamma.cdf(q,shape,scale),
+qinvgamma:(p,shape,scale)=>J.invgamma.inv(p,shape,scale),
+// 對數常態分布 : jStat.lognormal( mu, sigma )
+dlognormal:(n, mu, sigma)=>J.lognormal.pdf(x,sigma),
+plognormal:(n, mu, sigma)=>J.lognormal.cdf(q,sigma),
+qlognormal:(n, mu, sigma)=>J.lognormal.inv(p,sigma),
+rlognormal:(n, mu, sigma)=>ncall(n, J.dlognormal, 'sample', mu, sigma),
+// Pareto 分布 : jStat.pareto( scale, shape )
+dpareto:(n, scale, shape)=>J.pareto.pdf(x,scale,shape),
+ppareto:(n, scale, shape)=>J.pareto.cdf(q,scale,shape),
+qpareto:(n, scale, shape)=>J.pareto.inv(p,scale,shape),
+rpareto:(n, scale, shape)=>ncall(n, J.pareto, 'sample', scale, shape),
+// Weibull 分布 jStat.weibull(scale, shape)
+dweibull:(n, scale, shape)=>J.weibull.pdf(x,scale,shape),
+pweibull:(n, scale, shape)=>J.weibull.cdf(q,scale,shape),
+qweibull:(n, scale, shape)=>J.weibull.inv(p,scale,shape),
+rweibull:(n, scale, shape)=>ncall(n, J.weibull, 'sample', scale, shape),
+// 三角分布 : jStat.triangular(a, b, c)
+dtriangular:(n, a, b, c)=>J.triangular.pdf(x,a,b,c),
+ptriangular:(n, a, b, c)=>J.triangular.cdf(q,a,b,c),
+qtriangular:(n, a, b, c)=>J.triangular.inv(p,a,b,c),
+rtriangular:(n, a, b, c)=>ncall(n, J.triangular, 'sample', a, b, c),
+// 類似 Beta 分布，但計算更簡單 : jStat.kumaraswamy(alpha, beta)
+dkumaraswamy:(n, alpha, beta)=>J.kumaraswamy.pdf(x,alpha,beta),
+pkumaraswamy:(n, alpha, beta)=>J.kumaraswamy.cdf(q,alpha,beta),
+qkumaraswamy:(n, alpha, beta)=>J.kumaraswamy.inv(p,alpha,beta),
+rkumaraswamy:(n, alpha, beta)=>ncalls(n, J.kumaraswamy, 'sample', alpha, beta),
 
+// ========== 離散分佈的 r, q 函數 ============
+qcdf:qcdf,
+rcdf:rcdf,
+
+// 二項分布 : jStat.binomial(n, p0)
+dbinom:(x, size, prob)=>J.binomial.pdf(x, size, prob),
+pbinom:(q, size, prob)=>J.binomial.cdf(q, size, prob),
+qbinom:(p, size, prob)=>qcdf(S.pbinom, p, size, prob),
+rbinom:(n, size, prob)=>rcdf(S.qbinom, n, size, prob),
+// 負二項分布 : jStat.negbin(r, p)
+dnbinom:(x, size, prob)=>J.negbin.pdf(x, size, prob),
+pnbinom:(q, size, prob)=>J.negbin.cdf(q, size, prob),
+qnbinom:(p, size, prob)=>qcdf(S.pnbinom, p, size, prob),
+rnbinom:(n, size, prob)=>rcdf(S.qnbinom, n, size, prob),
+// 超幾何分布 : jStat.hypgeom(N, m, n)
+dhyper:(x, m, n, k)=>J.hypgeom.pdf(k, m, n, k),
+phyper:(q, m, n, k)=>J.hypgeom.cdf(q, m, n, k),
+qhyper:(p, m, n, k)=>qcdf(S.phyper, p, m, n, k),
+rhyper:(nn,m, n, k)=>rcdf(S.qhyper, nn, m, n, k),
+// 布瓦松分布 : jStat.poisson(l)
+dpois:(x, lambda)=>J.poisson.pdf(x, lambda),
+ppois:(q, lambda)=>J.poisson.cdf(q, lambda),
+qpois:(p, lambda)=>qcdf(S.ppois, p, lambda),
+rpois:(n, lambda)=>rcdf(S.qpois, n, lambda),
+
+// ====================== statistics =================================
 // extend function
+
 normalize:function(a) {
 	var sum = S.sum(a);
 	return a.map(function(x) { return x/sum});
 },
+
 };
 
-module.exports = S;
-},{"./base":2,"jStat":12}],8:[function(require,module,exports){
-var Symbol = require('algebrite')
 
-module.exports = Symbol;
-},{"algebrite":10}],9:[function(require,module,exports){
-var R = require("./R");
-var J = require("jStat").jStat;
-var T = {};
+// Vector Functionality
+B.copyFunctions(S, J, "sum,sumsqrt,sumsqerr,sumrow,product,min,max,mean,meansqerr,geomean,median,cumsum,cumprod,diff,mode,range,variance,stdev,meandev,meddev,skewness,kurtosis,coeffvar,quartiles,quantiles,percentile,percentileOfScore,histogram,covariance,corrcoeff,calcRdx,isArray,isFunction,isNumber,betafn,betacf,ibetainv,ibeta,gammafn,gammaln,gammap,lowRegGamma,gammapinv,factorialln,factorial,combination,combinationln,permutation,erf,erfc,erfcinv,randn,randg".split(","));
+
+B.mapFunctions(S, J, {
+	C:'combination',// C(n,m)
+	choose:'combination',// C(n,m)
+	lchoose:'combinationln',// log C(n,m)
+	P:'permutation', // P(n,m)
+	sd:'stdev',
+	cov:'covariance',
+	cor:'corrcoeff',
+});
 
 // =============== 檢定 ==============================
+B.mix(S, B);
+
+T = R = S;
 
 T.test = function(o) { // name, D, x, mu, sd, y, alpha, op
   Object.assign(o, {alpha:0.05, op:"="});
@@ -1095,19 +920,13 @@ T.anovaftest = function() {
   };
 }
 
-module.exports = T;
+module.exports = S;
 
-// ---------------- 統計與檢定 ----------------------
-/*
-function opAlt(op) {
-  if (op === "=") return "!=";
-  if (op === "<") return ">=";
-  if (op === ">") return "<=";
-  return null;
-}
-*/
+},{"./base":1,"jStat":8}],5:[function(require,module,exports){
+var Symbol = require('algebrite')
 
-},{"./R":1,"jStat":12}],10:[function(require,module,exports){
+module.exports = Symbol;
+},{"algebrite":6}],6:[function(require,module,exports){
 // Generated by CoffeeScript 1.10.0
 (function() {
   var $, ABS, ADD, ADJ, AND, ARCCOS, ARCCOSH, ARCSIN, ARCSINH, ARCTAN, ARCTANH, ARG, ATOMIZE, AUTOEXPAND, BAKE, BESSELJ, BESSELY, BINDING, BINOMIAL, BINOM_check_args, BUF, C1, C2, C3, C4, C5, C6, CEILING, CHECK, CHOOSE, CIRCEXP, CLEAR, CLOCK, COEFF, COFACTOR, CONDENSE, CONJ, CONS, CONTRACT, COS, COSH, Condense, DEBUG, DECOMP, DEFINT, DEGREE, DENOMINATOR, DERIVATIVE, DET, DET_check_arg, DIM, DIRAC, DISPLAY, DIVISORS, DO, DOT, DOUBLE, DRAW, DRAWX, DSOLVE, E, EIGEN, EIGENVAL, EIGENVEC, EIG_N, EIG_check_arg, EIG_yydd, EIG_yyqq, ERF, ERFC, EVAL, EXP, EXPAND, EXPCOS, EXPSIN, Eval, Eval_Eval, Eval_abs, Eval_add, Eval_adj, Eval_and, Eval_arccos, Eval_arccosh, Eval_arcsin, Eval_arcsinh, Eval_arctan, Eval_arctanh, Eval_arg, Eval_besselj, Eval_bessely, Eval_binding, Eval_binomial, Eval_ceiling, Eval_check, Eval_choose, Eval_circexp, Eval_clear, Eval_clock, Eval_coeff, Eval_cofactor, Eval_condense, Eval_conj, Eval_cons, Eval_contract, Eval_cos, Eval_cosh, Eval_decomp, Eval_defint, Eval_degree, Eval_denominator, Eval_derivative, Eval_det, Eval_dim, Eval_dirac, Eval_divisors, Eval_do, Eval_dsolve, Eval_eigen, Eval_eigenval, Eval_eigenvec, Eval_erf, Eval_erfc, Eval_exp, Eval_expand, Eval_expcos, Eval_expsin, Eval_factor, Eval_factorial, Eval_factorpoly, Eval_filter, Eval_float, Eval_floor, Eval_for, Eval_gamma, Eval_gcd, Eval_hermite, Eval_hilbert, Eval_imag, Eval_index, Eval_inner, Eval_integral, Eval_inv, Eval_invg, Eval_isinteger, Eval_isprime, Eval_laguerre, Eval_lcm, Eval_leading, Eval_legendre, Eval_log, Eval_mag, Eval_mod, Eval_multiply, Eval_noexpand, Eval_not, Eval_nroots, Eval_number, Eval_numerator, Eval_operator, Eval_or, Eval_outer, Eval_polar, Eval_power, Eval_predicate, Eval_prime, Eval_print, Eval_product, Eval_quote, Eval_quotient, Eval_rank, Eval_rationalize, Eval_real, Eval_rect, Eval_roots, Eval_setq, Eval_sgn, Eval_shape, Eval_simfac, Eval_simplify, Eval_sin, Eval_sinh, Eval_sqrt, Eval_stop, Eval_subst, Eval_sym, Eval_tan, Eval_tanh, Eval_taylor, Eval_tensor, Eval_test, Eval_testeq, Eval_testge, Eval_testgt, Eval_testle, Eval_testlt, Eval_transpose, Eval_unit, Eval_user_function, Eval_zero, Evalpoly, FACTOR, FACTORIAL, FACTORPOLY, FILTER, FLOATF, FLOOR, FOR, Find, GAMMA, GCD, HERMITE, HILBERT, IMAG, INDEX, INNER, INTEGRAL, INV, INVG, INV_check_arg, INV_decomp, ISINTEGER, ISPRIME, LAGUERRE, LAST, LCM, LEADING, LEGENDRE, LOG, M, MAG, MAXDIM, MAXPRIMETAB, MAX_PROGRAM_SIZE, MEQUAL, METAA, METAB, METAX, MLENGTH, MOD, MP_MAX_FREE, MP_MIN_SIZE, MSIGN, MULTIPLY, MZERO, N, NIL, NOT, NROOTS, NROOTS_ABS, NROOTS_DELTA, NROOTS_EPSILON, NROOTS_RANDOM, NROOTS_YMAX, NROOTS_divpoly, NSYM, NUM, NUMBER, NUMERATOR, OPERATOR, OR, OUTER, PI, POLAR, POWER, PRIME, PRINT, PRINTOUTRESULT, PRODUCT, QUOTE, QUOTIENT, RANK, RATIONALIZE, REAL, ROOTS, SECRETX, SELFTEST, SETQ, SGN, SHAPE, SIMPLIFY, SIN, SINH, SPACE_BETWEEN_COLUMNS, SPACE_BETWEEN_ROWS, SQRT, STOP, STR, SUBST, SUM, SYM, SYMBOL_A, SYMBOL_B, SYMBOL_C, SYMBOL_D, SYMBOL_I, SYMBOL_J, SYMBOL_N, SYMBOL_R, SYMBOL_S, SYMBOL_T, SYMBOL_X, SYMBOL_Y, SYMBOL_Z, TAN, TANH, TAYLOR, TENSOR, TEST, TESTEQ, TESTGE, TESTGT, TESTLE, TESTLT, TOS, TRACE, TRANSPOSE, TTY, T_DOUBLE, T_EQ, T_FUNCTION, T_GTEQ, T_INTEGER, T_LTEQ, T_NEWLINE, T_STRING, T_SYMBOL, U, UNIT, USR_SYMBOLS, YMAX, YYE, YYRECT, ZERO, __emit_char, __emit_str, __factor_add, __factorial, __is_negative, __is_radical_number, __lcm, __legendre, __legendre2, __legendre3, __normalize_radical_factors, __rationalize_tensor, absval, absval_tensor, ac, ad, add, add_all, add_numbers, add_terms, addf, adj, alloc_tensor, allocatedId, any_denominators, arccos, arccosh, arcsin, arcsinh, arctan, arctanh, arg, arglist, bake, bake_poly, bake_poly_term, besselj, bessely, bigInt, bignum_factorial, bignum_float, bignum_power_number, bignum_scan_float, bignum_scan_integer, bignum_truncate, binding, binomial, buffer, build_tensor, caaddr, caadr, caar, cadaddr, cadadr, cadar, caddaddr, caddadr, caddar, caddddr, cadddr, caddr, cadr, car, cdaddr, cdadr, cdar, cddaddr, cddar, cdddaddr, cddddr, cdddr, cddr, cdr, ceiling, charTabIndex, chartab, check_esc_flag, check_stack, choose, choose_check_args, circexp, clear, clear_symbols, clear_term, clockform, cmpGlyphs, cmp_args, cmp_expr, cmp_terms, cmp_terms_count, coeff, cofactor, collectResultLine, combine_factors, combine_gammas, combine_terms, compare_numbers, compare_rationals, compare_tensors, compatible, compute_fa, conjugate, cons, consCount, contract, convert_bignum_to_double, convert_rational_to_double, copy_tensor, cosine, cosine_of_angle, cosine_of_angle_sum, count, count_denominators, counter, d_scalar_scalar, d_scalar_scalar_1, d_scalar_tensor, d_tensor_scalar, d_tensor_tensor, dabs, darccos, darccosh, darcsin, darcsinh, darctan, darctanh, dbesselj0, dbesseljn, dbessely0, dbesselyn, dcos, dcosh, dd, decomp, decomp_product, decomp_sum, define_user_function, defn, defn_str, degree, denominator, derf, derfc, derivative, derivative_of_integral, det, determinant, detg, dfunction, dhermite, dirac, display, display_flag, displaychar, divide, divide_numbers, divisors, divisors_onstack, divpoly, dlog, doubleToReasonableString, dpow, dpower, dproduct, draw_flag, draw_stop_return, dsgn, dsin, dsinh, dsum, dtan, dtanh, dupl, echo_input, eigen, elelmIndex, elem, emit_denominator, emit_denominators, emit_expr, emit_factor, emit_factorial_function, emit_flat_tensor, emit_fraction, emit_function, emit_index_function, emit_multiply, emit_number, emit_numerators, emit_numerical_fraction, emit_power, emit_string, emit_subexpr, emit_symbol, emit_tensor, emit_tensor_inner, emit_term, emit_top_expr, emit_unsigned_expr, emit_x, equal, equaln, equalq, erfc, errorMessage, esc_flag, exec, expand, expand_get_A, expand_get_AF, expand_get_B, expand_get_C, expand_get_CF, expand_tensor, expanding, expcos, exponential, expr_level, expsin, f1, f2, f3, f4, f5, f9, f_equals_a, factor, factor_a, factor_again, factor_b, factor_number, factor_small_number, factor_term, factorial, factorpoly, factors, factpoly_expo, fill_buf, filter, filter_main, filter_sum, filter_tensor, findroot, fixed_top_level_eval, fixup_fraction, fixup_power, flag, fmt_index, fmt_level, fmt_x, frame, free_stack, gamma, gamma_of_sum, gammaf, gcd, gcd_expr, gcd_expr_expr, gcd_factor_term, gcd_main, gcd_numbers, gcd_term_factor, gcd_term_term, gen, get_arglist, get_binding, get_factor, get_next_token, get_printname, get_size, get_token, getdisplaystr, glyph, gp, guess, hasImaginaryCoeff, hermite, hilbert, imag, imaginaryunit, index_function, init, initNRoots, inited, inner, inner_f, input_str, integral, integral_of_form, integral_of_product, integral_of_sum, inv, inverse, invert_number, invg, is_denominator, is_factor, is_small_integer, is_square_matrix, isadd, isalnum, isalpha, iscomplexnumber, iscons, isdenominator, isdigit, isdouble, iseveninteger, isfactor, isfactorial, isfloating, isfraction, isimaginarynumber, isimaginaryunit, isinteger, isintegerfactor, iskeyword, isminusone, isminusoneoversqrttwo, ismultiply, isnegative, isnegativenumber, isnegativeterm, isnonnegativeinteger, isnpi, isnum, isoneover, isoneoversqrttwo, isplusone, ispoly, ispoly_expr, ispoly_factor, ispoly_term, isposint, ispower, isquarterturn, isrational, isspace, isstr, issymbol, issymbolic, istensor, iszero, itab, laguerre, laguerre2, lcm, leading, legendre, length, lessp, level, list, logarithm, logbuf, lookupsTotal, lu_decomp, madd, mag, makePositive, makeSignSameAs, mask, mcmp, mcmpint, mdiv, mdivrem, meta_mode, mgcd, mini_solve, mint, mmod, mmul, mod, monic, move, mp_clr_bit, mp_denominator, mp_numerator, mp_set_bit, mpow, mprime, mroot, mshiftright, msub, mtotal, multinomial_sum, multiply, multiply_all, multiply_all_noexpand, multiply_denominators, multiply_denominators_factor, multiply_denominators_term, multiply_noexpand, multiply_numbers, n_factor_number, negate, negate_expand, negate_noexpand, negate_number, new_string, newline_flag, nil_symbols, normalize_angle, nroots_a, nroots_b, nroots_c, nroots_df, nroots_dx, nroots_fa, nroots_fb, nroots_x, nroots_y, nterms, numerator, numericRootOfPolynomial, o, one, oneElement, out_buf, out_count, out_of_memory, outer, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, parse, parse_internal, parse_p1, parse_p2, partition, peek, peek2, polar, polycoeff, polyform, pop, pop_double, pop_frame, pop_integer, power, power_str, power_sum, power_tensor, prime, primetab, print1, print_a_over_b, print_char, print_denom, print_double, print_expr, print_factor, print_factorial_function, print_it, print_multiply_sign, print_number, print_str, print_subexpr, print_tensor, print_tensor_inner, print_term, printchar, printchar_nowrap, printline, program_buf, promote_tensor, push, push_cars, push_double, push_factor, push_frame, push_identity_matrix, push_integer, push_rational, push_symbol, push_term_factors, push_terms, push_zero_matrix, qadd, qdiv, qmul, qpow, qpowf, quickfactor, quickpower, rational, rationalize, rationalize_coefficients, real, reciprocate, rect, ref, ref1, remove_negative_exponents, reset_after_error, restore, rewrite_args, rewrite_args_tensor, roots, roots2, roots3, run, save, scalar_times_tensor, scan, scan_error, scan_expression, scan_factor, scan_function_call, scan_meta, scan_power, scan_relation, scan_stmt, scan_str, scan_string, scan_subexpr, scan_symbol, scan_term, scanned, setM, setSignTo, set_binding, set_binding_and_arglist, set_component, setq_indexed, sfac_product, sfac_product_f, sgn, shape, sign, sign_of_term, simfac, simfac_term, simplify, simplify_main, simplify_polar, simplify_tensor, simplify_trig, simplifyfactorials, sine, sine_of_angle, sine_of_angle_sum, sort_stack, square, ssqrt, stack, stackAddsCount, std_symbol, step, step2, stop, strcmp, stringToBePrinted, subf, subst, subtract, subtract_numbers, swap, symbol, symnum, symtab, tangent, taylor, tensor, tensor_plus_tensor, tensor_times_scalar, test_flag, text_metric, theRandom, token, token_buf, token_str, top_level_eval, tos, transform, transpose, trigmode, trivial_divide, try_kth_prime, ucmp, unique, unique_f, update_token_buf, usr_symbol, verbosing, will_be_displayed_as_fraction, ybinomial, ycosh, ydirac, yerf, yerfc, yfloor, yindex, ysinh, yyarg, yybesselj, yybessely, yyceiling, yycondense, yycontract, yycosh, yydegree, yydetg, yydivpoly, yyerf, yyerfc, yyexpand, yyfactorpoly, yyfloat, yyfloor, yyhermite, yyhermite2, yyinvg, yylcm, yylog, yymag, yymultiply, yyouter, yypower, yyrationalize, yysgn, yysimfac, yysinh, yytangent, zero,
@@ -17760,7 +17579,7 @@ function opAlt(op) {
 
 }).call(this);
 
-},{"big-integer":11}],11:[function(require,module,exports){
+},{"big-integer":7}],7:[function(require,module,exports){
 var bigInt = (function (undefined) {
     "use strict";
 
@@ -18957,7 +18776,7 @@ if (typeof module !== "undefined" && module.hasOwnProperty("exports")) {
     module.exports = bigInt;
 }
 
-},{}],12:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 this.j$ = this.jStat = (function(Math, undefined) {
 
 // For quick reference.
@@ -22614,7 +22433,7 @@ jStat.extend(jStat.fn, {
 
 }(this.jStat, Math));
 
-},{}],13:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -37691,7 +37510,7 @@ jStat.extend(jStat.fn, {
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],14:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -42119,7 +41938,7 @@ numeric.svd= function svd(A) {
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 // http://cs.stanford.edu/people/karpathy/convnetjs/
 // https://github.com/junku901/dnn
 var NN = {};
@@ -42142,7 +41961,7 @@ NN.dSigmoid = function(x){
 }
 
 module.exports = NN;
-},{}],16:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var NN = require("../neural");
 var R, M;
 
@@ -42262,287 +42081,299 @@ RBM.prototype.set = function(property,value) {
 }
 
 module.exports = RBM;
-},{"../neural":15}],17:[function(require,module,exports){
+},{"../neural":11}],13:[function(require,module,exports){
 var _ = require("lodash");
-var R = require("./lib/R");
+var R = require("./lib/statistics");
 var M = require("./lib/matrix");
-var Math = require("./lib/math");
 var Symbol = require("./lib/symbolic");
-var T = require("./lib/test");
 var D = require("./lib/calculus");
 R.NN = require("./plugin/neural");
 R.NN.RBM = require("./plugin/neural/rbm");
 
 R.Matrix = R.M = M;
-R.Differential = R.D = D;
 R._ = _;
 R.S = R.Sym = R.Symbol = Symbol;
 
-R.mix(R, Math);
-R.mix(R, T);
-
-// Global
-debug = function() {
-	var arg = B.slice(arguments);
-	console.debug.apply(console, arg);
-}
-
-log = function() {
-	var arg = B.slice(arguments);
-	console.log.apply(console, arg);
-}
+R.PI = Math.PI;
+R.E  = Math.E;
 
 // space 沒有加上機率參數 , 不能指定機率
 R.samples = function(space, size, arg) {
 	var arg = _.defaults(arg, {replace:true});
 	if (arg.replace)
-		return R.calls(size, function() { return _.sample(space); });
+		return _.times(size, ()=>_.sample(space));
 	else
 		return _.sampleSize(space, size);
 }
 
-R.ODE=(x0,x1,y0,f,tol,maxit,event)=>M.dopri(x0,x1,y0,f,tol,maxit,event); // Ordinary differential equation
-R.solveLP =(c,A,b,Aeq,beq,tol,maxit)=>M.solveLP(c,A,b,Aeq,beq,tol,maxit); // Linear programming
-R.solveQP =(Dmat, dvec, Amat, bvec, meq, factorized)=>M.solveQP(Dmat, dvec, Amat, bvec, meq, factorized); // Quadratic Programming
-R.minimize=(f,x0,tol,gradient,maxit,callback,options)=>M.uncmin(f,x0,tol,gradient,maxit,callback,options); // Unconstrained optimization
-R.sparse=M.sparse; // Matrix => Sparse
-R.sparse2full=M.sparse2full; // Sparse => Matrix
-R.complex=M.t;
-R.spline=M.spline;
-R.linspace=M.linspace;
+// Graph
+
+R.G = G = {}
+
+G.curve=function(f, from=-10, to=10, step=0.1) {
+	var x=R.steps(from, to, step);
+	var y=x.map(f);
+	return { type:"curve", x:x,	y:y	};
+}
+
+G.hist=function(a, from, to, step=1) {
+	from = from||a.min();
+	to = to||a.max();
+  var n = Math.ceil((to-from+R.EPSILON)/step);
+  var xc = R.steps(from+step/2.0, to, step);
+  var bins = R.M.newV(n, 0);
+  for (var i in a) {
+    var slot=Math.floor((a[i]-from)/step);
+    if (slot>=0 && slot < n)
+      bins[slot]++;
+  }
+	return { type:'histogram', xc:xc, bins:bins, from:from, to:to, step:step};
+}
+
+G.ihist=function(a) {
+	return G.hist(a, a.min()-0.5, a.max()+0.5, 1);
+}
+
+// Global
+debug = function() {
+	var arg = _.slice(arguments);
+	console.debug.apply(console, arg);
+}
+
+print = function() {
+	var arg = _.slice(arguments);
+	console.log.apply(console, arg);
+}
+
+R.debug = debug;
+R.print = print;
+
+// ==== Copy functions to R ======
+R.copyFunctions(R, D, "differential,integral".split(","));
+R.copyFunctions(R, Math, "abs,acos,asin,atan,ceil,cos,exp,floor,log,pow,random,round,sin,sqrt,tan".split(","));
+
+R.copyFunctions(R, M, "solveLP,solveMP,ODE,minimize,complex,spline,linspace".split(","));
+
 
 // not include : bench, xxxeq, ccsXXX, cgrid, 
-R.mixThis(Array.prototype, {
-cLU:M.cLU,
-cdelsq:M.cdelsq, // Laplacian
-clone:M.clone,
-// matrix
-rows:M.rows,
-cols:M.cols,
-row:M.row,
-col:M.col,
-tr:M.tr,
-strM:M.str,
-not:M.not,
-bnot:M.bnot,
-neg:M.neg,
-abs:M.abs,
-sin:M.sin,
-cos:M.cos,
-tan:M.tan,
-asin:M.asin,
-acos:M.acos,
-atan:M.atan,
-//https://zh.wikipedia.org/wiki/Atan2
-atan2:M.atan2,
-inv:M.inv,
-all:M.all,
-any:M.any,
-same:M.same,
-isFinite:M.isFinite,
-isNaN:M.isNaN,
-sqrt:M.sqrt,
-ceil:M.ceil,
-floor:M.floor,
-round:M.round,
-log:M.log,
-exp:M.exp,
-pow:M.pow,
-mapreduce:M.mapreduce,
-lshifteq:M.lshifteq,
-rshifteq:M.rshifteq,
-add:M.add,
-sub:M.sub,
-mul:M.mul,
-div:M.div,
-mod:M.mod,
-and:M.and,
-or:M.or,
-xor:M.xor,
-band:M.band,
-bor:M.bor,
-bxor:M.bxor,
-eq:M.eq,
-neq:M.neq,
-geq:M.geq,
-leq:M.leq,
-lt:M.lt,
-gt:M.gt,
-t:M.t,
-det:M.det,
-norm2:M.norm2,
-norm2Squared:M.norm2Squared,
-norm2inf:M.norm2inf,
-dot:M.dot,
-det:M.det,
-dim:M.dim,
-eig:M.eig,
-LU:M.LU,
-svd:M.svd,
-sumM:M.sum,
-rowSum:M.rowSum,
-colSum:M.colSum,
-rowMean:M.rowMean,
-colMean:M.colMean,
-addMV:M.addMV,
-mapM:M.mapM, 
-mapMM:M.mapMM,
-flatM:M.flatM,
-getBlock:M.getBlock,
-setBlock:M.setBlock,
-getDiag:M.getDiag,
-diag:M.diag,
-parseFloat:M.parseFloat,
-parseDate:M.parseDate,
-parseCSV:M.parseCSV,
-toCSV:M.toCSV,
+R.mixThis(Array.prototype, M, [
+"cLU",
+"cdelsq",
+"clone",
+"rows",
+"cols",
+"row",
+"col",
+"tr",
+// "str",
+"not",
+"bnot",
+"neg",
+"abs",
+"sin",
+"cos",
+"tan",
+"asin",
+"acos",
+"atan",
+"atan2",
+"inv",
+"all",
+"any",
+"same",
+"isFinite",
+"isNaN",
+"sqrt",
+"ceil",
+"floor",
+"round",
+"log",
+"exp",
+"pow",
+"mapreduce",
+"lshifteq",
+"rshifteq",
+"add",
+"sub",
+"mul",
+"div",
+"mod",
+"and",
+"or",
+"xor",
+"band",
+"bor",
+"bxor",
+"eq",
+"neq",
+"geq",
+"leq",
+"lt",
+"gt",
+"complex",
+"det",
+"norm2",
+"norm2Squared",
+"norm2inf",
+"dot",
+"dim",
+"eig",
+"LU",
+"svd",
+"sum",
+"rowSum",
+"colSum",
+"rowMean",
+"colMean",
+"addMV",
+"mapM",
+"mapMM",
+"flatM",
+"fillVM",
+"fillMM",
+"getBlock",
+"setBlock",
+"getDiag",
+"diag",
+"parseFloat",
+"parseDate",
+"parseCSV",
+"toCSV",
+"strM",
+"sumM",
+]);
+
+// not include : bench, xxxeq, ccsXXX, cgrid, 
+R.mixThis(Array.prototype, G, [
+"hist",
+"ihist",
+]);
+
+R.mixThis(Array.prototype, R, [
 // statistics
-max:R.max,
-min:R.min,
-sum:R.sum,
-product:R.product,
-mean:R.mean,
-range:R.range,
-median:R.median,
-variance:R.variance,
-deviation:R.deviation,
-sd:R.sd,
-cov:R.cov,
-cor:R.cor,
-normalize:R.normalize,
+"max",
+"min",
+// "sum",
+"product",
+"mean",
+"range",
+"median",
+"variance",
+"deviation",
+"sd",
+"cov",
+"cor",
+"normalize",
+]);
+
+R.mixThis(Array.prototype, _, [
 // lodash
-chunk:_.chunk,
-compact:_.compact,
+"chunk",
+"compact",
 // concat:_.concat
-difference:_.difference,
-differenceBy:_.differenceBy,
-differenceWith:_.differenceWith,
-drop:_.drop,
-dropRight:_.dropRight,
-dropRightWhile:_.dropRightWhile,
-dropWhile:_.dropWhile,
+"difference",
+"differenceBy",
+"differenceWith",
+"drop",
+"dropRight",
+"dropRightWhile",
+"dropWhile",
 // fill:_.fill,
 // findIndex:_.findIndex,
-findLastIndex:_.findLastIndex,
-flatten:_.flatten,
-flattenDeep:_.flattenDeep,
-flattenDepth:_.flattenDepth,
-fromPairs:_.fromPairs,
-head:_.head,
+"findLastIndex",
+"flatten",
+"flattenDeep",
+"flattenDepth",
+"fromPairs",
+"head",
 // indexOf:_.indexOf,
-initial:_.initial,
-intersection:_.intersection,
-intersectionBy:_.intersectionBy,
-intersectionWith:_.intersectionWith,
+"initial",
+"intersection",
+"intersectionBy",
+"intersectionWith",
 // _.join
-last:_.last,
+"last",
 // _.lastIndexOf
-nth:_.nth,
-pull:_.pull,
-pullAll:_.pullAll,
-pullAllBy:_.pullAllBy,
-pullAllWith:_.pullAllWith,
-pullAt:_.pullAt,
-remove:_.remove,
+"nth",
+"pull",
+"pullAll",
+"pullAllBy",
+"pullAllWith",
+"pullAt",
+"remove",
 // _.reverse
 // _.slice
-sortedIndex:_.sortedIndex,
-sortedIndexBy:_.sortedIndexBy,
-sortedIndexOf:_.sortedIndexOf,
-sortedLastIndex:_.sortedLastIndex,
-sortedLastIndexBy:_.sortedLastIndexBy,
-sortedLastIndexOf:_.sortedLastIndexOf,
-sortedUniq:_.sortedUniq,
-sortedUniqBy:_.sortedUniqBy,
-tail:_.tail,
-take:_.take,
-takeRight:_.takeRight,
-takeRightWhile:_.takeRightWhile,
-takeWhile:_.takeWhile,
-union:_.union,
-unionBy:_.unionBy,
-unionWith:_.unionWith,
-uniq:_.uniq,
-uniqBy:_.uniqBy,
-uniqWith:_.uniqWith,
-unzip:_.unzip,
-unzipWith:_.unzipWith,
-without:_.without,
+"sortedIndex",
+"sortedIndexBy",
+"sortedIndexOf",
+"sortedLastIndex",
+"sortedLastIndexBy",
+"sortedLastIndexOf",
+"sortedUniq",
+"sortedUniqBy",
+"tail",
+"take",
+"takeRight",
+"takeRightWhile",
+"takeWhile",
+"union",
+"unionBy",
+"unionWith",
+"uniq",
+"uniqBy",
+"uniqWith",
+"unzip",
+"unzipWith",
+"without",
 // _.xor
 // _.xorBy
 // _.xorWith
-zip:_.zip,
-zipObject:_.zipObject,
-zipObjectDeep:_.zipObjectDeep,
-zipWith:_.zipWith,
+"zip",
+"zipObject",
+"zipObjectDeep",
+"zipWith",
 // Collection
-countBy:_.countBy,
+"countBy",
 // _.each → forEach
 // _.eachRight → forEachRight
 // every:_.every
 // filter:_.filter
 // find:_.find
-findLast:_.findLast,
-flatMap:_.flatMap,
-flatMapDeep:_.flatMapDeep,
-flatMapDepth:_.flatMapDepth,
+"findLast",
+"flatMap",
+"flatMapDeep",
+"flatMapDepth",
 // _.forEach
-forEachRight:_.forEachRight,
-groupBy:_.groupBy,
+"forEachRight",
+"groupBy",
 // includes:_.includes
-invokeMap:_.invokeMap,
-keyBy:_.keyBy,
+"invokeMap",
+"keyBy",
 // _.map
-orderBy:_.orderBy,
-partition:_.partition,
+"orderBy",
+"partition",
 // _.reduce
 // reduceRight:_.reduceRight,
-reject:_.reject,
-sample:_.sample,
-sampleSize:_.sampleSize,
-shuffle:_.shuffle,
-size:_.size,
+"reject",
+"sample",
+"sampleSize",
+"shuffle",
+"size",
 // some:_.some
-sortBy:_.sortBy,
-});
+"sortBy",
+]);
 
-B = R;
-B.precision=4;
-
-B.mix(Number.prototype, { str:function(n) {
-	return this.toFixed(B.precision);
-}});
-
-B.mix(Array.prototype, { str:function(a) {
-	var s="";
-	for (var i in this) {
-		s+=this[i].str()+",";
-	}
-	return "["+B.ctrim(s, ',')+"]";
-}});
-
-B.mix(String.prototype, { 
-str:function() {
-	return this.toString();
-},
-lpad:B.curryThis(B.lpad),
-});
-
-B.mix(Object.prototype, { str:function(o) {
-  var s = "";
-  for (var k in o)
-    s+= k+":"+B.str(o[k])+",";
-  return "{"+B.ctrim(s,",")+"}";
-}});
-
-B.str=function(o) { return o.str(); }
-
-R.mixThis(Object.prototype, {
-strM:M.str,
-});
-
+// R.mixThis(Array.prototype,  {str:R.astr}, ['str']);
+R.mixThisMap(Array.prototype,  R, {astr:'str',print:'print'});
+R.mixThisMap(Number.prototype, R, {nstr:'str',print:'print'});
+R.mixThisMap(String.prototype, R, {sstr:'str',print:'print'});
+R.mixThisMap(Object.prototype, R, {ostr:'str',print:'print'});
+R.mixThisMap(Object.prototype, M, {strM:'strM'});
 
 module.exports = R;
-},{"./lib/R":1,"./lib/calculus":3,"./lib/math":4,"./lib/matrix":5,"./lib/symbolic":8,"./lib/test":9,"./plugin/neural":15,"./plugin/neural/rbm":16,"lodash":13}],18:[function(require,module,exports){
+
+
+
+},{"./lib/calculus":2,"./lib/matrix":3,"./lib/statistics":4,"./lib/symbolic":5,"./plugin/neural":11,"./plugin/neural/rbm":12,"lodash":9}],14:[function(require,module,exports){
 rlab=require("../rlab");
-},{"../rlab":17}]},{},[18]);
+},{"../rlab":13}]},{},[14]);

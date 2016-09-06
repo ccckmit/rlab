@@ -57,17 +57,6 @@ C3G.prototype.curve = function(f, options) {
   this.g.data.xs[name] = name+"x";
   var x = R.steps(from, to, step), y=[];
 	var y = x.map(f);
-/*	
-	console.log("x=", x, "y=", y);
-	console.log("f=", f, "curve:x=", x);
-  for (var i in x) {
-    if (typeof(f)==="string")
-      y.push(eval(f.replace("x", x[i])));
-    else if (typeof f === "function")
-      y.push(f(x[i]));
-  }
-	console.log("y=", y);
-*/	
   this.g.data.columns.push([name+"x"].concat(x));
   this.g.data.columns.push([name].concat(y));
 }
@@ -80,26 +69,20 @@ C3G.prototype.hist = function(x, options) {
   var to   = options.to   || this.xmax;
   this.g.data.types[name] = "bar";
   this.g.data.xs[name] = name+"x";
+	var count = R.hist(x, step, from, to);
   var xc = R.steps(from+step/2.0, to, step);
-  var n = (to-from)/step + 1;
-  var count = R._.fill(Array(n), 0);
-  for (var i in x) {
-    var slot=Math.floor((x[i]-from)/step);
-    if (slot>=0 && slot < n)
-      count[slot]++;
-  }
-//	console.log("count=", count);
   this.g.data.columns.push([name+"x"].concat(xc));
   var total = R.sum(count);
   if (mode === "normalized")
     count = count.map(function(c) { return (1.0/step)*(c/total); });
-//	console.log("count=", count);
   this.g.data.columns.push([name].concat(count));
 }
 
-C3G.prototype.show = function() {
-  if (typeof(module)==="undefined")
-    return c3.generate(this.g);
+C3G.prototype.show = function(chartName) {
+  if (typeof(module)==="undefined") {
+		this.g.bindto=chartName;
+    return c3.generate(this.g);		
+	}
 }
 
 // ------------------ 繪圖物件與函數 vis.js 部份  --------------------------------
@@ -149,7 +132,7 @@ G.xrange = function(xmin, xmax) { G.c3g.xrange(xmin, xmax); }
 
 G.curve = function(f, options) {
   G.c3g.curve(f, options);
-  G.c3g.show();
+//  G.c3g.show();
 }
 
 G.hist = function(x, options) {

@@ -25,5 +25,5 @@ rbm.train({
 var v = [[1, 1, 0, 0, 0, 0],
     [0, 0, 0, 1, 1, 0]];
 
-console.log(rbm.reconstruct(v).strM());
-console.log(rbm.sampleHgivenV(v)[0].strM());
+print(rbm.reconstruct(v).strM());
+print(rbm.sampleHgivenV(v)[0].strM());

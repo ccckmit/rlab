@@ -1,14 +1,14 @@
 var R = require("../rlab");
 var S = R.Symbol;
 
-console.log('x+x=', S.run('x + x')) // => 2 x"
+print('x+x=', S.run('x + x')) // => 2 x"
 
-console.log('10!=', S.factor('10!').toString()); // => "2^8 3^4 5^2 7"
+print('10!=', S.factor('10!').toString()); // => "2^8 3^4 5^2 7"
 
-console.log('integral(x^2)=', S.eval('integral(x^2)').toString()); // => "1/3 x^3"
+print('integral(x^2)=', S.eval('integral(x^2)').toString()); // => "1/3 x^3"
 
 // composing...
-console.log('integral(x)=', S.integral(S.eval('x')).toString()); // => "1/2 x^2"
+print('integral(x)=', S.integral(S.eval('x')).toString()); // => "1/2 x^2"
 
 var questions=[
 '13579/99999 + 13580/100000',
@@ -37,9 +37,9 @@ var questions=[
 'f=sin(t)^4-2*cos(t/2)^3*sin(t);f=circexp(f);defint(f,t,0,2*pi)',
 ];
 
-console.log("=========== Q&A =============");
+print("=========== Q&A =============");
 
 for (var i in questions) {
 	var q = questions[i];
-	console.log(q, "=", S.run(q.replace(/;/g, '\n')));
+	print(q, "=", S.run(q.replace(/;/g, '\n')));
 }
