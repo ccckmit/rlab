@@ -42375,5 +42375,5 @@ module.exports = R;
 
 
 },{"./lib/calculus":2,"./lib/matrix":3,"./lib/statistics":4,"./lib/symbolic":5,"./plugin/neural":11,"./plugin/neural/rbm":12,"lodash":9}],14:[function(require,module,exports){
-rlab=require("../rlab");
+R=rlab=require("../rlab");
 },{"../rlab":13}]},{},[14]);
