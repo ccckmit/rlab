@@ -1,1 +1,1 @@
-rlab=require("../rlab");
+R=rlab=require("../rlab");

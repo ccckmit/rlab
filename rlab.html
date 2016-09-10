@@ -67,11 +67,13 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="#">Rlab = (R + Matlab).js</a>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div id="navbar" class="navbar-collapse collapse">
+<!--        	
           <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="#console">Console</a></li>
-            <li><a href="#canvas">Canvas</a></li>
+            <li class="active"><a href="#chartGrid"><span class="glyphicon glyphicon-th" aria-hidden="true"></a></li>
+            <li><a href="#chartBig"><span class="glyphicon glyphicon-picture" aria-hidden="true"></a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Help<span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -82,13 +84,17 @@
                 <li><a href="#">More</a></li>
               </ul>
             </li>
-          </ul>				
+          </ul>
+-->          				
           <form class="navbar-form">
-						<label class="btn btn-primary btn-file">
-								File <input id="fileButton" type="file" style="display: none;">
-						</label>						
-						<label class="btn btn-primary">
-								Run <input id="runButton" type="button" style="display: none;">
+
+						<label class="btn btn-primary btn-file" data-toggle="tooltip" title="Open File">
+						  <span class="glyphicon glyphicon-file" aria-hidden="true">
+							<input id="fileButton" type="file" style="display: none;">
+						</label>						 
+						<label class="btn btn-primary" data-toggle="tooltip" title="Run Code">
+						  <span class="glyphicon glyphicon-play">
+							<input id="runButton" type="button" style="display: none;">
 						</label>
           </form>
         </div><!--/.navbar-collapse -->
@@ -98,173 +104,10 @@
     <div class="container">
 		  <div class="row">
         <div class="col-md-6">
-  				<div class="form-group">				
-		  			<textarea class="form-control" rows="10" id="codeBox" wrap="soft">
-function hist(x,k) {
-	var mk = x.fillVM(k,x.length/k);
-	return mk.colSum().hist();
-}
+					<h4>Code</h4>
+					<textarea class="form-control" rows="10" id="codeBox" wrap="soft">
+print('The chart demo of Rlab.\nPlease scroll down to see charts below ...')
 
-var centralLimit = function(x) {
-	print('hist(x,1)=',  x.hist());
-	print('hist(x,2)=',  hist(x,2).str(0));
-	print('hist(x,10)=', hist(x,10).str(0));
-	print('hist(x,20)=', hist(x,20).str(0));
-}
-
-var x = R.samples([0,1], 100000, {replace:true});
-centralLimit(x);
-
-var xu = R.runif(100000, 0, 10);
-centralLimit(xu);
-						</textarea>
-			  	</div>
-				</div>
-        <div class="col-md-6">
-  				<div class="form-group">				
-		  			<textarea class="form-control" rows="14" id="consoleBox"></textarea>
-			  	</div>
-				</div>
-			
-			</div>
-			
-			<div id="bigChartPanel">
-        <div id="bigChart" class="chart-big"></div>
-		  </div>
-			
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
-          <p><a class="btn btn-default" href="#" role="button">View 1 &raquo;</a></p>
-				  <div id="chart1" class="chart"></div>
-        </div>
-        <div class="col-md-4">
-          <p><a class="btn btn-default" href="#" role="button">View 2 &raquo;</a></p>
-				  <div id="chart2" class="chart"></div>
-        </div>
-        <div class="col-md-4">
-          <p><a class="btn btn-default" href="#" role="button">View 3 &raquo;</a></p>
-				  <div id="chart3" class="chart"></div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <p><a class="btn btn-default" href="#" role="button">View 4 &raquo;</a></p>
-				  <div id="chart4" class="chart"></div>
-        </div>
-        <div class="col-md-4">
-          <p><a class="btn btn-default" href="#" role="button">View 5 &raquo;</a></p>
-				  <div id="chart5" class="chart"></div>
-        </div>
-        <div class="col-md-4">
-          <p><a class="btn btn-default" href="#" role="button">View 6 &raquo;</a></p>
-				  <div id="chart6" class="chart"></div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <p><a class="btn btn-default" href="#" role="button">View 7 &raquo;</a></p>
-				  <div id="chart7" class="chart"></div>
-        </div>
-        <div class="col-md-4">
-          <p><a class="btn btn-default" href="#" role="button">View 8 &raquo;</a></p>
-				  <div id="chart8" class="chart"></div>
-        </div>
-        <div class="col-md-4">
-          <p><a class="btn btn-default" href="#" role="button">View 9 &raquo;</a></p>
-				  <div id="chart9" class="chart"></div>
-        </div>
-      </div>
-
-      <hr>
-
-      <footer>
-        <p>Rlab = (R+Matlab).js in MIT License</p>
-      </footer>
-    </div> <!-- /container -->
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/codemirror.js"></script>		
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/mode/javascript/javascript.js"></script>		
-		<script src="
-https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.js"></script>		
-		<script src="web/rlab.js"></script>		
-		<script src="web/glab.js"></script>
-		
-<script>
-var R = rlab;
-var codeBox = document.getElementById('codeBox');
-var consoleBox = document.getElementById('consoleBox');
-var fileButton = document.getElementById('fileButton');
-var runButton = document.getElementById('runButton');
-var fileName;
-
-require=function() { return R; }
-
-clear=function() { consoleBox.value = ''; } 
-
-print=function() {
-	var args = [].slice.apply(arguments);
-	console.log.apply(console, args);
-	var logStr = "";
-	for (var i=0; i<args.length; i++) {
-	  logStr += args[i] + " ";
-	}
-	consoleBox.value += logStr+"\n";
-}
-
-var editor = CodeMirror.fromTextArea(codeBox, {
-  lineNumbers: true,
-	mode:'javascript',
-});
-
-function handleFileSelect(evt) {
-  console.log('handleFileSelect');
-	editor.getDoc().setValue('');
-  codeBox.value = "";
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    console.log('reader.onload');
-	  editor.getDoc().setValue(reader.result);
-//	  codeBox.value = reader.result;
-//	  E.editor.setValue(codebox.value);
-//    run();
-  };
-  fileName = evt.target.files[0].name;
-  reader.readAsText(evt.target.files[0]);
-}
-
-fileButton.addEventListener('change', handleFileSelect, false);
-$("#runButton").click(function() {
-  var code = editor.getDoc().getValue();
-	clear();
-	eval(code);
-});
-
-function showChart(i) {
-  return function() {
-		G.show('#bigChart', G.dgMap['#chart'+i]);
-	}
-}
-
-$(document).ready(function() {
-  for (var i=1; i<=9; i++) {
-		$('#chart'+i).click(showChart(i));
-	}
-});
-
-//  $('#bigChartModal').modal('show');
-</script>
-
-<script>
 G.chart2D('#chart1', function(g) {
   dt = R.dt;
   G.curve(g, "dt(3)" , (x)=>dt(x,3) );
@@ -308,7 +151,123 @@ G.chart3D('#chart9', 'surface', function(x, y) {
   return (Math.sin(x/50) * Math.cos(y/50) * 50 + 50); 
 });
 
-// c3.js 可以 resize，參考：http://c3js.org/samples/api_resize.html
+					</textarea>
+				</div>
+        <div class="col-md-6">
+  				<div class="form-group">				
+						<h4>Console</h4>
+						<textarea class="form-control" rows="14" id="consoleBox"></textarea>
+			  	</div>
+				</div>			
+			</div>
+			<div class="container-fluid">
+				<h4>Chart(Grid)</h4>
+				<div class="row box">
+					<div class="col-md-4"><div id="chart1" class="chart"></div></div>
+					<div class="col-md-4"><div id="chart2" class="chart"></div></div>
+					<div class="col-md-4"><div id="chart3" class="chart"></div></div>
+					<div class="col-md-4"><div id="chart4" class="chart"></div></div>
+					<div class="col-md-4"><div id="chart5" class="chart"></div></div>
+					<div class="col-md-4"><div id="chart6" class="chart"></div></div>
+					<div class="col-md-4"><div id="chart7" class="chart"></div></div>
+					<div class="col-md-4"><div id="chart8" class="chart"></div></div>
+					<div class="col-md-4"><div id="chart9" class="chart"></div></div>
+				</div>
+			</div>
+			<h4>Chart(Big)</h4>
+			<div class="row">
+				<a name="bigChart"></a>
+				<div class="col-md-12">
+				  <div id="bigChart" class="chart-big"></div>
+					<p><a class="btn btn-success" href="#" role="button">Top &raquo;</a></p>
+				</div>
+			</div>
+      <hr>
+      <footer>
+        <p>Rlab = (R+Matlab).js in MIT License</p>
+      </footer>
+		</div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/codemirror.js"></script>		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/mode/javascript/javascript.js"></script>		
+		<script src="
+https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.js"></script>		
+		<script src="web/rlab.js"></script>		
+		<script src="web/glab.js"></script>
+		
+<script>
+var codeBox = document.getElementById('codeBox');
+var consoleBox = document.getElementById('consoleBox');
+var fileButton = document.getElementById('fileButton');
+var runButton = document.getElementById('runButton');
+var fileName;
+
+require=function() { return R; }
+
+clear=function() { consoleBox.value = ''; } 
+
+print=function() {
+	var args = [].slice.apply(arguments);
+	console.log.apply(console, args);
+	var logStr = "";
+	for (var i=0; i<args.length; i++) {
+	  logStr += args[i] + " ";
+	}
+	consoleBox.value += logStr+"\n";
+}
+
+var editor = CodeMirror.fromTextArea(codeBox, {
+  lineNumbers: true,
+	mode:'javascript',
+});
+
+function handleFileSelect(evt) {
+	editor.getDoc().setValue('');
+  codeBox.value = "";
+  var reader = new FileReader();
+  reader.onload = function(e) {
+	  editor.getDoc().setValue(reader.result);
+  };
+  fileName = evt.target.files[0].name;
+  reader.readAsText(evt.target.files[0]);
+}
+
+fileButton.addEventListener('change', handleFileSelect, false);
+$("#runButton").click(function() {
+  var code = editor.getDoc().getValue();
+  clear();
+  try {
+    eval(code); 
+  } catch (e) {
+    print('error : ', e.message);
+    print('stack trace : ', e.stack);
+  }
+});
+
+function showChart(i) {
+  return function() {
+		G.show('#bigChart', G.tgMap['#chart'+i]);
+		window.location.href = '#bigChart';
+	}
+}
+
+$(document).ready(function() {
+  for (var i=1; i<=9; i++) {
+		$('#chart'+i).click(showChart(i));
+	}
+});
+</script>
+
+<script>
 
 </script>
 		
