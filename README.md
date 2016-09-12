@@ -214,7 +214,7 @@ i(x^2,0,1)= 0.33283350000000095
 i(sin(x),0,pi/2)= 0.9997035898637557
 ```
 
-## build web version
+## Rlab Web Version
 
 ```
 $npm run-script build-web
@@ -241,7 +241,9 @@ rlab@0.7.1 D:\Dropbox\github\rlab
 $ node server.js
 ```
 
-A Screen Shot for Rlab on Web.
+A demo for rlab is on my web site <http://ccc.nqu.edu.tw/rlab/rlab.html> .
+
+The following figure is Screen Shot for Rlab GUI.
 
 ![Run rlab on Web](img/RlabIDE.png)
 
