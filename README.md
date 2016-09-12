@@ -12,7 +12,7 @@ It's based on `lodash.js , jStat.js and numeric.js`
 npm install rlab
 ```
 
-## Use rlab
+## Use rlab in console mode
 
 file : probabilityEx.js
 
@@ -223,9 +223,27 @@ $npm run-script build-web
 > browserify web/_rlab.js -o web/rlab.js
 ```
 
-## IDE
+## Run rlab on Web
 
-There is a webIDE for rlab , you may start it by open rlab.html
+Fdbserver is a used in the server.js of rlab. You have to install fdbserver before start the server.js
+
+```
+$ git clone https://github.com/ccckmit/rlab
+...
+$ cd rlab
+...
+$ npm install fdbserver
+rlab@0.7.1 D:\Dropbox\github\rlab
++-- chai@3.5.0  extraneous
++-- express@4.13.4  extraneous
+`-- fdbserver@1.6.6  extraneous
+
+$ node server.js
+```
+
+A Screen Shot for Rlab on Web.
+
+![Run rlab on Web](img/RlabIDE.png)
 
 ## Author
 

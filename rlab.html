@@ -7,7 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="http://getbootstrap.com/favicon.ico">
+    <link rel="icon" href="web/favicon.ico">
 
     <title>Rlab IDE</title>
 
@@ -15,14 +15,14 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="http://getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+<!--    <link href="http://getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
 
     <!-- Custom styles for this template -->
     <link href="web/rlab.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>
+<!--    <script src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script> -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -39,24 +39,6 @@
 	</head>
 
   <body>
-<!-- Modal -->
-<div class="modal fade" id="bigChartModal" tabindex="-1" role="dialog" aria-labelledby="bigChartModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Chart(Big)</h4>
-      </div>
-      <div id="bigChart2" class="modal-body chart-big">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-	
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -70,40 +52,31 @@
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-<!--        	
-          <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="#chartGrid"><span class="glyphicon glyphicon-th" aria-hidden="true"></a></li>
-            <li><a href="#chartBig"><span class="glyphicon glyphicon-picture" aria-hidden="true"></a></li>
+          <ul class="nav navbar-nav navbar-right https">
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Help<span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Login<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#aboutRlab">About Rlab</a></li>
-                <li><a href="#">User Guide</a></li>
-                <li><a href="#">Rlab API</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">More</a></li>
+                <li><a href="#login" data-toggle="modal" data-target="#loginModal">Login</a></li>
+                <li><a href="#logout">Logout</a></li>
               </ul>
             </li>
           </ul>
--->          				
           <form class="navbar-form">
-<<<<<<< HEAD
-
+            <div class="form-group">
+              <input id='fileName', type="text" placeholder="File" class="form-control">
 						<label class="btn btn-primary btn-file" data-toggle="tooltip" title="Open File">
 						  <span class="glyphicon glyphicon-file" aria-hidden="true">
-							<input id="fileButton" type="file" style="display: none;">
+							<input id="loadButton" type="file" style="display: none;">
 						</label>						 
 						<label class="btn btn-primary" data-toggle="tooltip" title="Run Code">
-=======
-						<label class="btn btn-primary btn-file">
-						  <span class="glyphicon glyphicon-file" aria-hidden="true">
-							<input id="fileButton" type="file" style="display: none;">
-						</label>						 
-						<label class="btn btn-primary">
->>>>>>> 59726d7d35cd87e5a100a410ce3a21d192375617
 						  <span class="glyphicon glyphicon-play">
 							<input id="runButton" type="button" style="display: none;">
 						</label>
+						<label class="btn btn-primary https" data-toggle="tooltip" title="Save File">
+						  <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true">
+							<input id="saveButton" type="button" style="display: none;">
+						</label>						 
+            </div>
           </form>
         </div><!--/.navbar-collapse -->
       </div>
@@ -114,7 +87,6 @@
         <div class="col-md-6">
 					<h4>Code</h4>
 					<textarea class="form-control" rows="10" id="codeBox" wrap="soft">
-<<<<<<< HEAD
 print('The chart demo of Rlab.\nPlease scroll down to see charts below ...')
 
 G.chart2D('#chart1', function(g) {
@@ -160,8 +132,6 @@ G.chart3D('#chart9', 'surface', function(x, y) {
   return (Math.sin(x/50) * Math.cos(y/50) * 50 + 50); 
 });
 
-=======
->>>>>>> 59726d7d35cd87e5a100a410ce3a21d192375617
 					</textarea>
 				</div>
         <div class="col-md-6">
@@ -205,7 +175,7 @@ G.chart3D('#chart9', 'surface', function(x, y) {
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+<!--    <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>-->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/codemirror.js"></script>		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/mode/javascript/javascript.js"></script>		
 		<script src="
@@ -214,11 +184,12 @@ https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.js"></script>		
 		<script src="web/rlab.js"></script>		
 		<script src="web/glab.js"></script>
+		<script src="web/editor.js"></script>
 		
 <script>
 var codeBox = document.getElementById('codeBox');
 var consoleBox = document.getElementById('consoleBox');
-var fileButton = document.getElementById('fileButton');
+var loadButton = document.getElementById('loadButton');
 var runButton = document.getElementById('runButton');
 var fileName;
 
@@ -247,12 +218,17 @@ function handleFileSelect(evt) {
   var reader = new FileReader();
   reader.onload = function(e) {
 	  editor.getDoc().setValue(reader.result);
+		// file name
+		var path = loadButton.value;
+		var fileName = path.split(/(\\|\/)/g).pop();
+		$('#fileName').val(fileName);
   };
   fileName = evt.target.files[0].name;
   reader.readAsText(evt.target.files[0]);
 }
 
-fileButton.addEventListener('change', handleFileSelect, false);
+loadButton.addEventListener('change', handleFileSelect, false);
+
 $("#runButton").click(function() {
   var code = editor.getDoc().getValue();
   clear();
@@ -262,6 +238,11 @@ $("#runButton").click(function() {
     print('error : ', e.message);
     print('stack trace : ', e.stack);
   }
+});
+
+$('#saveButton').click(function() {
+  if (!E.isLogin()) return;	
+  E.Server.save($('#fileName').val(), $('#codeBox').val());
 });
 
 function showChart(i) {
@@ -279,126 +260,9 @@ $(document).ready(function() {
 </script>
 
 <script>
-<<<<<<< HEAD
-
-=======
-G.loadImage('./demo/demo_small.png', function(image) {
-  console.log('load Image complete!');
-  G.drawCanvas('#chart1', function(ctx1, canvas1) {
-    ctx1.drawImage(image, 0, 0);
-		ctx1.fillText('Hello World!', 10, 50);
-		var idata = G.getImageData(canvas1);
-		G.gray(idata);
-		G.drawCanvas('#chart2', function(ctx2) {
-			ctx2.putImageData(idata, 0, 0);
-		});
-		idata = G.getImageData(canvas1);
-		G.bright(idata, 50);
-		G.drawCanvas('#chart3', function(ctx) {
-			ctx.putImageData(idata, 0, 0);
-		});
-		idata = G.getImageData(canvas1);
-		G.threshold(idata, 128);
-		G.drawCanvas('#chart4', function(ctx) {
-			ctx.putImageData(idata, 0, 0);
-		});
-		idata = G.getImageData(canvas1);
-		var blurData = G.blurC(idata);
-		G.drawCanvas('#chart5', function(ctx) {
-			ctx.putImageData(blurData, 0, 0);
-		});
-		idata = G.getImageData(canvas1);
-		var sharpenData = G.sharpen(idata);
-		G.drawCanvas('#chart6', function(ctx) {
-			ctx.putImageData(sharpenData, 0, 0);
-		});
-		idata = G.getImageData(canvas1);
-		var sobelData = G.sobel(idata);
-		G.drawCanvas('#chart7', function(ctx) {
-			ctx.putImageData(sobelData, 0, 0);
-		});
-		idata = G.getImageData(canvas1);
-		var sobelData = G.sobel(idata);
-		var weights = 
-		[1,  1,  1,
-		 1,0.7, -1,
-		-1,-1 , -1];
-		idata = G.getImageData(canvas1);
-		var convData = G.convolute(idata, weights, true);
-		G.drawCanvas('#chart8', function(ctx) {
-			ctx.putImageData(convData, 0, 0);
-		});
-		var weights = 
-		[-1, -1, -1,
-		 -1,0.3, 1,
-		 1,   1, 1];
-		idata = G.getImageData(canvas1);
-		var conv2Data = G.convolute(idata, weights, true);
-		G.drawCanvas('#chart9', function(ctx) {
-			ctx.putImageData(conv2Data, 0, 0);
-		});
-	});
-});
-
-/*
-G.drawCanvas('#chart1', function(ctx1, canvas1) {
-  G.drawImage(ctx1, './demo/demo_small.png', function(){
-		G.drawText(ctx1, 10, 50, "Hello World!");
-		G.showCanvas('#chart1', G.tgMap['#chart1'].graph); // 這行補還沒畫好就先 showCanvas 的問題！
-		var idata = G.getImageData(canvas1);
-		G.gray(idata);
-		G.drawCanvas('#chart2', function(ctx2) {
-			ctx2.putImageData(idata, 0, 0);
-		});
-		idata = G.getImageData(canvas1);
-		G.bright(idata, 50);
-		G.drawCanvas('#chart3', function(ctx) {
-			ctx.putImageData(idata, 0, 0);
-		});
-		idata = G.getImageData(canvas1);
-		G.threshold(idata, 128);
-		G.drawCanvas('#chart4', function(ctx) {
-			ctx.putImageData(idata, 0, 0);
-		});
-		idata = G.getImageData(canvas1);
-		var blurData = G.blurC(idata);
-		G.drawCanvas('#chart5', function(ctx) {
-			ctx.putImageData(blurData, 0, 0);
-		});
-		idata = G.getImageData(canvas1);
-		var sharpenData = G.sharpen(idata);
-		G.drawCanvas('#chart6', function(ctx) {
-			ctx.putImageData(sharpenData, 0, 0);
-		});
-		idata = G.getImageData(canvas1);
-		var sobelData = G.sobel(idata);
-		G.drawCanvas('#chart7', function(ctx) {
-			ctx.putImageData(sobelData, 0, 0);
-		});
-		idata = G.getImageData(canvas1);
-		var sobelData = G.sobel(idata);
-		var weights = 
-		[1,  1,  1,
-		 1,0.7, -1,
-		-1,-1 , -1];
-		idata = G.getImageData(canvas1);
-		var convData = G.convolute(idata, weights, true);
-		G.drawCanvas('#chart8', function(ctx) {
-			ctx.putImageData(convData, 0, 0);
-		});
-		var weights = 
-		[-1, -1, -1,
-		 -1,0.3, 1,
-		 1,   1, 1];
-		idata = G.getImageData(canvas1);
-		var conv2Data = G.convolute(idata, weights, true);
-		G.drawCanvas('#chart9', function(ctx) {
-			ctx.putImageData(conv2Data, 0, 0);
-		});
-	});
-});
-*/
->>>>>>> 59726d7d35cd87e5a100a410ce3a21d192375617
+$('body').append(E.loginBoxHtml);
+if (window.location.protocol !== 'https:')
+  $('.https').hide();
 </script>
 		
   </body>
