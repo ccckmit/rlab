@@ -214,15 +214,6 @@ i(x^2,0,1)= 0.33283350000000095
 i(sin(x),0,pi/2)= 0.9997035898637557
 ```
 
-## Rlab Web Version
-
-```
-$npm run-script build-web
-
-> rlab@0.5.4 build-web D:\Dropbox\github\rlab
-> browserify web/_rlab.js -o web/rlab.js
-```
-
 ## Run rlab on Web
 
 Fdbserver is a used in the server.js of rlab. You have to install fdbserver before start the server.js
@@ -250,6 +241,20 @@ The following figure is Screen Shot for Rlab GUI.
 If you visit the site in https protocol, there will be a Button for 'Save File', and menus for 'Login' and 'Logout'. These function can only be used in the https mode, not in the http mode.
 
 You have to login to save code. The default code path is in 'file/' directory with the file name you choose to upload.
+
+## Rebuild Web Version
+
+You have to wrap rlab for web by browserify in the following command.
+
+```
+$npm run-script build-web
+
+> rlab@0.5.4 build-web D:\Dropbox\github\rlab
+> browserify web/_rlab.js -o web/rlab.js
+```
+
+When you modify the rlab source, make sure to wrap it again.
+
 
 ## Author
 
