@@ -247,6 +247,10 @@ The following figure is Screen Shot for Rlab GUI.
 
 ![Run rlab on Web](img/RlabIDE.png)
 
+If you visit the site in https protocol, there will be a Button for 'Save File', and menus for 'Login' and 'Logout'. These function can only be used in the https mode, not in the http mode.
+
+You have to login to save code. The default code path is in 'file/' directory with the file name you choose to upload.
+
 ## Author
 
 Author: ccckmit
