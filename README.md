@@ -94,12 +94,11 @@ factorial(5)= 120
 file : testEx.js
 
 ```javascript
-var R = require("rlab");
+var R = require("../rlab");
 var v = [1,3,5];
 
 var x = R.rnorm(10, 0, 0.1);
-log("x=", x.str());
-log("x.sort()=", x.sort().str());
+print("x=", x.str());
 
 var t1=R.ttest({x:x, mu:0});
 R.report(t1);
@@ -109,20 +108,18 @@ run :
 
 ```
 $ node testEx.js
-x= [-0.1405,0.0495,-0.1850,0.0824,0.0687,-0.0854,-0.1049,-0.1171,0.0947,-0.1592]
+x= [-0.1117,-0.1211,0.0382,-0.1902,0.0124,0.0949,0.2326,0.1315,-0.0261,0.0874]
 
-x.sort()= [-0.0854,-0.1049,-0.1171,-0.1405,-0.1592,-0.1850,0.0495,0.0687,0.0824,
-0.0947]
 =========== report ==========
 name    : ttest(X)
 h       : H0:mu=0
 alpha   : 0.0500
 op      : =
-pvalue  : 0.0003
-ci      : [-0.2599,-0.1101]
+pvalue  : 0.7129
+ci      : [-0.0733,0.1028]
 df      : 9.0000
-mean    : -0.1850
-sd      : 0.1047
+mean    : 0.0148
+sd      : 0.1231
 ```
 
 file : matrixEx.js
@@ -212,6 +209,98 @@ d(x^2,2)= 4.000999999999699
 d(sin(x/4),pi/4)= 0.7067531099743674
 i(x^2,0,1)= 0.33283350000000095
 i(sin(x),0,pi/2)= 0.9997035898637557
+```
+
+file: symbolEx.js
+
+```javascript
+var R = require("../rlab");
+var S = R.Symbol;
+
+print('x+x=', S.run('x + x')) // => 2 x"
+
+print('10!=', S.factor('10!').toString()); // => "2^8 3^4 5^2 7"
+
+print('integral(x^2)=', S.eval('integral(x^2)').toString()); // => "1/3 x^3"
+
+// composing...
+print('integral(x)=', S.integral(S.eval('x')).toString()); // => "1/2 x^2"
+
+var questions=[
+'13579/99999 + 13580/100000',
+'numerator(1/a+1/b)',
+'denominator(1/(x-1)/(x-2))',
+'rationalize(a/b+b/a)',
+'A=1+i;B=sqrt(2)*exp(i*pi/4);A-B',
+'simplify(cos(x)^2 + sin(x)^2)',
+'simplify(a*b+a*c)',
+'simplify(n!/(n+1)!)',
+'(x-1)(x-2)^3',
+'subst( u, exp(x), 2*exp(x) )',
+'roots(3 x + 12 + y = 24)',
+'roots(a*x^2+b*x+c)',
+'roots(x^4 + x^3 + x^2 + x + 1)',
+'roots(m*x^9 + n)',
+'roots((x^4+x^3)*(x^4*x^2))',
+'nroots(x^4+1)',
+'velocity=17000*"mile"/"hr";time=8*"min"/(60*"min"/"hr");velocity/time',
+'A=((a,b),(c,d));inv(A);adj(A);det(A);inv(A)-adj(A)/det(A)',
+'d(x^2);r=sqrt(x^2+y^2);d(r,(x,y))',
+'F=(x+2y,3x+4y);d(F,(x,y))',
+'integral(x^2)',
+'integral(x*y,x,y)',
+// 'defint(x^2,y,0,sqrt(1-x^2),x,-1,1)', // very slow, why ?
+// 'f=sin(t)^4-2*cos(t/2)^3*sin(t);f=circexp(f);defint(f,t,0,2*pi)', // very slow, why ?
+];
+
+print("=========== Q&A =============");
+
+for (var i in questions) {
+	var q = questions[i];
+	print(q, "=", S.run(q.replace(/;/g, '\n')));
+}
+```
+
+run : 
+
+```
+D:\js\rlab\example>node symbolEx.js
+x+x= 2 x
+10!= 2^8 3^4 5^2 7
+integral(x^2)= 1/3 x^3
+integral(x)= 1/2 x^2
+=========== Q&A =============
+13579/99999 + 13580/100000 = 135794321/499995000
+numerator(1/a+1/b) = a + b
+denominator(1/(x-1)/(x-2)) = x^2 - 3 x + 2
+rationalize(a/b+b/a) = (a^2 + b^2) / (a b)
+A=1+i;B=sqrt(2)*exp(i*pi/4);A-B = 1 + i - 2^(1/2) exp(1/4 i pi)
+simplify(cos(x)^2 + sin(x)^2) = 1
+simplify(a*b+a*c) = a (b + c)
+simplify(n!/(n+1)!) = 1 / (1 + n)
+(x-1)(x-2)^3 = x^4 - 7 x^3 + 18 x^2 - 20 x + 8
+subst( u, exp(x), 2*exp(x) ) = 2 u
+roots(3 x + 12 + y = 24) = -1/3 y + 4
+roots(a*x^2+b*x+c) = (-b / (2 a) - (-4 a c + b^2)^(1/2) / (2 a),-b / (2 a) + (-4
+ a c + b^2)^(1/2) / (2 a))
+roots(x^4 + x^3 + x^2 + x + 1) = Stop: roots: the polynomial is not factorable,
+try nroots
+roots(m*x^9 + n) = Stop: roots: the polynomial is not factorable, try nroots
+roots((x^4+x^3)*(x^4*x^2)) = (-1,0)
+nroots(x^4+1) = (-0.707107 - 0.707107 i,-0.707107 + 0.707107 i,0.707107 + 0.7071
+07 i,0.707107 - 0.707107 i)
+velocity=17000*"mile"/"hr";time=8*"min"/(60*"min"/"hr");velocity/time = 127500 "
+mile" / ("hr"^2)
+A=((a,b),(c,d));inv(A);adj(A);det(A);inv(A)-adj(A)/det(A) = ((d / (a d - b c),-b
+ / (a d - b c)),(-c / (a d - b c),a / (a d - b c)))
+((d,-b),(-c,a))
+a d - b c
+((0,0),(0,0))
+d(x^2);r=sqrt(x^2+y^2);d(r,(x,y)) = 2 x
+(x / ((x^2 + y^2)^(1/2)),y / ((x^2 + y^2)^(1/2)))
+F=(x+2y,3x+4y);d(F,(x,y)) = ((1,2),(3,4))
+integral(x^2) = 1/3 x^3
+integral(x*y,x,y) = 1/4 x^2 y^2
 ```
 
 ## Run rlab on Web

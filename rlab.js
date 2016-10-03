@@ -3,6 +3,9 @@ var R = require("./lib/statistics");
 var M = require("./lib/matrix");
 var Symbol = require("./lib/symbolic");
 var D = require("./lib/calculus");
+var A = require("./lib/algebra");
+
+R.A  = A;
 R.NN = require("./plugin/neural");
 R.NN.RBM = require("./plugin/neural/rbm");
 

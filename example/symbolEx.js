@@ -33,8 +33,8 @@ var questions=[
 'F=(x+2y,3x+4y);d(F,(x,y))',
 'integral(x^2)',
 'integral(x*y,x,y)',
-'defint(x^2,y,0,sqrt(1-x^2),x,-1,1)',
-'f=sin(t)^4-2*cos(t/2)^3*sin(t);f=circexp(f);defint(f,t,0,2*pi)',
+// 'defint(x^2,y,0,sqrt(1-x^2),x,-1,1)', // very slow, why ?
+// 'f=sin(t)^4-2*cos(t/2)^3*sin(t);f=circexp(f);defint(f,t,0,2*pi)', // very slow, why ?
 ];
 
 print("=========== Q&A =============");
