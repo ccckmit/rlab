@@ -1,6 +1,6 @@
 {
   "name": "rlab",
-  "version": "0.8.3",
+  "version": "0.9.0",
   "description": "Javascript scientific library like R",
   "main": "rlab.js",
   "dependencies": {
