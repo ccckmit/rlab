@@ -3,9 +3,9 @@ var R = require("./lib/statistics");
 var M = require("./lib/matrix");
 var Symbol = require("./lib/symbolic");
 var D = require("./lib/calculus");
-var A = require("./lib/algebra");
-
-R.A  = A;
+R.Rule = require("./lib/rule");
+R.Set = require("./lib/set");
+R.Field = require("./lib/field");
 R.NN = require("./plugin/neural");
 R.NN.RBM = require("./plugin/neural/rbm");
 
@@ -185,102 +185,102 @@ R.mixThis(Array.prototype, R, [
 "normalize",
 ]);
 
-R.mixThis(Array.prototype, _, [
+R.mixThisMap(Array.prototype, _, {
 // lodash
-"chunk",
-"compact",
-// concat:_.concat
-"difference",
-"differenceBy",
-"differenceWith",
-"drop",
-"dropRight",
-"dropRightWhile",
-"dropWhile",
-// fill:_.fill,
-// findIndex:_.findIndex,
-"findLastIndex",
-"flatten",
-"flattenDeep",
-"flattenDepth",
-"fromPairs",
-"head",
-// indexOf:_.indexOf,
-"initial",
-"intersection",
-"intersectionBy",
-"intersectionWith",
-// _.join
-"last",
-// _.lastIndexOf
-"nth",
-"pull",
-"pullAll",
-"pullAllBy",
-"pullAllWith",
-"pullAt",
-"remove",
-// _.reverse
-// _.slice
-"sortedIndex",
-"sortedIndexBy",
-"sortedIndexOf",
-"sortedLastIndex",
-"sortedLastIndexBy",
-"sortedLastIndexOf",
-"sortedUniq",
-"sortedUniqBy",
-"tail",
-"take",
-"takeRight",
-"takeRightWhile",
-"takeWhile",
-"union",
-"unionBy",
-"unionWith",
-"uniq",
-"uniqBy",
-"uniqWith",
-"unzip",
-"unzipWith",
-"without",
-// _.xor
-// _.xorBy
-// _.xorWith
-"zip",
-"zipObject",
-"zipObjectDeep",
-"zipWith",
+_chunk:'chunk',
+_compact:'compact',
+// _concat:'concat',
+_difference:'difference',
+_differenceBy:'differenceBy',
+_differenceWith:'differenceWith',
+_drop:'drop',
+_dropRight:'dropRight',
+_dropRightWhile:'dropRightWhile',
+_dropWhile:'dropWhile',
+// _fill:'fill',
+// _findIndex:'findIndex',
+_findLastIndex:'findLastIndex',
+_flatten:'flatten',
+_flattenDeep:'flattenDeep',
+_flattenDepth:'flattenDepth',
+_fromPairs:'flattenPairs',
+_head:'head',
+// _indexOf:'indexOf',
+_initial:'initial',
+_intersection:'intersection',
+_intersectionBy:'intersectonBy',
+_intersectionWith:'intersectionWith',
+// _join:'join',
+_last:'last',
+// _lastIndexOf:'lastIndexOf',
+_nth:'nth',
+_pull:'pull',
+_pullAll:'pullAll',
+_pullAllBy:'pullAllBy',
+_pullAllWith:'pullAllWith',
+_pullAt:'pullAt',
+_remove:'remove',
+// _reverse:'reverse',
+// _slice:'slice',
+_sortedIndex:'sortedIndex',
+_sortedIndexBy:'sortedIndexBy',
+_sortedIndexOf:'sortedIndexOf',
+_sortedLastIndex:'sortedLastIndex',
+_sortedLastIndexBy:'sortedLastIndexBy',
+_sortedLastIndexOf:'sortedLastIndexOf',
+_sortedUniq:'sortedUniq',
+_sortedUniqBy:'sortedUniqBy',
+_tail:'tail',
+_take:'take',
+_takeRight:'takeRight',
+_takeRightWhile:'takeRightWhile',
+_takeWhile:'takeWhile',
+_union:'union',
+_unionBy:'unionBy',
+_unionWith:'unionWith',
+_uniq:'uniq',
+_uniqBy:'uniqBy',
+_uniqWith:'uniqWith',
+_unzip:'unzip',
+_unzipWith:'unzipWith',
+_without:'without',
+// _xor:'xor',
+_xorBy:'xorBy',
+_xorWith:'xorWith',
+_zip:'zip',
+_zipObject:'zipObject',
+_zipObjectDeep:'zipObjectDeep',
+_zipWith:'zipWith',
 // Collection
-"countBy",
-// _.each → forEach
+_countBy:'countBy',
+// each→ forEach
 // _.eachRight → forEachRight
-// every:_.every
-// filter:_.filter
-// find:_.find
-"findLast",
-"flatMap",
-"flatMapDeep",
-"flatMapDepth",
-// _.forEach
-"forEachRight",
-"groupBy",
-// includes:_.includes
-"invokeMap",
-"keyBy",
-// _.map
-"orderBy",
-"partition",
-// _.reduce
-// reduceRight:_.reduceRight,
-"reject",
-"sample",
-"sampleSize",
-"shuffle",
-"size",
-// some:_.some
-"sortBy",
-]);
+// _every:'every',
+// _filter:'filter',
+// _find:'find',
+_findLast:'findLast',
+_flatMap:'flatMap',
+_flatMapDeep:'flatMapDeep',
+_flatMapDepth:'flatMapDepth',
+// _forEach:'forEach',
+_forEachRight:'forEachRight',
+_groupBy:'groupBy',
+// _includes:'includes',
+_invokeMap:'invokeMap',
+_keyBy:'keyBy',
+// _map:'map',
+_orderBy:'orderBy',
+_partition:'partition',
+// _reduce:'reduce',
+// _reduceRight:'reduceRight',
+_reject:'reject',
+_sample:'sample',
+_sampleSize:'sampleSize',
+_shuffle:'shuffle',
+_size:'size',
+// _some:'some',
+_sortBy:'sortBy',
+});
 
 // R.mixThis(Array.prototype,  {str:R.astr}, ['str']);
 R.mixThisMap(Array.prototype,  R, {astr:'str',print:'print'});

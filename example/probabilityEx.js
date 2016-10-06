@@ -1,6 +1,6 @@
 var R = require("../rlab");
 var dice = R.steps(1,6);
-print("sample(1:6, 10)", R.samples(dice, 10));
+print("samples(1:6, 10)", R.samples(dice, 10));
 print("runif(10,0,1)=", R.runif(10, 0, 1).str());
 print("rnorm(10,5,1)=", R.rnorm(10, 5, 1).str());
 print("dnorm(5,5,1)=", R.dnorm(5, 5, 1));
