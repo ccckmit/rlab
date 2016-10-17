@@ -1,15 +1,16 @@
 var M = require("../rlab").M;
 var v = [1,2,3];
-print("v.sin()=", v.sin());
-print("v.norm2()=", v.norm2());
-print("v.norm2Squared()=", v.norm2Squared());
+print("v.sin()=", v.sin().str());
+print("v.norm2()=", v.norm2().str());
+print("v.norm2Squared()=", v.norm2Squared().str());
 
 var A = [[1,2,3],[4,5,6],[7,3,9]];
 var AiA = A.inv().dot(A);
 print("AiA=\n", AiA.strM());
 print("AiA.tr()=\n", AiA.tr().strM());
 print("A=\n", A.str());
-print("A.mul(0.1)=\n", A.mul(0.1).strM());
+// print("A.mul(0.1)=\n", A.mul(0.1).strM()); 
+// 目前只允許矩陣乘矩陣，要加上矩陣 +-*/ 數量 (R, C, ....)
 print("A.row(1)=", A.row(1));
 print("A.col(1)=", A.col(1));
 print("A.sumM()=", A.sum());

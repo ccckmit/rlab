@@ -7,7 +7,7 @@
     "algebrite": "^0.2.23",
     "coffeequate": "^1.2.2",
     "jStat": "^1.5.2",
-    "lodash": "^4.6.1",
+    "lodash": "^4.16.4",
     "numeric": "^1.2.6"
   },
   "devDependencies": {

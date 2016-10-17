@@ -1,0 +1,10 @@
+var R = require("../rlab");
+var A = R.Algebra;
+var P = A.Polynomial;
+var p1 = new P([1,2]), p2=new P([1,1,1]);
+console.log('p1=%s p2=%s', p1, p2);
+console.log('p1+p2=%s', p1.add(p2));
+console.log('p1-p2=%s', p1.sub(p2));
+console.log('p1*p2=%s', p1.mul(p2));
+console.log('p1(3)=', p1.eval(3));
+console.log('p2(2)=', p2.eval(2));

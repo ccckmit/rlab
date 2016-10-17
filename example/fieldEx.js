@@ -1,14 +1,15 @@
 var R = require("../rlab");
-var F = R.Field;
+var F = R.Field, be=R.Rule.be, p=R.p;
+/*
 var FF = F.FloatField;
 var be = R.Rule.be, eq = R.Rule.eq;
 be('FF:2+3=5',FF.add(2,3)===5);
 be('FF:2^3=8',FF.power(2,3)===8);
-
+*/
 var F7= F.FiniteField.create(7);
 var a = 3, b=6;
 be('F7:3+6=2', F7.add(a,b)===2);
-be('F7:3*6=', F7.mul(a,b)===4);
+be('F7:3*6=4', F7.mul(a,b)===4);
 be('F7:closability(+)=> a+b in F7', F7.addGroup.closability(3,6));
 be('F7:associativity(+)=>(a+b)+c=a+(b+c)', F7.addGroup.associativity(3,6,4));
 be('F7:identity(+)=>a+0=a', F7.addGroup.identity(3));
@@ -37,3 +38,17 @@ be('C:co*co=-5+12i', co.mul(co).str()==='-5+12i');
 be('C:co/co=1+0i', co.div(co).str()==='1+0i');
 be('C:co*co/co=2+3i', co.mul(co).div(co).str()==='2+3i');
 
+var c1=p('1+2i'), c2=p('2+1i'), c3=p('10+0i');
+print('%s * %s=%s', c1, c2, c1.mul(c2));
+print('(%s)*3=%s', c1, c1.mul(3));
+print('3 * 3=%s', p('3').mul(3));
+// print('c1.exp().log()=', c1.exp().log().str());
+
+var sqrt2 = Math.sqrt(2);
+var c=new F.Complex(sqrt2, sqrt2);
+print('c=%s', c);
+print('c.toPolar=%j', c.toPolar().str());
+print('c*c=%s', c.mul(c));
+print('c^2=%s', c.power(2));
+print('c^2.sqrt()=%s', c.power(2).sqrt());
+// be('c1.exp().ln()=', c1.exp().ln().str()==='1+2i');

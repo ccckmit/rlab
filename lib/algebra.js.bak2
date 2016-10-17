@@ -1,0 +1,167 @@
+// module : Field & Group Theory
+var F=require("./field");
+var extend = Object.assign;
+var Field=F.Field, Group=F.Group, FieldObj=F.FieldObj;
+// =========== Vector Field ==============
+var FunctionRing=extend({}, Field);
+
+class FunctionObj extends FieldObj {
+  constructor(f) {
+    super(FunctionRing);
+    this.f = f;
+  }
+	
+	eval(v) { return this.f(v) }
+}
+
+var FunctionAddGroup={
+  e:new FunctionObj(function(x) {return 0}),
+  op:function(x,y) { 
+	  return new FunctionObj(function f(v) {
+			return x.eval(v).add(y.eval(v));
+		})
+	},
+  inv:function(x) { 
+	  return new FunctionObj(function f(v) {
+			return -1*x.eval(v);
+		})
+	},
+}
+  
+extend(FunctionAddGroup, Group);
+
+var FunctionMulSemiGroup={
+  e:new FunctionObj(function f(v) { return v }),
+  op:function(x,y) { 
+	  return new FunctionObj(function f(v) {
+			return x.eval(y.eval(v));
+		})
+	},
+  inv:function(x) { throw Error('Function SemiGroup has no inverse!') },
+}
+
+extend(FunctionMulSemiGroup, Group);
+
+FunctionRing.init(FunctionAddGroup, FunctionMulSemiGroup);
+
+// =========== Vector Field ==============
+var VectorField=extend({}, Field);
+
+class Vector extends FieldObj {
+  constructor(a) {
+    super(VectorField);
+    this.a = a;
+  }
+	size() { return a.length }
+	get(i) { return a[i] }
+}
+
+var VectorAddGroup={
+  e:{ get:function(i) { return 0} },
+  op:function(x,y) { 
+	  var c = [];
+	  for (var i=0; i<x.size(); i++) {
+			c[i] = x.get(i).add(y.get(i));
+		}
+		return new Vector(c);
+	},
+  inv:function(x) { 
+	  var a = [];
+		for (var i=0; i<x.size(); i++) {
+			a[i] = x.get(i).neg();
+		}
+	},
+}
+  
+extend(VectorAddGroup, Group);
+
+var VectorMulGroup={
+  e:{ get:function(i) { return 1} },
+  op:function(x,y) { 
+	  var c = [];
+	  for (var i=0; i<x.size(); i++) {
+			c[i] = x.get(i).mul(y.get(i));
+		}
+		return new Vector(c);
+	},
+  inv:function(x) { 
+	  var a = [];
+		for (var i=0; i<x.size(); i++) {
+			a[i] = x.get(i).inv();
+		}
+		return new Vector(a);
+	},
+}
+
+extend(VectorMulGroup, Group);
+
+VectorField.init(VectorAddGroup, VectorMulGroup);
+
+/*
+// =========== Polynomial Field ==============
+var PolynomialField=extend({}, Field);
+
+class Polynomial extends FieldObj {
+  constructor(c) {
+    super(RatioField);
+    this.c = c;
+  }
+	eval(x) {
+		var c = this.c, sum=0;
+		for (var i=0; i<c.length;i++) {
+			sum = sum.mul(x).add(c[i]);
+		}
+		return sum;
+	}
+}
+
+var PolynomialAddGroup={
+  e:new Polynomial([1]),
+  op:function(x,y) { return new Polynomial() },
+  inv:function(x) { return new Ratio(-x.a, x.b); },
+}
+  
+extend(PolynomialAddGroup, Group);
+
+var PolynomialMulGroup={
+  e:new Ratio(1,1),
+  op:function(x,y) { return new Ratio(x.a*y.a, x.b*y.b) },
+  inv:function(x) { return new Ratio(x.b, x.a) },
+}
+
+extend(PolynomialMulGroup, Group);
+
+PolynomialField.init(PolynomialAddGroup, PolynomialMulGroup);
+
+
+
+class Ratio extends FieldObj {
+  constructor(a,b) {
+    super(RatioField);
+    this.a = a; this.b = b; 
+  }
+
+  reduce() {
+    var a = this.a, b=this.b;
+    var c = I.gcd(a, b);
+    return new Ratio(a/c, b/c);
+  }
+  
+  toString() { return this.a+'/'+this.b; }
+
+  static parse(s) {
+    var m = s.match(/^(\d+)(\/(\d+))?$/);
+    var a = parseInt(m[1]);
+    var b = typeof m[3]==='undefined'?1:parseInt(m[3]);
+    return new Ratio(a, b)
+  } 
+}
+*/
+
+module.exports={
+	FunctionRing:FunctionRing,
+	FunctionObj:FunctionObj,
+	VectorField:VectorField,
+	Vector:Vector,
+}
+
