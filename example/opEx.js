@@ -8,11 +8,17 @@ print('isField(%s)=%s', c1, O.isField(c1));
 print('%s instanceof Complex=%s', c1, c1 instanceof O.Field.Complex);
 print('op(+, 3, 5)=%s', op('+', 3, 5));
 print('op(+, 3, 5+2i)=%s', op('+', 3, c1));
-var v1 = [1,2,3], v2=[2,3,c1];
+var v1 = [1,2,3], v2=[2,3,c1], m=[[1,2], [3,p('1+2i')]];
 print('op(+, %s, %s)=%s', v1, v2, op('+', v1, v2));
 // print('op(dot, %s, %s)=%s', v1, v2, op('dot', v1, v2));
 print('%s.sqrt()=%s', v1, op('sqrt', v1).str());
 print('%s.sqrt()=%s', v2, op('sqrt', v2).str());
+print('v2.sum()=%s', op('sum', v2).str())
+print('v2.product()=%s', op('product', v2).str())
+print('m.sum()=%s', op('sum', m).str())
+print('m.product()=%s', op('product', m).str())
+print('v1.max()=%s', op('max', v1).str())
+
 var exp = (x)=>3*x*x+5;
 print('%s.eval(%d)=%s', exp, 1, op('eval', 1, exp).str());
 print('eval(1,%s)=', exp, op('eval', 1, exp).str());

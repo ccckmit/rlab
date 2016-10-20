@@ -1,11 +1,10 @@
 var R = require("../rlab");
-var F = R.Field, be=R.Rule.be, p=R.p;
-/*
+var F = R.Field;
 var FF = F.FloatField;
-var be = R.Rule.be, eq = R.Rule.eq;
 be('FF:2+3=5',FF.add(2,3)===5);
 be('FF:2^3=8',FF.power(2,3)===8);
-*/
+
+
 var F7= F.FiniteField.create(7);
 var a = 3, b=6;
 be('F7:3+6=2', F7.add(a,b)===2);
@@ -15,8 +14,10 @@ be('F7:associativity(+)=>(a+b)+c=a+(b+c)', F7.addGroup.associativity(3,6,4));
 be('F7:identity(+)=>a+0=a', F7.addGroup.identity(3));
 be('F7:inversability(+)=a-a=0', F7.addGroup.inversability(3));
 
+
 var C = F.ComplexField;
 var c1 = new F.Complex(2,3);
+be('C.has(c1)=true', C.has(c1));
 be('C :c1==2+3i', c1.str()==='2+3i');
 be('C :c1+c1=4+6i', C.add(c1,c1).str()==='4+6i');
 be('C :c1*c1=-5+12i', C.mul(c1,c1).str()==='-5+12i');
@@ -52,3 +53,17 @@ print('c*c=%s', c.mul(c));
 print('c^2=%s', c.power(2));
 print('c^2.sqrt()=%s', c.power(2).sqrt());
 // be('c1.exp().ln()=', c1.exp().ln().str()==='1+2i');
+
+var P2 = extend({e:[0,1]}, F.PermutationGroup);
+print('[1,0].inv()=%j', P2.inv([1,0]));
+var P3 = extend({e:[0,1,2]}, F.PermutationGroup);
+print('[0,2,1].inv()=%j', P3.inv([0,2,1]));
+print('[2,1,0].inv()=%j', P3.inv([2,1,0]));
+print('[1,2,0].inv()=%j', P3.inv([1,2,0]));
+print('[1,2,0]*[1,2,0].inv()=%j', P3.op([1,2,0], P3.inv([1,2,0])));
+print('[1,2,0].inv()*[1,2,0]=%j', P3.op(P3.inv([1,2,0]),[1,2,0]));
+
+var S2=[[0,1,2], [1,0,2]];
+print('S2=', S2);
+print('leftCoset([1,2,0], S2)=', P3.leftCoset([1,2,0],S2));
+print('rightCoset([1,2,0], S2)=', P3.rightCoset(S2, [1,2,0]));

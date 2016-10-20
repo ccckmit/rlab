@@ -7,7 +7,6 @@ R.Algebra = require("./lib/algebra");
 R.Op = R.Algebra.Op;
 R.Field = R.Op.Field;
 R.Set = R.Field.Set;
-R.Rule = R.Set.Rule;
 R.NN = require("./plugin/neural");
 R.NN.RBM = require("./plugin/neural/rbm");
 
@@ -67,6 +66,7 @@ print = function() {
 }
 
 p = R.p = R.Op.parse;
+be = R.Set.be;
 
 R.debug = debug;
 R.print = print;
@@ -331,7 +331,7 @@ R.mixThisMap(Function.prototype, R.Op, {
 R.mixThisMap(String.prototype, R, {str:'sstr',print:'print'});
 R.mixThisMap(Object.prototype, R, {str:'ostr',print:'print'});
 R.mixThisMap(Object.prototype, M, {strM:'strM'});
-R.mixThisMap(Object.prototype, R.Rule, {
+R.mixThisMap(Object.prototype, R.Set, {
 	proto:'proto',
 	eq:'eq',
 	neq:'neq',
@@ -342,174 +342,3 @@ R.mixThisMap(Object.prototype, R.Rule, {
 });
 
 module.exports = R;
-
-
-/*
-p = parse = R.p = R.parse = function(s) {
-	if (s.indexOf(';')>=0) {
-		var m = split(s, ";"), matrix;
-		for (var i=0; i<m.length; i++) {
-			matrix[i] = parse(m[i]);
-		}
-		return matrix;
-	} if (s.indexOf(',')>=0) {
-		var a = split(s, ","), array;
-		for (var i=0; i<a.length; i++) {
-			array[i] = parse(a[i]);
-		}
-		return array;
-	}
-	else if (s.indexOf('/')>=0)
-		return Ratio.parse(s);
-	else if (s.indexOf('i')>=0)
-		return Complex.parse(s);
-	else {
-		return parseFloat(s);
-	}
-}
-
-var toComplex = R.toComplex=function(o) { 
-  if (_.isNumber(o))
-		return new Complex(o, 0);
-	else if (o.__proto__.constructor === Complex)
-		return o;
-	throw Error('toComplex fail');
-}
-
-var bop = R.bop=function(x,y,op) {	
-  if (_.isNumber(x) && _.isNumber(y)) {
-		switch (op) {
-			case '+':return x+y;
-			case '-':return x-y;
-			case '*':return x*y;
-			case '/':return x/y;
-			case '^':return Math.pow(x,y);
-		}
-	}	else {
-		var xc = toComplex(x), yc=toComplex(y);
-		switch (op) {
-			case '+':return xc.add(yc);
-			case '-':return xc.sub(yc);
-			case '*':return xc.mul(yc);
-			case '/':return xc.div(yc);
-			case '^':return xc.power(yc);
-		}
-	}
-}
-
-R.add=function(x,y) {	return R.bop(x,y,'+') }
-R.sub=function(x,y) {	return R.bop(x,y,'-') }
-R.mul=function(x,y) {	return R.bop(x,y,'*') }
-R.div=function(x,y) {	return R.bop(x,y,'/') }
-R.power=function(x,y) { return R.bop(x, y,'^') }
-
-R.fadd=function(fx,fy) { return function(v) {
-	return fx(v).add(fy(v));
-}}
-
-R.fsub=function(fx,fy) { return function(v) {
-	return fx(v).sub(fy(v));
-}}
-
-R.fmul=function(fx,fy) { return function(v) {
-	return fx(v).mul(fy(v));
-}}
-
-R.fmul=function(fx,fy) { return function(v) {
-	return fx(v).div(fy(v));
-}}
-
-R.fcompose=function(fx,fy) { return function(v) {
-	return fx(fy(v));
-}}
-*/
-
-/*
-// not include : bench, xxxeq, ccsXXX, cgrid, 
-R.mixThis(Array.prototype, M, [
-"cLU",
-"cdelsq",
-"clone",
-"rows",
-"cols",
-"row",
-"col",
-"tr",
-// "str",
-"not",
-"bnot",
-"neg",
-"abs",
-"sin",
-"cos",
-"tan",
-"asin",
-"acos",
-"atan",
-"atan2",
-"inv",
-"all",
-"any",
-"same",
-"isFinite",
-"isNaN",
-"sqrt",
-"ceil",
-"floor",
-"round",
-"log",
-"exp",
-"pow",
-"mapreduce",
-"lshifteq",
-"rshifteq",
-"add",
-"sub",
-"mul",
-"div",
-"mod",
-"and",
-"or",
-"xor",
-"band",
-"bor",
-"bxor",
-"eq",
-"neq",
-"geq",
-"leq",
-"lt",
-"gt",
-"complex",
-"det",
-"norm2",
-"norm2Squared",
-"norm2inf",
-"dot",
-"dim",
-"eig",
-"LU",
-"svd",
-"sum",
-"rowSum",
-"colSum",
-"rowMean",
-"colMean",
-"addMV",
-"mapM",
-"mapMM",
-"flatM",
-"fillVM",
-"fillMM",
-"getBlock",
-"setBlock",
-"getDiag",
-"diag",
-"parseFloat",
-"parseDate",
-"parseCSV",
-"toCSV",
-"strM",
-"sumM",
-]);
-*/
