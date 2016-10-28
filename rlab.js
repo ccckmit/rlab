@@ -1,21 +1,8 @@
-var _ = require("lodash");
-var R = require("./lib/statistics");
-var M = require("./lib/matrix");
-var Symbol = require("./lib/symbolic");
-var D = require("./lib/calculus");
-R.Algebra = require("./lib/algebra");
-R.Op = R.Algebra.Op;
-R.Field = R.Op.Field;
-R.Set = R.Field.Set;
-R.NN = require("./plugin/neural");
+var R    = require("./lib/math");
+var _ = R._ = require("lodash");
+R.Symbol = require("./lib/symbolic");
+R.NN     = require("./plugin/neural");
 R.NN.RBM = require("./plugin/neural/rbm");
-
-R.Matrix = R.M = M;
-R._ = _;
-R.S = R.Sym = R.Symbol = Symbol;
-
-R.PI = Math.PI;
-R.E  = Math.E;
 
 // space 沒有加上機率參數 , 不能指定機率
 R.samples = function(space, size, arg) {
@@ -26,119 +13,77 @@ R.samples = function(space, size, arg) {
 		return _.sampleSize(space, size);
 }
 
-// Graph
-
-R.G = G = {}
-
-G.curve=function(f, from=-10, to=10, step=0.1) {
-	var x=R.steps(from, to, step);
-	var y=x.map(f);
-	return { type:"curve", x:x,	y:y	};
-}
-
-G.hist=function(a, from, to, step=1) {
-	from = from||a.min();
-	to = to||a.max();
-  var n = Math.ceil((to-from+R.EPSILON)/step);
-  var xc = R.steps(from+step/2.0, to, step);
-  var bins = R.M.newV(n, 0);
-  for (var i in a) {
-    var slot=Math.floor((a[i]-from)/step);
-    if (slot>=0 && slot < n)
-      bins[slot]++;
-  }
-	return { type:'histogram', xc:xc, bins:bins, from:from, to:to, step:step};
-}
-
-G.ihist=function(a) {
-	return G.hist(a, a.min()-0.5, a.max()+0.5, 1);
-}
-
 // Global
-debug = function() {
+R.debug = debug = function() {
 	var arg = _.slice(arguments);
 	console.debug.apply(console, arg);
 }
 
-print = function() {
+R.print = print = function() {
 	var arg = _.slice(arguments);
 	console.log.apply(console, arg);
 }
 
-p = R.p = R.Op.parse;
-be = R.Set.be;
+p = R.parse;
+be = R.be;
 
-R.debug = debug;
-R.print = print;
-
-// ==== Copy functions to R ======
-R.copyFunctions(R, D, "differential,integral".split(","));
-R.copyFunctions(R, Math, "abs,acos,asin,atan,ceil,cos,exp,floor,log,pow,random,round,sin,sqrt,tan".split(","));
-
-R.copyFunctions(R, M, "solveLP,solveMP,ODE,minimize,complex,spline,linspace".split(","));
-
-// not include : bench, xxxeq, ccsXXX, cgrid, 
-R.mixThis(Array.prototype, M, [
-"cLU",
-"cdelsq",
-"clone",
-"rows",
-"cols",
-"row",
-"col",
-"tr",
-"inv",
-"all",
-"any",
-"same",
-"isFinite",
-"isNaN",
-"mapreduce",
-"complex",
-"det",
-"norm2",
-"norm2Squared",
-"norm2inf",
-"dot",
-"dim",
-"eig",
-"LU",
-"svd",
-"sum",
-"rowSum",
-"colSum",
-"rowMean",
-"colMean",
-"addMV",
-"mapM",
-"mapMM",
-"flatM",
-"fillVM",
-"fillMM",
-"getBlock",
-"setBlock",
-"getDiag",
-"diag",
+R.mixThisMap(Array.prototype, R, {
+lu:"lu",
+luSolve:"luSolve",
+svd:"svd",
+// "cdelsq",
+// "clone",
+rows:"rows",
+cols:"cols",
+row:"row",
+col:"col",
+tr:"tr",
+inv:"inv",
+// "all",
+// "any",
+// "same",
+// "isFinite",
+// "isNaN",
+// "mapreduce",
+// "complex",
+det:"det",
+// "norm2",
+// "norm2Squared",
+// "norm2inf",
+dot:"dot",
+// "dim",
+eig:"eig",
+// "sum",
+rowSum:"rowSum",
+colSum:"colSum",
+rowMean:"rowMean",
+colMean:"colMean",
+addMV:"addMV",
+mapM:"mapM",
+mapMM:"mapMM",
+flatM:"flatM",
+fillVM:"fillVM",
+fillMM:"fillMM",
+getBlock:"getBlock",
+setBlock:"setBlock",
+getDiag:"getDiag",
+diag:"diag",
 // "parseFloat",
 // "parseDate",
 // "parseCSV",
 // "toCSV",
-"strM",
-"sumM",
-]);
-
-// not include : bench, xxxeq, ccsXXX, cgrid, 
-R.mixThis(Array.prototype, G, [
-"hist",
-"ihist",
-]);
+mstr:"mstr",
+// "sumM",
+str:'astr',
+print:'print',
+});
 
 R.mixThis(Array.prototype, R, [
-// statistics
 "max",
 "min",
-// "sum",
+"sum",
 "product",
+"norm",
 "mean",
 "range",
 "median",
@@ -148,9 +93,98 @@ R.mixThis(Array.prototype, R, [
 "cov",
 "cor",
 "normalize",
+"curve",
+"hist",
+"ihist",
+"eval",
+// +-*/%
+"add",
+"sub",
+"mul",
+"div",
+"mod",
+"neg",
+// "inv", 和矩陣相衝
+// logical
+"and",
+"or",
+"xor",
+"not",
+// bits operation
+"bnot",
+"band",
+"bor",
+"bxor",
+// function
+"power",
+// "dot", 和矩陣相衝
+"sqrt",
+"log",
+"exp",
+"abs",
+"sin",
+"cos",
+"tan",
+"asin",
+"acos",
+"atan",
+"ceil",
+"floor",
+"round",
 ]);
 
-R.mixThisMap(Array.prototype, _, {
+R.mixThisMap(Number.prototype, R, {
+	str:'nstr',
+	print:'print',
+});
+
+R.mixThis(Number.prototype, R, [
+	'eval',
+	'add',
+	'sub',
+	'mul',
+	'div',
+	'mod',
+	'power',
+	'neg',
+	'inv',
+	'sqrt',
+	'log',
+	'exp',
+	'abs',
+	'sin',
+	'cos',
+	'tan',
+	'asin',
+	'acos',
+	'atan',
+	'ceil',
+	'floor',
+	'round',
+]);
+R.mixThisMap(Function.prototype, R, {
+	add:'fadd',
+	sub:'fsub',
+	mul:'fmul',
+	div:'fdiv',
+	compose:'fcompose',
+	eval:'feval',
+	diff:'fdiff',
+	integral:'fintegral',
+});
+R.mixThisMap(String.prototype, R, {str:'sstr',print:'print'});
+R.mixThisMap(Object.prototype, R, {str:'ostr',print:'print'});
+R.mixThisMap(Object.prototype, R, {
+	proto:'proto',
+	eq:'eq',
+	neq:'neq',
+	geq:'geq',
+	leq:'leq',
+	gt:'gt',
+	lt:'lt',
+});
+
+R.mixThisMap(Array.prototype, R._, {
 // lodash
 _chunk:'chunk',
 _compact:'compact',
@@ -247,98 +281,17 @@ _some:'some',
 _sortBy:'sortBy',
 });
 
-Complex = R.Field.Complex;
-Ratio = R.Field.Ratio;
-// R.mixThis(Array.prototype,  {str:R.astr}, ['str']);
-R.mixThisMap(Array.prototype,  R, {str:'astr',print:'print'});
-R.mixThis(Array.prototype, R.Op, [
-"eval",
-// +-*/%
-"add",
-"sub",
-"mul",
-"div",
-"mod",
-"neg",
-// "inv", 和矩陣相衝
-// logical
-"and",
-"or",
-"xor",
-"not",
-// bits operation
-"bnot",
-"band",
-"bor",
-"bxor",
-// function
-"power",
-// "dot", 和矩陣相衝
-"sqrt",
-"log",
-"exp",
-"abs",
-"sin",
-"cos",
-"tan",
-"asin",
-"acos",
-"atan",
-"ceil",
-"floor",
-"round",
-]);
-
-R.mixThisMap(Number.prototype, R, {
-	str:'nstr',
-	print:'print',
-});
-
-R.mixThis(Number.prototype, R.Op, [
-	'eval',
-	'add',
-	'sub',
-	'mul',
-	'div',
-	'mod',
-	'power',
-	'neg',
-	'inv',
-	'sqrt',
-	'log',
-	'exp',
-	'abs',
-	'sin',
-	'cos',
-	'tan',
-	'asin',
-	'acos',
-	'atan',
-	'ceil',
-	'floor',
-	'round',
-]);
-R.mixThisMap(Function.prototype, R.Op, {
-	add:'fadd',
-	sub:'fsub',
-	mul:'fmul',
-	div:'fdiv',
-	compose:'fcompose',
-	eval:'feval',
-	diff:'fdiff',
-	integral:'fintegral',
-});
-R.mixThisMap(String.prototype, R, {str:'sstr',print:'print'});
-R.mixThisMap(Object.prototype, R, {str:'ostr',print:'print'});
-R.mixThisMap(Object.prototype, M, {strM:'strM'});
-R.mixThisMap(Object.prototype, R.Set, {
-	proto:'proto',
-	eq:'eq',
-	neq:'neq',
-	geq:'geq',
-	leq:'leq',
-	gt:'gt',
-	lt:'lt',
-});
-
 module.exports = R;
+
+// R.mixThis(Array.prototype,  {str:R.astr}, ['str']);
+// R.mixThisMap(Array.prototype, R, {str:'astr',print:'print'});
+// R.mixThisMap(Object.prototype, R, {strM:'strM'});
+// ==== Copy functions to R ======
+// R.copyFunctions(R, D, "differential,integral".split(","));
+// R.copyFunctions(R, Math, "abs,acos,asin,atan,ceil,cos,exp,floor,log,pow,random,round,sin,sqrt,tan".split(","));
+
+// R.copyFunctions(R, M, "solveLP,solveMP,ODE,minimize,complex,spline,linspace".split(","));
+
+// not include : bench, xxxeq, ccsXXX, cgrid, 
+// Complex = R.Complex;
+// Ratio = R.Ratio;

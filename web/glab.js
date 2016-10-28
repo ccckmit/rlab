@@ -281,16 +281,17 @@ G.draw = function(g, name, x, y, type) {
 }
 
 G.curve = function(g, name, f, from=-10, to=10, step=0.1) {
-	var rg  = R.G.curve(f, from, to, step);
+	var rg  = R.curve(f, from, to, step);
 	G.draw(g, name, rg.x, rg.y, 'line');
 }
 
 G.hist = function(g, name, x, type, from, to, step=1) {
-	var rh = R.G.hist(x, from, to, step);
+	var rh = R.hist(x, from, to, step);
 	G.draw(g, name, rh.xc, rh.bins, type || 'bar');
 }
 
 G.ihist=function(g, name, x, type) {
+//	console.log("x.min()=%d x.max()=%d", x.min(), x.max());	
 	G.hist(g, name, x, type, x.min()-0.5, x.max()+0.5, 1);
 }
 

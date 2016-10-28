@@ -13,4 +13,4 @@ print("v.variance()=", v.variance());
 print("v.sd()=", v.sd(), " sd^2=", v.sd()*v.sd());
 print("v.cov(v)=", v.cov(v), "v.cor(v)=", v.cor(v));
 print("factorial(5)=", R.factorial(5));
-print('hist(rnorm(10000,5,2))=', R.rnorm(10000, 5, 2).hist(1,3,7).str(0));
+print('hist(rnorm(10000,5,2))=', R.rnorm(10000, 5, 2).hist(3,7,1).str(0));

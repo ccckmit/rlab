@@ -1,38 +1,39 @@
-var M = require("../rlab").M;
+var M = require("../rlab");
 var v = [1,2,3];
 print("v.sin()=", v.sin().str());
-print("v.norm2()=", v.norm2().str());
-print("v.norm2Squared()=", v.norm2Squared().str());
-
+print("v.norm()=%s", v.norm().str());
 var A = [[1,2,3],[4,5,6],[7,3,9]];
+// var AiA = M.mdot(M.minv(A), A);
 var AiA = A.inv().dot(A);
-print("AiA=\n", AiA.strM());
-print("AiA.tr()=\n", AiA.tr().strM());
+print("AiA=\n", AiA.mstr());
+print("AiA.tr()=\n", M.tr(AiA).mstr());
 print("A=\n", A.str());
 // print("A.mul(0.1)=\n", A.mul(0.1).strM()); 
-// 目前只允許矩陣乘矩陣，要加上矩陣 +-*/ 數量 (R, C, ....)
+// 目前只允許矩陣乘矩陣，要加上矩陣 *+-/ 數量 (R, C, ....)
 print("A.row(1)=", A.row(1));
 print("A.col(1)=", A.col(1));
-print("A.sumM()=", A.sum());
-print("A.rowSum()=", A.rowSum());
-print("A.colSum()=", A.colSum());
-print("A.mean(row)=", A.rowMean().str());
-print("A.mean(col)=", A.colMean().str());
+print("A.sum()=", A.sum());
+// print("A.rowSum()=", A.rowSum());
+// print("A.colSum()=", A.colSum());
+// print("A.mean(row)=", A.rowMean().str());
+// print("A.mean(col)=", A.colMean().str());
 
-var D = M.diag(v);
+var D = v.diag();
 print("D=", D);
 
 print("===========eigen================");
-var Eλ = M.eigR(A);
+var Eλ = A.eig();
+print("Eλ=", Eλ);
 var E = Eλ.E, λ=Eλ.lambda;
-print("E*[λ]*E-1=", E.dot(λ.diag()).dot(E.inv()).strM());
+print("E*[λ]*E-1=", E.dot(λ.diag()).dot(E.inv()).mstr());
 
 print("===========LU================");
-var lu = M.cLU([[0,0,1,1,1,2,2],[0,1,0,1,2,1,2],[2,-1,-1,2,-1,-1,2]]);
-print('lu:', M.str(lu));
-var luSolve = M.cLUsolve(lu,[5,-8,13]);
-print('luSolve:', luSolve.strM());
+var lu = M.lu([[0,0,1,1,1,2,2],[0,1,0,1,2,1,2],[2,-1,-1,2,-1,-1,2]]);
+print('lu:', M.mstr(lu));
+var luSolve = M.luSolve(lu,[5,-8,13]);
+print('luSolve:', luSolve.mstr());
 
+/*
 print("===========Sparse================");
 var S = [
 [0,0,0,0,0,0],
@@ -51,3 +52,4 @@ print("sparse(S)=", M.sparse(S));
 // sparse(S)=[[0,  0, 1,     3,    5, 6,  7 ], // (行)
 //                 [ 1,  3, 6, 2, 6, 4,  5 ],  // (列)
 //                 [ 3,  9, 1, 6, 1, 12, 5 ] ] // (值)
+*/

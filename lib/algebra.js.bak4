@@ -420,65 +420,92 @@ extend(F.RatioMulGroup, F.Group);
 
 F.RatioField.init(F.RatioAddGroup, F.RatioMulGroup);
 
-// =========== Function Operation ==============
-F.fneg=function(fx) { return function(v) {
-	return -1*fx(v);
-}}
+// =========== Polynomial Field ==============
+F.PolynomialRing=extend({}, F.Field);
 
-F.finv=function(fx) { return function(v) {
-	return 1/fx(v);
-}}
-
-F.fadd=function(fx,fy) { return function(v) {
-	return fx(v).add(fy(v));
-}}
-
-F.fsub=function(fx,fy) { return function(v) {
-	return fx(v).sub(fy(v));
-}}
-
-F.fmul=function(fx,fy) { return function(v) {
-	return fx(v).mul(fy(v));
-}}
-
-F.fdiv=function(fx,fy) { return function(v) {
-	return fx(v).div(fy(v));
-}}
-
-F.fcompose=function(fx,fy) { return function(v) {
-	return fx(fy(v));
-}}
-
-F.feval=function(f,x) { return f(x) }
-
-// f=(x,y)=>x*y+x*x;
-// f0=fa(f); f0([x,y]);
-F.fa=function(f) {
-	return function(x) {
-		return f.apply(null, x);
+class Polynomial extends FieldObj {
+  constructor(c) {
+    super(F.PolynomialRing);
+    this.c = c; // sum(ci x^i)
+  }
+	eval(x) {
+		var c = this.c, i=c.length-1, sum=c[i];
+		for (i--;i>=0; i--) {
+			sum = c[i].add(x.mul(sum));
+		}
+		return sum;
+	}
+	size() { return this.c.length }
+	toString() {
+		var s = [], c=this.c;
+		for (var i=c.length-1; i>=0; i--) {
+			s.push(c[i]+'x^'+i);
+		}
+		return s.join('+');
+	}
+	
+	root() {
+		normalize(); // 正規化
+		return root2(c[1], c[0]);
+	}
+	
+	root2(b,c) {
+		var d = b.mul(b).sub(c.mul(4)).sqrt();
+		return [-b+d, -b-d];
 	}
 }
 
-// =========== Function Field ==============
-F.FunctionField=extend({}, F.Field);
+F.Polynomial = Polynomial;
+/*
 
-F.FunctionAddGroup={
-  e:function(x) { return 0 },
-  op:function(x,y) { return F.fadd(x,y) },
-  inv:function(x) { return F.fneg(x) },
+function root3(a,b,c) { // x^3+ax^2+bx+c=0
+  var q=((2*a*a*a/27)-(a*b/3)+c/2);
+	var p=(b-a*a/3)/3;
+	var D=p*p*p+q*q;
+	var u_p=Math.sqrt(3, -q+Math.sqrt(D));
+	var u_m=Math.sqrt(3, -q-Math.sqrt(D));
+	var rho_p = 1/2*(-1+3i);
+	var rho_m = 1/2*(-1-3i);
+  var y1=u_p+u_m;
+  var y2=rho_p+u_p+ rho_m*u_m;
+  var y3=rho_p-u_p+ rho_p*u_m;
+}
+*/
+F.PolynomialAddGroup={
+  e:new Polynomial([0]), // 到底應該設幾個？
+  op:function(x,y) {
+		var size = Math.max(x.size(), y.size());
+		var a=Op.vextend(x.c,size), b=Op.vextend(y.c,size);
+	  var c=Op.add(a,b);
+		return new Polynomial(c);
+	},
+  inv:function(x) {
+		var c = Op.neg(x.c);
+		return new Polynomial(c);
+	},
 }
   
-extend(F.FunctionAddGroup, F.Group);
+extend(F.PolynomialAddGroup, F.Group);
 
-F.FunctionMulGroup={
-  e:function(x) { return f(x) },
-  op:function(x,y) { return F.fsub(x,y) },
-  inv:function(x) { return F.finv(x) },
+F.PolynomialMulSemiGroup={
+  e:new Polynomial([1]),
+  op:function(x,y) { 
+	  var c=[];
+	  for (var xi=0; xi<x.c.length; xi++) {
+			for (var yi=0; yi<y.c.length; yi++) {
+				var cxy = (typeof c[xi+yi]==='undefined')?0:c[xi+yi];
+				c[xi+yi] = cxy+x.c[xi]*y.c[yi];
+			}
+		}
+		return new Polynomial(c);
+	},
+  inv:function(x) { throw Error('PolynomialMulSemiGroup.inv not defined') },
 }
 
-extend(F.FunctionMulGroup, F.Group);
+extend(F.PolynomialMulSemiGroup, F.Group);
 
-F.FunctionField.init(F.FunctionAddGroup, F.FunctionMulGroup);
+F.PolynomialRing.init(F.PolynomialAddGroup, F.PolynomialMulSemiGroup);
+
 
 // Function
 F.isField=function(x) {
