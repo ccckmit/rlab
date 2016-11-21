@@ -2,9 +2,12 @@ var M = require("../rlab");
 var v = [1,2,3];
 print("v.sin()=", v.sin().str());
 print("v.norm()=%s", v.norm().str());
+print("v.diag()=\n%s\n", v.diag().mstr());
 var A = [[1,2,3],[4,5,6],[7,3,9]];
 // var AiA = M.mdot(M.minv(A), A);
 var AiA = A.inv().dot(A);
+print("dim(A)=", M.dim(A));
+print("det(A)=", M.det(A)); // det(A)=-30
 print("AiA=\n", AiA.mstr());
 print("AiA.tr()=\n", M.tr(AiA).mstr());
 print("A=\n", A.str());
@@ -21,17 +24,20 @@ print("A.sum()=", A.sum());
 var D = v.diag();
 print("D=", D);
 
+print('I([2])=', M.I([2]));
+
+
 print("===========eigen================");
 var Eλ = A.eig();
-print("Eλ=", Eλ);
+print("E=", Eλ.E.str(), "λ=", Eλ.lambda.str());
 var E = Eλ.E, λ=Eλ.lambda;
-print("E*[λ]*E-1=", E.dot(λ.diag()).dot(E.inv()).mstr());
+print("E*[λ]*E-1=", E.dot(λ.diag()).dot(E.inv()).str());
 
 print("===========LU================");
 var lu = M.lu([[0,0,1,1,1,2,2],[0,1,0,1,2,1,2],[2,-1,-1,2,-1,-1,2]]);
-print('lu:', M.mstr(lu));
+print('lu:', M.strM(lu));
 var luSolve = M.luSolve(lu,[5,-8,13]);
-print('luSolve:', luSolve.mstr());
+print('luSolve:', luSolve.str());
 
 /*
 print("===========Sparse================");

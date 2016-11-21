@@ -44,3 +44,6 @@ print('p1(3)=', p1.eval(3));
 print('p2(2)=', p2.eval(2));
 print('p2.root()=%s', p2.root());
 print('p3.root()=%s', p3.root());
+print('=========== repeat ===============');
+print('repeat([3,2,2],0)=\n', R.repeat([3,2,2]));
+print('random([2,2],[0,1])=\n', R.repeat([2,2],()=>R.random(0,1)).mstr());

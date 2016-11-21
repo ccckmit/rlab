@@ -1,5 +1,4 @@
 var R = require("../rlab");
-var be = R.be;
 
 var S10 = R.Finite(10);
 print('S10.sample(5)=', S10.sample(5));
@@ -25,6 +24,7 @@ print('RussellSet.has(Odd)=', R.RussellSet.has(R.Odd));
 print('RussellSet.has(RussellSet)=', R.RussellSet.has(R.RussellSet));
 
 /*
+var be = R.be;
 be('3.5 in Float', S.Float.has(3.5));
 be('3.5 not in Integer', !S.Integer.has(3.5));
 // be('3 not in Even', !S.Even.has(3));

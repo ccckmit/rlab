@@ -97,6 +97,7 @@ R.mixThis(Array.prototype, R, [
 "hist",
 "ihist",
 "eval",
+// "map",
 // +-*/%
 "add",
 "sub",
@@ -139,7 +140,7 @@ R.mixThisMap(Number.prototype, R, {
 });
 
 R.mixThis(Number.prototype, R, [
-	'eval',
+	'map',
 	'add',
 	'sub',
 	'mul',

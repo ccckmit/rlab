@@ -1,5 +1,5 @@
 var assert = require('chai').assert;
-var S = require("../rlab").Set;
+var S = require("../rlab");
 var eq = assert.equal;
 
 describe('Set', function() {
@@ -20,7 +20,7 @@ describe('Set', function() {
 			eq(false, UAB.has(8));
 			var IAB = S.intersection(A,B);
 			eq(true, IAB.has(3));
-			eq(true, IAB.has(2));
+			eq(false, IAB.has(2));
 			var DAB = S.difference(A,B);
 			print('3 in A-B:', DAB.has(3));
 			print('2 in A-B:', DAB.has(2));
@@ -32,8 +32,8 @@ describe('Set', function() {
 		})
   })
 })
-
-var UAB = S.union(A,B);
+/*
+var UAB = A.union(B);
 print('3 in A∪B:', UAB.has(3));
 print('8 in A∪B:', UAB.has(8));
 var IAB = S.intersection(A,B);
@@ -61,3 +61,4 @@ print('{1,4} in P5:', P.has(new S.Set([1,4])));
 print('subset({1,3},A)=', S.subSet(new S.Set([1,3]), A));
 print('subset({1,7},A)=', S.subSet(new S.Set([1,7]), A));
 
+*/

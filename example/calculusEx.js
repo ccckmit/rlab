@@ -1,4 +1,4 @@
-var R = require("../rlab").Math;
+var R = require("../rlab");
 
 var v1 = [1,2,3];
 var exp = (x)=>3*x*x+5;
