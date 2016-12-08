@@ -1,64 +1,57 @@
 /**
  * Created by joonkukang on 2014. 1. 13..
  */
-var math = require('./utils').math;
-HiddenLayer = require('./HiddenLayer');
-RBM = require('./RBM');
-MLP = require('./MLP');
+// var math = require('./utils').math;
+// HiddenLayer = require('./HiddenLayer');
+// RBM = require('./RBM');
+// MLP = require('./MLP');
+var NN=R.NN, RBM = NN.RBM, MLP = NN.MLP, HiddenLayer=NN.HiddenLayer, sigmoid=NN.sigmoid;
 
 DBN = module.exports = function (settings) {
-    var self = this;
-    self.x = settings['input'];
-    self.y = settings['label'];
-    self.sigmoidLayers = [];
-    self.rbmLayers = [];
-    self.nLayers = settings['hidden_layer_sizes'].length;
-    self.hiddenLayerSizes = settings['hidden_layer_sizes'];
-    self.nIns = settings['n_ins'];
-    self.nOuts = settings['n_outs'];
-    self.settings = {
-        'log level' : 1 // 0 : nothing, 1 : info, 2: warn
-    };
+    this.x = settings['input'];
+    this.y = settings['label'];
+    this.sigmoidLayers = [];
+    this.rbmLayers = [];
+    this.hiddenLayerSizes = settings['hiddenLayerSizes'];
+    this.nLayers = settings['hiddenLayerSizes'].length;
+    this.nIns = settings['nIns'];
+    this.nOuts = settings['nOuts'];
 
     // Constructing Deep Neural Network
     var i;
-    for(i=0 ; i<self.nLayers ; i++) {
+    for(i=0 ; i<this.nLayers ; i++) {
         var inputSize, layerInput;
-        if(i == 0)
-            inputSize = settings['n_ins'];
-        else
-            inputSize = settings['hidden_layer_sizes'][i-1];
+        inputSize = (i===0)?settings['nIns']:settings['hiddenLayerSizes'][i-1];
 
         if(i == 0)
-            layerInput = self.x;
+            layerInput = this.x;
         else
-            layerInput = self.sigmoidLayers[self.sigmoidLayers.length-1].sampleHgivenV();
+            layerInput = this.sigmoidLayers[this.sigmoidLayers.length-1].sampleHgivenV();
 
         var sigmoidLayer = new HiddenLayer({
             'input' : layerInput,
-            'n_in' : inputSize,
-            'n_out' : settings['hidden_layer_sizes'][i],
-            'activation' : math.sigmoid
+            'nIn' : inputSize,
+            'nOut' : settings['hiddenLayerSizes'][i],
+            'activation' : sigmoid
         });
-        self.sigmoidLayers.push(sigmoidLayer);
+        this.sigmoidLayers.push(sigmoidLayer);
 
         var rbmLayer = new RBM({
             'input' : layerInput,
-            'n_visible' : inputSize,
-            'n_hidden' : settings['hidden_layer_sizes'][i]
+            'nVisible' : inputSize,
+            'nHidden' : settings['hiddenLayerSizes'][i]
         });
-        self.rbmLayers.push(rbmLayer);
+        this.rbmLayers.push(rbmLayer);
     }
-    self.outputLayer = new HiddenLayer({
-        'input' : self.sigmoidLayers[self.sigmoidLayers.length-1].sampleHgivenV(),
-        'n_in' : settings['hidden_layer_sizes'][settings['hidden_layer_sizes'].length - 1],
-        'n_out' : settings['n_outs'],
-        'activation' : math.sigmoid
+    this.outputLayer = new HiddenLayer({
+        'input' : this.sigmoidLayers[this.sigmoidLayers.length-1].sampleHgivenV(),
+        'nIn' : settings['hiddenLayerSizes'][settings['hiddenLayerSizes'].length - 1],
+        'nOut' : settings['nOuts'],
+        'activation' : sigmoid
     });
 };
 
 DBN.prototype.pretrain = function (settings) {
-    var self = this;
     var lr = 0.6, k = 1, epochs = 2000;
     if(typeof settings['lr'] !== 'undefined')
         lr = settings['lr'];
@@ -68,14 +61,14 @@ DBN.prototype.pretrain = function (settings) {
         epochs = settings['epochs'];
 
     var i,j;
-    for(i=0; i<self.nLayers ; i++) {
+    for(i=0; i<this.nLayers ; i++) {
         var layerInput ,rbm;
         if (i==0)
-            layerInput = self.x;
+            layerInput = this.x;
         else
-            layerInput = self.sigmoidLayers[i-1].sampleHgivenV(layerInput);
-        rbm = self.rbmLayers[i];
-        rbm.set('log level',0);
+            layerInput = this.sigmoidLayers[i-1].sampleHgivenV(layerInput);
+        rbm = this.rbmLayers[i];
+        rbm.logLevel = 0;
         rbm.train({
             'lr' : lr,
             'k' : k,
@@ -83,21 +76,17 @@ DBN.prototype.pretrain = function (settings) {
             'epochs' : epochs
         });
 
-        if(self.settings['log level'] > 0) {
-            console.log("DBN RBM",i,"th Layer Final Cross Entropy: ",rbm.getReconstructionCrossEntropy());
-            console.log("DBN RBM",i,"th Layer Pre-Training Completed.");
-        }
+        console.log("DBN RBM",i,"th Layer Final Cross Entropy: ",rbm.getReconstructionCrossEntropy());
+        console.log("DBN RBM",i,"th Layer Pre-Training Completed.");
 
         // Synchronization between RBM and sigmoid Layer
-        self.sigmoidLayers[i].W = rbm.W;
-        self.sigmoidLayers[i].b = rbm.hbias;
+        this.sigmoidLayers[i].W = rbm.W;
+        this.sigmoidLayers[i].b = rbm.hbias;
     }
-    if(self.settings['log level'] > 0)
-        console.log("DBN Pre-Training Completed.")
+    console.log("DBN Pre-Training Completed.")
 };
 
 DBN.prototype.finetune = function (settings) {
-    var self = this;
     var lr = 0.2, epochs = 1000;
     if(typeof settings['lr'] !== 'undefined')
         lr = settings['lr'];
@@ -107,60 +96,53 @@ DBN.prototype.finetune = function (settings) {
     //Fine-Tuning Using MLP (Back Propagation)
     var i;
     var pretrainedWArray = [], pretrainedBArray = []; // HiddenLayer W,b values already pretrained by RBM.
-    for(i=0; i<self.nLayers ; i++) {
-        pretrainedWArray.push(self.sigmoidLayers[i].W);
-        pretrainedBArray.push(self.sigmoidLayers[i].b);
+    for(i=0; i<this.nLayers ; i++) {
+        pretrainedWArray.push(this.sigmoidLayers[i].W);
+        pretrainedBArray.push(this.sigmoidLayers[i].b);
     }
     // W,b of Final Output Layer are not involved in pretrainedWArray, pretrainedBArray so they will be treated as undefined at MLP Constructor.
     var mlp = new MLP({
-        'input' : self.x,
-        'label' : self.y,
-        'n_ins' : self.nIns,
-        'n_outs' : self.nOuts,
-        'hidden_layer_sizes' : self.hiddenLayerSizes,
+        'input' : this.x,
+        'label' : this.y,
+        'n_ins' : this.nIns,
+        'nOuts' : this.nOuts,
+        'hiddenLayerSizes' : this.hiddenLayerSizes,
         'w_array' : pretrainedWArray,
         'b_array' : pretrainedBArray
     });
-    mlp.set('log level',self.settings['log level']);
     mlp.train({
         'lr' : lr,
         'epochs' : epochs
     });
-    for(i=0; i<self.nLayers ; i++) {
-        self.sigmoidLayers[i].W = mlp.sigmoidLayers[i].W;
-        self.sigmoidLayers[i].b = mlp.sigmoidLayers[i].b;
+    for(i=0; i<this.nLayers ; i++) {
+        this.sigmoidLayers[i].W = mlp.sigmoidLayers[i].W;
+        this.sigmoidLayers[i].b = mlp.sigmoidLayers[i].b;
     }
-    self.outputLayer.W = mlp.sigmoidLayers[self.nLayers].W;
-    self.outputLayer.b = mlp.sigmoidLayers[self.nLayers].b;
+    this.outputLayer.W = mlp.sigmoidLayers[this.nLayers].W;
+    this.outputLayer.b = mlp.sigmoidLayers[this.nLayers].b;
 
 };
 
 DBN.prototype.getReconstructionCrossEntropy = function() {
-    var self = this;
-    var reconstructedOutput = self.predict(self.x);
-    var a = math.activateTwoMat(self.y,reconstructedOutput,function(x,y){
+    var reconstructedOutput = this.predict(this.x);
+    var a = R.map2(this.y,reconstructedOutput,function(x,y){
         return x*Math.log(y);
     });
 
-    var b = math.activateTwoMat(self.y,reconstructedOutput,function(x,y){
+    var b = R.map2(this.y,reconstructedOutput,function(x,y){
         return (1-x)*Math.log(1-y);
     });
 
-    var crossEntropy = -math.meanVec(math.sumMatAxis(math.addMat(a,b),1));
+    var crossEntropy = -a.madd(b).colSum().mean();
     return crossEntropy
 };
 
 DBN.prototype.predict = function (x) {
-    var self = this;
     var layerInput = x, i;
-    for(i=0; i<self.nLayers ; i++) {
-        layerInput = self.sigmoidLayers[i].output(layerInput);
+    for(i=0; i<this.nLayers ; i++) {
+        layerInput = this.sigmoidLayers[i].output(layerInput);
     }
-    var output = self.outputLayer.output(layerInput);
+    var output = this.outputLayer.output(layerInput);
     return output;
 };
 
-DBN.prototype.set = function(property,value) {
-    var self = this;
-    self.settings[property] = value;
-}

@@ -1,58 +1,39 @@
 /**
  * Created by joonkukang on 2014. 1. 12..
  */
-var math = require('./utils').math;
+var sigmoid = R.NN.sigmoid;
+
 HiddenLayer = module.exports = function (settings) {
-    var self = this;
-    self.input = settings['input'];
-
-    if(typeof settings['W'] === 'undefined') {
-        var a = 1. / settings['n_in'];
-        settings['W'] = math.randMat(settings['n_in'],settings['n_out'],-a,a);
-    }
-    if(typeof settings['b'] === 'undefined')
-        settings['b'] = math.zeroVec(settings['n_out']);
-    if(typeof settings['activation'] === 'undefined')
-        settings['activation'] = math.sigmoid;
-
-    self.W = settings['W'];
-    self.b = settings['b'];
-    self.activation = settings['activation'];
+	this.input = settings['input'];
+	var a = 1. / settings['nIn'];
+	settings['W'] = settings['W'] || R.randomM(settings['nIn'],settings['nOut'],-a,a);
+	settings['b'] = settings['b'] || R.newV(settings['nOut']);
+	settings['activation'] = settings['activation'] || sigmoid;
+	this.W = settings['W'];
+	this.b = settings['b'];
+	this.activation = settings['activation'];
 }
 
 HiddenLayer.prototype.output = function(input) {
-    var self = this;
-    if(typeof input !== 'undefined')
-        self.input = input;
-
-    var linearOutput = math.addMatVec(math.mulMat(self.input,self.W),self.b);
-    return math.activateMat(linearOutput,self.activation);
+  this.input = input || this.input;
+	return this.linearOutput(this.input).map1(this.activation);
 };
 
-HiddenLayer.prototype.linearOutput = function(input) { // returns the value before activation.
-    var self = this;
-    if(typeof input !== 'undefined')
-        self.input = input;
-
-    var linearOutput = math.addMatVec(math.mulMat(self.input,self.W),self.b);
-    return linearOutput;
+HiddenLayer.prototype.linearOutput = function(input) { // before activation
+  this.input = input || this.input;
+  var linearOutput = R.addMV(R.mdot(this.input, this.W), this.b);
+  return linearOutput;
 }
 
-HiddenLayer.prototype.backPropagate = function (input) { // example+num * n_out matrix
-    var self = this;
-    if(typeof input === 'undefined')
-        throw new Error("No BackPropagation Input.")
-
-    var linearOutput = math.mulMat(input, m.transpose(self.W));
+HiddenLayer.prototype.backPropagate = function (input) { // example+num * nOut matrix
+    if(typeof input === 'undefined') throw new Error("No BackPropagation Input.")
+		var linearOutput = input.mdot(this.W.tr());
     return linearOutput;
 }
 
 HiddenLayer.prototype.sampleHgivenV = function(input) {
-    var self = this;
-    if(typeof input !== 'undefined')
-        self.input = input;
-
-    var hMean = self.output();
-    var hSample = math.probToBinaryMat(hMean);
-    return hSample;
+	this.input = input || this.input;
+	var hMean = this.output();
+	var hSample = R.NN.binarySample(hMean); // Gibb's random sampling
+	return hSample;
 }
